@@ -31,6 +31,7 @@ export default defineSchema({
         userId: v.string(),
         status: v.union(v.literal('waiting'), v.literal('offered'), v.literal('purchased'), v.literal('expired')),
         offerExpiresAt: v.optional(v.number()),
+        quantity: v.number(),
     })
         .index('by_event_status', ['eventId', 'status'])
         .index('by_user_event', ['userId', 'eventId'])

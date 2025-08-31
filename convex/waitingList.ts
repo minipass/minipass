@@ -102,7 +102,11 @@ export const processQueue = internalMutation({
                         q.eq('eventId', eventId).eq('status', WAITING_LIST_STATUS.OFFERED),
                     )
                     .collect()
-                    .then(entries => entries.filter(e => (e.offerExpiresAt ?? 0) > now).length)
+                    .then(entries =>
+                        entries
+                            .filter(e => (e.offerExpiresAt ?? 0) > now)
+                            .reduce((total, entry) => total + entry.quantity, 0),
+                    )
 
                 return {
                     availableSpots: event.totalTickets - (purchasedCount + activeOffers),
@@ -111,27 +115,37 @@ export const processQueue = internalMutation({
 
         if (availableSpots <= 0) return
 
-        // Get next users in line
+        // Get all waiting users ordered by join time
         const waitingUsers = await ctx.db
             .query('waitingList')
             .withIndex('by_event_status', q => q.eq('eventId', eventId).eq('status', WAITING_LIST_STATUS.WAITING))
             .order('asc')
-            .take(availableSpots)
+            .collect()
 
-        // Create time-limited offers for selected users
+        // Create time-limited offers for selected users, considering quantities
         const now = Date.now()
-        for (const user of waitingUsers) {
-            // Update the waiting list entry to OFFERED status
-            await ctx.db.patch(user._id, {
-                status: WAITING_LIST_STATUS.OFFERED,
-                offerExpiresAt: now + DURATIONS.TICKET_OFFER,
-            })
+        let remainingSpots = availableSpots
 
-            // Schedule expiration job for this offer
-            await ctx.scheduler.runAfter(DURATIONS.TICKET_OFFER, internal.waitingList.expireOffer, {
-                waitingListId: user._id,
-                eventId,
-            })
+        for (const user of waitingUsers) {
+            if (remainingSpots <= 0) break
+
+            const userQuantity = user.quantity
+            if (userQuantity <= remainingSpots) {
+                // User can get all the tickets they want
+                await ctx.db.patch(user._id, {
+                    status: WAITING_LIST_STATUS.OFFERED,
+                    offerExpiresAt: now + DURATIONS.TICKET_OFFER,
+                })
+
+                // Schedule expiration job for this offer
+                await ctx.scheduler.runAfter(DURATIONS.TICKET_OFFER, internal.waitingList.expireOffer, {
+                    waitingListId: user._id,
+                    eventId,
+                })
+
+                remainingSpots -= userQuantity
+            }
+            // If user wants more tickets than available, they stay in the waiting list
         }
     },
 })

@@ -54,11 +54,13 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
 
     const handlePurchase = async () => {
         if (!user) return
+        if (!queuePosition) return
 
         try {
             setIsLoading(true)
             const { sessionUrl } = await createStripeCheckoutSession({
                 eventId,
+                quantity: queuePosition.quantity,
             })
 
             if (sessionUrl) {
@@ -75,6 +77,8 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
         return null
     }
 
+    const ticketText = queuePosition.quantity === 1 ? 'Ticket' : `${queuePosition.quantity} Tickets`
+
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-amber-200">
             <div className="space-y-4">
@@ -85,14 +89,15 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
                                 <Ticket className="w-6 h-6 text-amber-600" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">Ticket Reserved</h3>
+                                <h3 className="text-lg font-semibold text-gray-900">{ticketText} Reserved</h3>
                                 <p className="text-sm text-gray-500">Expires in {timeRemaining}</p>
                             </div>
                         </div>
 
                         <div className="text-sm text-gray-600 leading-relaxed">
-                            A ticket has been reserved for you. Complete your purchase before the timer expires to
-                            secure your spot at this event.
+                            {queuePosition.quantity === 1
+                                ? 'A ticket has been reserved for you. Complete your purchase before the timer expires to secure your spot at this event.'
+                                : `${queuePosition.quantity} tickets have been reserved for you. Complete your purchase before the timer expires to secure your spots at this event.`}
                         </div>
                     </div>
                 </div>
@@ -102,7 +107,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
                     disabled={isExpired || isLoading}
                     className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-lg font-bold shadow-md hover:from-amber-600 hover:to-amber-700 transform hover:scale-[1.02] transition-all duration-200 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:hover:scale-100 text-lg"
                 >
-                    {isLoading ? 'Redirecting to checkout...' : 'Purchase Your Ticket Now →'}
+                    {isLoading ? 'Redirecting to checkout...' : `Purchase Your ${ticketText} Now →`}
                 </button>
 
                 <div className="mt-4">

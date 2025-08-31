@@ -64,9 +64,13 @@ export const create = mutation({
 
 // Join waiting list for an event
 export const joinWaitingList = mutation({
-    // Function takes an event ID and user ID as arguments
-    args: { eventId: v.id('events'), userId: v.string() },
-    handler: async (ctx, { eventId, userId }) => {
+    // Function takes an event ID, user ID, and optional quantity as arguments
+    args: {
+        eventId: v.id('events'),
+        userId: v.string(),
+        quantity: v.number(),
+    },
+    handler: async (ctx, { eventId, userId, quantity }) => {
         // Rate limit check
         const status = await rateLimiter.limit(ctx, 'queueJoin', { key: userId })
         if (!status.ok) {
@@ -105,16 +109,23 @@ export const joinWaitingList = mutation({
                     tickets.filter(t => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED).length,
             )
 
-        // Count current valid offers
+        // Count current valid offers (including quantities)
         const now = Date.now()
         const activeOffers = await ctx.db
             .query('waitingList')
             .withIndex('by_event_status', q => q.eq('eventId', eventId).eq('status', WAITING_LIST_STATUS.OFFERED))
             .collect()
-            .then(entries => entries.filter(e => (e.offerExpiresAt ?? 0) > now).length)
+            .then(entries =>
+                entries.filter(e => (e.offerExpiresAt ?? 0) > now).reduce((total, entry) => total + entry.quantity, 0),
+            )
 
         const availableSpots = event.totalTickets - (purchasedCount + activeOffers)
-        const available = availableSpots > 0
+        const available = availableSpots >= quantity
+
+        // If not enough tickets available, throw a specific error
+        if (!available && availableSpots > 0) {
+            throw new ConvexError(`There aren't ${quantity} tickets available. Try fewer tickets.`)
+        }
 
         if (available) {
             // If tickets are available, create an offer entry
@@ -123,6 +134,7 @@ export const joinWaitingList = mutation({
                 userId,
                 status: WAITING_LIST_STATUS.OFFERED, // Mark as offered
                 offerExpiresAt: now + DURATIONS.TICKET_OFFER, // Set expiration time
+                quantity: quantity,
             })
 
             // Schedule a job to expire this offer after the offer duration
@@ -136,18 +148,20 @@ export const joinWaitingList = mutation({
                 eventId,
                 userId,
                 status: WAITING_LIST_STATUS.WAITING, // Mark as waiting
+                quantity: quantity,
             })
         }
 
         // Return appropriate status message
+        const ticketText = quantity === 1 ? 'Ticket' : `${quantity} tickets`
         return {
             success: true,
             status: available
                 ? WAITING_LIST_STATUS.OFFERED // If available, status is offered
                 : WAITING_LIST_STATUS.WAITING, // If not available, status is waiting
             message: available
-                ? 'Ticket offered - you have 15 minutes to purchase'
-                : "Added to waiting list - you'll be notified when a ticket becomes available",
+                ? `${ticketText} offered - you have 15 minutes to purchase`
+                : `Added to waiting list for ${ticketText} - you'll be notified when tickets become available`,
         }
     },
 })
@@ -209,16 +223,24 @@ export const purchaseTicket = mutation({
         }
 
         try {
-            console.log('Creating ticket with payment info', paymentInfo)
-            // Create ticket with payment info
-            await ctx.db.insert('tickets', {
-                eventId,
-                userId,
-                purchasedAt: Date.now(),
-                status: TICKET_STATUS.VALID,
-                paymentIntentId: paymentInfo.paymentIntentId,
-                amount: paymentInfo.amount,
-            })
+            console.log('Creating tickets with payment info', paymentInfo)
+
+            // Get the quantity from the waiting list entry
+            const quantity = waitingListEntry.quantity
+
+            // Create multiple tickets based on quantity
+            const ticketPromises = Array.from({ length: quantity }, () =>
+                ctx.db.insert('tickets', {
+                    eventId,
+                    userId,
+                    purchasedAt: Date.now(),
+                    status: TICKET_STATUS.VALID,
+                    paymentIntentId: paymentInfo.paymentIntentId,
+                    amount: paymentInfo.amount / quantity, // Split the total amount across tickets
+                }),
+            )
+
+            await Promise.all(ticketPromises)
 
             console.log('Updating waiting list status to purchased')
             await ctx.db.patch(waitingListId, {
@@ -300,13 +322,15 @@ export const getEventAvailability = query({
                     tickets.filter(t => t.status === TICKET_STATUS.VALID || t.status === TICKET_STATUS.USED).length,
             )
 
-        // Count current valid offers
+        // Count current valid offers (including quantities)
         const now = Date.now()
         const activeOffers = await ctx.db
             .query('waitingList')
             .withIndex('by_event_status', q => q.eq('eventId', eventId).eq('status', WAITING_LIST_STATUS.OFFERED))
             .collect()
-            .then(entries => entries.filter(e => (e.offerExpiresAt ?? 0) > now).length)
+            .then(entries =>
+                entries.filter(e => (e.offerExpiresAt ?? 0) > now).reduce((total, entry) => total + entry.quantity, 0),
+            )
 
         const totalReserved = purchasedCount + activeOffers
 

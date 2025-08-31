@@ -16,7 +16,7 @@ export type StripeCheckoutMetaData = {
     waitingListId: Id<'waitingList'>
 }
 
-export async function createStripeCheckoutSession({ eventId }: { eventId: Id<'events'> }) {
+export async function createStripeCheckoutSession({ eventId, quantity }: { eventId: Id<'events'>; quantity: number }) {
     const { userId } = await auth()
     if (!userId) throw new Error('Not authenticated')
 
@@ -34,6 +34,11 @@ export async function createStripeCheckoutSession({ eventId }: { eventId: Id<'ev
 
     if (!queuePosition || queuePosition.status !== 'offered') {
         throw new Error('No valid ticket offer found')
+    }
+
+    // Verify the quantity matches what was offered
+    if (queuePosition.quantity !== quantity) {
+        throw new Error('Quantity mismatch - please refresh and try again')
     }
 
     const stripeConnectId = await convex.query(api.users.getUsersStripeConnectId, {
@@ -57,7 +62,6 @@ export async function createStripeCheckoutSession({ eventId }: { eventId: Id<'ev
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create(
         {
-            payment_method_types: ['card'],
             line_items: [
                 {
                     price_data: {
@@ -68,11 +72,11 @@ export async function createStripeCheckoutSession({ eventId }: { eventId: Id<'ev
                         },
                         unit_amount: Math.round(event.price * 100),
                     },
-                    quantity: 1,
+                    quantity: quantity,
                 },
             ],
             payment_intent_data: {
-                application_fee_amount: Math.round(event.price * 100 * 0.01),
+                application_fee_amount: Math.round(event.price * 100 * quantity * 0.01),
             },
             expires_at: Math.floor(Date.now() / 1000) + DURATIONS.TICKET_OFFER / 1000, // 30 minutes (stripe checkout minimum expiration time)
             mode: 'payment',
