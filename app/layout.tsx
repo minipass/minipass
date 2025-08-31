@@ -1,5 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 
 import { ConvexClientProvider } from '@/components/ConvexClientProvider'
@@ -23,6 +23,13 @@ const geistMono = localFont({
 export const metadata: Metadata = {
     title: 'TicketR',
     description: 'Your mini ticket marketplace',
+}
+
+export const viewport: Viewport = {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
 }
 
 export default function RootLayout({
