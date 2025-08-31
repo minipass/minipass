@@ -2,6 +2,7 @@ import { MINUTE, RateLimiter } from '@convex-dev/rate-limiter'
 import { ConvexError, v } from 'convex/values'
 
 import { components, internal } from './_generated/api'
+import { Doc, Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
 import { DURATIONS, TICKET_STATUS, WAITING_LIST_STATUS } from './constants'
 
@@ -280,6 +281,41 @@ export const getUserTickets = query({
         )
 
         return ticketsWithEvents
+    },
+})
+
+// Get user's tickets grouped by event
+export const getUserTicketsGroupedByEvent = query({
+    args: { userId: v.string() },
+    handler: async (ctx, { userId }) => {
+        const tickets = await ctx.db
+            .query('tickets')
+            .withIndex('by_user', q => q.eq('userId', userId))
+            .collect()
+
+        // Group tickets by event
+        const ticketsByEvent = new Map<Id<'events'>, { event: Doc<'events'>; tickets: Doc<'tickets'>[] }>()
+
+        for (const ticket of tickets) {
+            const event = await ctx.db.get(ticket.eventId)
+            if (!event) continue
+
+            const eventId = ticket.eventId
+            if (!ticketsByEvent.has(eventId)) {
+                ticketsByEvent.set(eventId, {
+                    event,
+                    tickets: [],
+                })
+            }
+
+            ticketsByEvent.get(eventId)!.tickets.push(ticket)
+        }
+
+        // Convert to array and sort by event date
+        const groupedTickets = Array.from(ticketsByEvent.values())
+        groupedTickets.sort((a, b) => a.event.eventDate - b.event.eventDate)
+
+        return groupedTickets
     },
 })
 
