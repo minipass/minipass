@@ -1,12 +1,13 @@
-import { cronJobs } from "convex/server";
-import { internal } from "./_generated/api";
+import { cronJobs } from 'convex/server'
 
-const crons = cronJobs();
+import { internal } from './_generated/api'
+
+const crons = cronJobs()
 
 crons.interval(
-  "cleanup-expired-offers",
-  { minutes: 1 }, // Run every 1 minute
-  internal.waitingList.cleanupExpiredOffers
-);
+    'cleanup-expired-offers',
+    { minutes: 1 }, // Run every 1 minute
+    internal.waitingList.cleanupExpiredOffers,
+)
 
-export default crons;
+export default crons
