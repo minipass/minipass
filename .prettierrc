@@ -1,0 +1,14 @@
+{
+    "printWidth": 120,
+    "tabWidth": 4,
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "bracketSpacing": true,
+    "jsxSingleQuote": false,
+    "quoteProps": "as-needed",
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": ["<THIRD_PARTY_MODULES>", "^@/convex/(.*)$", "^@/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+}
