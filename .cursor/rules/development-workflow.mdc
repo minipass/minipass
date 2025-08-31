@@ -1,0 +1,79 @@
+# Development Workflow
+
+## Package Management
+
+-   Use **Bun** for all package operations: `bun install`, `bun add`, `bun run`
+-   Use `bunx` for running tools: `bunx oxlint`, `bunx prettier`
+-   Lock file is `bun.lockb` (not package-lock.json)
+
+## Available Scripts
+
+See them inside [package.json](mdc:package.json):
+
+## Code Quality
+
+-   **Linting**: oxlint for fast JavaScript/TypeScript linting
+-   **Formatting**: Prettier with import sorting via `@trivago/prettier-plugin-sort-imports`
+-   **Pre-commit hooks**: Automatically run linting and formatting via husky + lint-staged
+-   **GitHub Actions**: Automated checks on PRs and pushes to main
+
+## File Organization
+
+-   **App Router**: Use Next.js 15 App Router structure in [app/](mdc:app/)
+-   **Components**: Reusable components in [components/](mdc:components/)
+-   **UI Components**: shadcn/ui components in [components/ui/](mdc:components/ui/)
+-   **Convex Functions**: Backend logic in [convex/](mdc:convex/)
+-   **Utilities**: Helper functions in [lib/](mdc:lib/)
+-   **Hooks**: Custom React hooks in [hooks/](mdc:hooks/)
+
+## Import Organization
+
+Prettier automatically sorts imports
+
+## TypeScript
+
+-   Use strict TypeScript configuration
+-   Define proper interfaces for all props and data structures
+-   Use Convex generated types from `@/convex/_generated/dataModel`
+-   Use proper type guards and null checks
+
+## Testing
+
+-   Write tests for critical business logic
+-   Test Convex functions with proper mocking
+-   Test React components with proper user interactions
+-   Use proper error boundaries and loading states
+
+## Deployment
+
+-   Deploy to Vercel for Next.js hosting
+-   Deploy Convex functions to Convex Cloud
+-   Configure environment variables properly
+-   Set up proper CORS and security headers
+
+## Environment Variables
+
+-   Use `.env.local` for local development
+-   Configure Clerk environment variables
+-   Configure Convex environment variables
+-   Configure Stripe environment variables
+
+## Performance
+
+-   Use Next.js Image component for image optimization
+-   Implement proper loading states
+-   Use Convex subscriptions for real-time updates
+-   Optimize bundle size with proper code splitting
+
+## Security
+
+-   Use Clerk for authentication and user management
+-   Implement proper rate limiting in Convex functions
+-   Validate all inputs in mutations
+-   Use proper CORS configuration
+-   Secure API routes with proper middleware
+    description:
+    globs:
+    alwaysApply: true
+
+---

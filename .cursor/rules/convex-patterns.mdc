@@ -1,0 +1,82 @@
+# Convex Development Patterns
+
+## Database Schema
+
+-   Define tables in [convex/schema.ts](mdc:convex/schema.ts) using `defineTable`
+-   Use proper validation with `v.union()`, `v.literal()`, and `v.optional()`
+-   Create indexes for efficient queries using `.index()`
+-   Reference other tables using `v.id('tableName')`
+
+## Function Patterns
+
+### Queries
+
+```typescript
+export const getById = query({
+    args: { eventId: v.id('events') },
+    handler: async (ctx, { eventId }) => {
+        return await ctx.db.get(eventId)
+    },
+})
+```
+
+### Mutations
+
+```typescript
+export const create = mutation({
+    args: {
+        name: v.string(),
+        userId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const id = await ctx.db.insert('tableName', {
+            name: args.name,
+            userId: args.userId,
+        })
+        return id
+    },
+})
+```
+
+## Best Practices
+
+-   Use `ConvexError` for throwing errors with user-friendly messages
+-   Implement rate limiting using `@convex-dev/rate-limiter`
+-   Use proper indexes for query performance
+-   Handle optional fields with `v.optional()`
+-   Use `ctx.db.query().withIndex()` for efficient queries
+-   Implement proper validation in mutation handlers
+-   Use constants for status values (see [convex/constants.ts](mdc:convex/constants.ts))
+
+## Common Patterns
+
+-   Check for existing records before creating new ones
+-   Use `filter()` to exclude cancelled/deleted records
+-   Implement proper error handling for not found scenarios
+-   Use `collect()` for getting all results or `first()` for single results
+-   Use `order()` for sorting results
+
+## Rate Limiting
+
+```typescript
+const rateLimiter = new RateLimiter(components.rateLimiter, {
+    actionName: {
+        kind: 'fixed window',
+        rate: 3,
+        period: 30 * MINUTE,
+    },
+})
+```
+
+## Error Handling
+
+```typescript
+if (!event) throw new ConvexError('Event not found')
+if (existingEntry) throw new Error('Already exists')
+```
+
+description:
+globs:
+alwaysApply: true
+
+---

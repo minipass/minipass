@@ -1,0 +1,113 @@
+# React Component Patterns
+
+## Component Structure
+
+-   Use `'use client'` directive for client components
+-   Import Convex hooks: `useQuery`, `useMutation` from `convex/react`
+-   Import Clerk hooks: `useUser` from `@clerk/nextjs`
+-   Use TypeScript interfaces for props
+
+## Convex Integration
+
+```typescript
+import { useMutation, useQuery } from 'convex/react'
+
+import { api } from '@/convex/_generated/api'
+
+// Queries
+const event = useQuery(api.events.getById, { eventId })
+const availability = useQuery(api.events.getEventAvailability, { eventId })
+
+// Mutations
+const joinQueue = useMutation(api.waitingList.join)
+const purchaseTicket = useMutation(api.tickets.purchase)
+```
+
+## Clerk Authentication
+
+```typescript
+import { useUser } from '@clerk/nextjs'
+
+const { user, isSignedIn } = useUser()
+const userId = user?.id ?? ''
+```
+
+## Styling Patterns
+
+-   Use Tailwind CSS classes with the `cn` utility from [lib/css.ts](mdc:lib/css.ts)
+-   Follow the component variants pattern from [components/ui/button.tsx](mdc:components/ui/button.tsx)
+-   Use conditional classes for different states
+
+```typescript
+import { cn } from '@/lib/css'
+
+const className = cn('base-classes', condition && 'conditional-classes', variant === 'primary' && 'primary-classes')
+```
+
+## UI Components
+
+-   Use shadcn/ui components from [components/ui/](mdc:components/ui/)
+-   Import icons from `lucide-react`
+-   Use proper button variants: `default`, `destructive`, `outline`, `secondary`, `ghost`, `link`
+-   Use proper button sizes: `default`, `sm`, `lg`, `icon`
+
+## Common Patterns
+
+-   Handle loading states with conditional rendering
+-   Use proper error boundaries
+-   Implement proper form handling with `react-hook-form`
+-   Use `useRouter` from `next/navigation` for navigation
+-   Handle optional data with null checks
+
+## Event Handling
+
+```typescript
+const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    // Handle click logic
+}
+
+const handleSubmit = async (data: FormData) => {
+    try {
+        await mutation(data)
+    } catch (error) {
+        // Handle error
+    }
+}
+```
+
+## Conditional Rendering
+
+```typescript
+if (!event || !availability) {
+    return <Spinner />
+}
+
+if (!user) {
+    return <div>Please sign in</div>
+}
+
+if (isEventOwner) {
+    return <SellerControls />
+}
+```
+
+## Image Handling
+
+-   Use `useStorageUrl` hook for Convex storage images
+-   Use Next.js `Image` component for optimization
+-   Handle missing images with fallbacks
+
+```typescript
+import Image from 'next/image'
+
+import { useStorageUrl } from '@/hooks/useStorageUrl'
+
+const imageUrl = useStorageUrl(event?.imageStorageId)
+```
+
+description:
+globs:
+alwaysApply: true
+
+---

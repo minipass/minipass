@@ -1,0 +1,92 @@
+# Clerk Authentication Patterns
+
+## Setup
+
+-   Clerk is configured in [app/layout.tsx](mdc:app/layout.tsx) with `ClerkProvider`
+-   Middleware is configured in [middleware.ts](mdc:middleware.ts) for route protection
+-   User sync with Convex is handled in [components/SyncUserWithConvex.tsx](mdc:components/SyncUserWithConvex.tsx)
+
+## Using Clerk Hooks
+
+```typescript
+import { useUser } from '@clerk/nextjs'
+
+const { user, isSignedIn, isLoaded } = useUser()
+const userId = user?.id ?? ''
+const userEmail = user?.emailAddresses[0]?.emailAddress
+const userName = user?.fullName
+```
+
+## User State Management
+
+```typescript
+// Check if user is loaded
+if (!isLoaded) {
+    return <Spinner />
+}
+
+// Check if user is signed in
+if (!isSignedIn) {
+    return <div>Please sign in</div>
+}
+
+// Use user data safely
+const userId = user?.id ?? ''
+```
+
+## Route Protection
+
+-   Use middleware for API route protection
+-   Use `auth()` helper for server components
+-   Use `useUser()` for client components
+-   Redirect unauthenticated users appropriately
+
+## User Data in Convex
+
+-   Store user data in [convex/users.ts](mdc:convex/users.ts)
+-   Sync user data when they sign in/up
+-   Use `userId` from Clerk as the primary key
+-   Handle user deletion and updates properly
+
+## Common Patterns
+
+```typescript
+// Check if user owns a resource
+const isOwner = user?.id === event?.userId
+
+// Conditional rendering based on auth state
+{isSignedIn ? <UserDashboard /> : <SignInPrompt />}
+
+// Handle user-specific data
+const userTicket = useQuery(api.tickets.getUserTicketForEvent, {
+    eventId,
+    userId: user?.id ?? '',
+})
+```
+
+## Error Handling
+
+```typescript
+// Handle missing user gracefully
+if (!user) {
+    return <div>User not found</div>
+}
+
+// Handle loading states
+if (!isLoaded) {
+    return <Spinner />
+}
+```
+
+## Security Best Practices
+
+-   Always validate user permissions in Convex functions
+-   Use proper error handling for unauthorized access
+-   Implement proper session management
+-   Handle user logout and session expiration
+-   Validate user data on both client and server
+    description:
+    globs:
+    alwaysApply: true
+
+---

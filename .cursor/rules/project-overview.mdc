@@ -1,0 +1,37 @@
+# MiniPass - Ticketing Application Overview
+
+This is a modern ticketing marketplace built with Next.js 15, Convex, Clerk, and Tailwind CSS. The application allows users to create events, sell tickets, and manage a waiting list system.
+
+## Tech Stack
+
+-   **Frontend**: Next.js 15 with App Router, React 19, TypeScript
+-   **Backend**: Convex (real-time database and functions)
+-   **Authentication**: Clerk
+-   **Styling**: Tailwind CSS with shadcn/ui components
+-   **Package Manager**: Bun
+-   **Payment**: Stripe integration
+-   **Linting**: oxlint + prettier
+
+## Key Features
+
+1. **Event Management**: Create, edit, and cancel events
+2. **Ticket Sales**: Purchase tickets with Stripe integration
+3. **Waiting List**: Queue system for sold-out events
+4. **Seller Dashboard**: Manage events and view metrics
+5. **Real-time Updates**: Live updates using Convex subscriptions
+6. **Authentication**: User management with Clerk
+7. **Image Storage**: Event images stored in Convex storage
+
+## Development Guidelines
+
+-   Use Bun for package management and running scripts
+-   Follow the established component patterns in [components/ui/](mdc:components/ui/)
+-   Use Convex queries and mutations for data operations
+-   Implement proper error handling with ConvexError
+-   Use Tailwind CSS classes with the `cn` utility for conditional styling
+-   Follow the existing file structure and naming conventions
+    description:
+    globs:
+    alwaysApply: true
+
+---
