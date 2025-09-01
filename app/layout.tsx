@@ -21,7 +21,7 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-    title: 'TicketR',
+    title: 'minipass',
     description: 'Your mini ticket marketplace',
 }
 

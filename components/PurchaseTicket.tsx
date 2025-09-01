@@ -1,7 +1,7 @@
 'use client'
 
 import { useUser } from '@clerk/nextjs'
-import { useQuery } from 'convex/react'
+import { useAction, useQuery } from 'convex/react'
 import { Ticket } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -9,17 +9,20 @@ import { useEffect, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
-import { createStripeCheckoutSession } from '@/app/actions/createStripeCheckoutSession'
-
 import ReleaseTicket from './ReleaseTicket'
 
 export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
     const router = useRouter()
     const { user } = useUser()
+
+    // Get queue position
     const queuePosition = useQuery(api.waitingList.getQueuePosition, {
         eventId,
         userId: user?.id ?? '',
     })
+
+    // Create checkout session action
+    const createCheckoutSession = useAction(api.payment.createCheckoutSession)
 
     const [timeRemaining, setTimeRemaining] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -54,11 +57,10 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
 
     const handlePurchase = async () => {
         if (!user) return
-        if (!queuePosition) return
 
         try {
             setIsLoading(true)
-            const { sessionUrl } = await createStripeCheckoutSession({
+            const { sessionUrl } = await createCheckoutSession({
                 eventId,
                 quantity: queuePosition.quantity,
             })

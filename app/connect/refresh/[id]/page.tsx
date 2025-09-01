@@ -1,24 +1,31 @@
 'use client'
 
+import { useAction } from 'convex/react'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { createStripeConnectAccountLink } from '@/app/actions/createStripeConnectAccountLink'
+import { api } from '@/convex/_generated/api'
 
 export default function Refresh() {
     const params = useParams()
     const connectedAccountId = params.id as string
     const [accountLinkCreatePending, setAccountLinkCreatePending] = useState(false)
     const [error, setError] = useState(false)
+    const createAccountLink = useAction(api.payment.createAccountLink)
 
     useEffect(() => {
-        const createAccountLink = async () => {
+        const handleCreateAccountLink = async () => {
             if (connectedAccountId) {
                 setAccountLinkCreatePending(true)
                 setError(false)
                 try {
-                    const { url } = await createStripeConnectAccountLink(connectedAccountId)
+                    // Determine provider from account ID format or user data
+                    // For now, we'll assume it's Stripe since this is a Stripe-specific route
+                    const { url } = await createAccountLink({
+                        provider: 'stripe',
+                        accountId: connectedAccountId,
+                    })
                     window.location.href = url
                 } catch (error) {
                     console.error('Error creating account link:', error)
@@ -28,8 +35,8 @@ export default function Refresh() {
             }
         }
 
-        createAccountLink()
-    }, [connectedAccountId])
+        handleCreateAccountLink()
+    }, [connectedAccountId, createAccountLink])
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">

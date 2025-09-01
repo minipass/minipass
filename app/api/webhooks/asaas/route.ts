@@ -6,23 +6,20 @@ import { getConvexClient } from '@/lib/convex'
 import { PaymentProviderFactory } from '@/lib/payment/provider-factory'
 
 export async function POST(req: Request) {
-    console.log('Stripe webhook received')
+    console.log('Asaas webhook received')
 
     const body = await req.text()
     const headersList = await headers()
-    const signature = headersList.get('stripe-signature') as string
-
-    console.log('Webhook signature:', signature ? 'Present' : 'Missing')
+    const signature = headersList.get('asaas-access-token') as string
 
     let event: any
-
     try {
-        console.log('Attempting to construct webhook event')
-        const stripeProvider = PaymentProviderFactory.getProvider('stripe')
-        event = await stripeProvider.verifyWebhook(body, signature)
-        console.log('Webhook event constructed successfully:', event.type)
+        console.log('Attempting to parse Asaas webhook event')
+        const asaasProvider = PaymentProviderFactory.getProvider('asaas')
+        event = await asaasProvider.verifyWebhook(body, signature)
+        console.log('Asaas webhook event parsed successfully:', event.event)
     } catch (err) {
-        console.error('Webhook construction failed:', err)
+        console.error('Asaas webhook parsing failed:', err)
         return new Response(`Webhook Error: ${(err as Error).message}`, {
             status: 400,
         })
@@ -30,11 +27,10 @@ export async function POST(req: Request) {
 
     const convex = getConvexClient()
 
-    if (event.type === 'checkout.session.completed') {
-        console.log('Processing checkout.session.completed')
-        const session = event.data.object
-        const metadata = session.metadata
-        console.log('Session metadata:', metadata)
+    if (event.event === 'PAYMENT_RECEIVED') {
+        console.log('Processing PAYMENT_RECEIVED')
+        const payment = event.payment
+        const metadata = JSON.parse(payment.externalReference)
 
         try {
             const result = await convex.mutation(api.events.purchaseTicket, {
@@ -42,13 +38,13 @@ export async function POST(req: Request) {
                 userId: metadata.userId,
                 waitingListId: metadata.waitingListId,
                 paymentInfo: {
-                    paymentIntentId: session.payment_intent as string,
-                    amount: session.amount_total ?? 0,
+                    paymentIntentId: payment.id,
+                    amount: payment.value,
                 },
             })
             console.log('Purchase ticket mutation completed:', result)
         } catch (error) {
-            console.error('Error processing webhook:', error)
+            console.error('Error processing Asaas webhook:', error)
             return new Response('Error processing webhook', { status: 500 })
         }
     }

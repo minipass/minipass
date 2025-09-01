@@ -1,6 +1,6 @@
 'use client'
 
-import { useMutation } from 'convex/react'
+import { useAction, useMutation, useQuery } from 'convex/react'
 import { Ban } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
-import { refundEventTickets } from '@/app/actions/refundEventTickets'
 import { useToast } from '@/hooks/useToast'
 
 export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }) {
@@ -16,6 +15,10 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
     const { toast } = useToast()
     const router = useRouter()
     const cancelEvent = useMutation(api.events.cancelEvent)
+    const processRefunds = useAction(api.payment.processRefunds)
+
+    // Get event details and event owner accounts
+    const event = useQuery(api.events.getById, { eventId })
 
     const handleCancel = async () => {
         if (
@@ -26,10 +29,20 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
             return
         }
 
+        if (!event) {
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: 'Unable to load event details. Please try again.',
+            })
+            return
+        }
+
         setIsCancelling(true)
         try {
-            await refundEventTickets(eventId)
+            await processRefunds({ eventId })
             await cancelEvent({ eventId })
+
             toast({
                 title: 'Event cancelled',
                 description: 'All tickets have been refunded successfully.',

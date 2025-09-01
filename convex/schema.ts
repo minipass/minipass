@@ -42,6 +42,8 @@ export default defineSchema({
         email: v.string(),
         userId: v.string(),
         stripeConnectId: v.optional(v.string()),
+        asaasSubaccountId: v.optional(v.string()),
+        asaasWalletId: v.optional(v.string()),
     })
         .index('by_user_id', ['userId'])
         .index('by_email', ['email']),

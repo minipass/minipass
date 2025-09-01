@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 
 import { api } from '@/convex/_generated/api'
 
-import Spinner from '@/components/Spinner'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 
 export default function MyTicketsPage() {
