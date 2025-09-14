@@ -12,7 +12,6 @@ import QRCode from 'react-qr-code'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
-import EventCard from '@/components/EventCard'
 import JoinQueue from '@/components/JoinQueue'
 import Spinner from '@/components/Spinner'
 import { Button } from '@/components/ui/button'
@@ -70,56 +69,68 @@ export default function EventPage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {imageUrl && (
-                        <div className="aspect-[21/9] relative w-full">
+                        <div className="aspect-[3/1] relative w-full">
                             <Image src={imageUrl} alt={event.name} fill className="object-cover" priority />
                         </div>
                     )}
 
-                    <div className="p-8">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div className="flex flex-col p-8">
+                        <div>
+                            <h1 className="text-4xl font-bold text-gray-900 mb-4">{event.name}</h1>
+                            <p className="text-lg text-gray-600 mb-8">{event.description}</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                             {/* Left Column - Event Details */}
-                            <div className="space-y-8">
-                                <div>
-                                    <h1 className="text-4xl font-bold text-gray-900 mb-4">{event.name}</h1>
-                                    <p className="text-lg text-gray-600">{event.description}</p>
-                                </div>
+                            <div className="lg:col-span-2 space-y-8">
+                                {/* Event Information - Less Card-Centric Design */}
+                                <div className="bg-white border border-gray-200 rounded-sm p-6">
+                                    <h2 className="text-xl font-semibold text-gray-900 mb-6">Informações do Evento</h2>
 
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
-                                        <div className="flex items-center text-gray-600 mb-1">
-                                            <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Data</span>
+                                    <div className="space-y-4">
+                                        <div className="flex items-center py-3 border-b border-gray-100">
+                                            <CalendarDays className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
+                                            <div>
+                                                <span className="text-sm font-medium text-gray-600">Data</span>
+                                                <p className="text-gray-900 font-medium">
+                                                    {new Date(event.eventDate).toLocaleDateString('pt-BR', {
+                                                        weekday: 'long',
+                                                        year: 'numeric',
+                                                        month: 'long',
+                                                        day: 'numeric',
+                                                    })}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <p className="text-gray-900">
-                                            {new Date(event.eventDate).toLocaleDateString()}
-                                        </p>
-                                    </div>
 
-                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
-                                        <div className="flex items-center text-gray-600 mb-1">
-                                            <MapPin className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Local</span>
+                                        <div className="flex items-center py-3 border-b border-gray-100">
+                                            <MapPin className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
+                                            <div>
+                                                <span className="text-sm font-medium text-gray-600">Local</span>
+                                                <p className="text-gray-900 font-medium">{event.location}</p>
+                                            </div>
                                         </div>
-                                        <p className="text-gray-900">{event.location}</p>
-                                    </div>
 
-                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
-                                        <div className="flex items-center text-gray-600 mb-1">
-                                            <Ticket className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Preço</span>
+                                        <div className="flex items-center py-3 border-b border-gray-100">
+                                            <Ticket className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
+                                            <div>
+                                                <span className="text-sm font-medium text-gray-600">Preço</span>
+                                                <p className="text-gray-900 font-medium">R$ {event.price.toFixed(2)}</p>
+                                            </div>
                                         </div>
-                                        <p className="text-gray-900">R$ {event.price.toFixed(2)}</p>
-                                    </div>
 
-                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
-                                        <div className="flex items-center text-gray-600 mb-1">
-                                            <Users className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Disponibilidade</span>
+                                        <div className="flex items-center py-3">
+                                            <Users className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
+                                            <div>
+                                                <span className="text-sm font-medium text-gray-600">
+                                                    Disponibilidade
+                                                </span>
+                                                <p className="text-gray-900 font-medium">
+                                                    {availability.totalTickets - availability.purchasedCount} de{' '}
+                                                    {availability.totalTickets} ingressos restantes
+                                                </p>
+                                            </div>
                                         </div>
-                                        <p className="text-gray-900">
-                                            {availability.totalTickets - availability.purchasedCount} /{' '}
-                                            {availability.totalTickets} restantes
-                                        </p>
                                     </div>
                                 </div>
 
@@ -179,7 +190,7 @@ export default function EventPage() {
 
                                 {/* Additional Event Information */}
                                 <div className="bg-blue-50 border border-blue-100 rounded-sm p-6">
-                                    <h3 className="text-lg font-semibold text-blue-900 mb-2">Informações do Evento</h3>
+                                    <h3 className="text-lg font-semibold text-blue-900 mb-2">Informações Extras</h3>
                                     <ul className="space-y-2 text-blue-700">
                                         <li>• Por favor, chegue 30 minutos antes do evento começar</li>
                                         <li>• Ingressos não são reembolsáveis</li>
@@ -187,20 +198,35 @@ export default function EventPage() {
                                 </div>
                             </div>
 
-                            {/* Right Column - Ticket Purchase Card */}
+                            {/* Right Column - Purchase Section */}
                             <div>
-                                <div className="sticky top-8 space-y-4">
-                                    <EventCard eventId={params.id as Id<'events'>} />
+                                <div className="sticky top-8">
+                                    <div className="bg-white border border-gray-200 rounded-sm p-8">
+                                        <div className="text-center mb-8">
+                                            <div className="text-4xl font-bold text-gray-900 mb-3">
+                                                R$ {event.price.toFixed(2)}
+                                            </div>
+                                            <div className="flex items-center justify-center text-sm text-gray-600 mb-2">
+                                                <Users className="w-4 h-4 mr-2" />
+                                                <span>
+                                                    {availability.totalTickets - availability.purchasedCount} de{' '}
+                                                    {availability.totalTickets} ingressos restantes
+                                                </span>
+                                            </div>
+                                        </div>
 
-                                    {user ? (
-                                        <JoinQueue eventId={params.id as Id<'events'>} userId={user.id} />
-                                    ) : (
-                                        <Link href="/sign-in">
-                                            <Button className="w-full mt-2 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg">
-                                                Entrar para comprar ingressos
-                                            </Button>
-                                        </Link>
-                                    )}
+                                        <div className="space-y-4">
+                                            {user ? (
+                                                <JoinQueue eventId={params.id as Id<'events'>} userId={user.id} />
+                                            ) : (
+                                                <Link href="/sign-in">
+                                                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-4 px-6 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg text-lg">
+                                                        Entrar para comprar ingressos
+                                                    </Button>
+                                                </Link>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
