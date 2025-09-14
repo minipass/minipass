@@ -67,7 +67,7 @@ export default function TicketPage() {
                     <div
                         className={cn(
                             'bg-white p-6 rounded-sm shadow-sm border',
-                            ticket.event.is_cancelled ? 'border-red-200' : 'border-gray-100',
+                            ticket.event.isCancelled ? 'border-red-200' : 'border-gray-100',
                         )}
                     >
                         <h1 className="text-2xl font-bold text-gray-900">{ticket.event.name}</h1>
@@ -78,16 +78,16 @@ export default function TicketPage() {
                             <span
                                 className={cn(
                                     'px-3 py-1 rounded-sm text-sm font-medium',
-                                    ticket.event.is_cancelled ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700',
+                                    ticket.event.isCancelled ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700',
                                 )}
                             >
-                                {ticket.event.is_cancelled ? 'Cancelado' : 'Ingresso Válido'}
+                                {ticket.event.isCancelled ? 'Cancelado' : 'Ingresso Válido'}
                             </span>
                             <span className="text-sm text-gray-500">
                                 Comprado em {new Date(ticket.purchasedAt).toLocaleDateString()}
                             </span>
                         </div>
-                        {ticket.event.is_cancelled && (
+                        {ticket.event.isCancelled && (
                             <p className="mt-4 text-sm text-red-600">
                                 Este evento foi cancelado. Um reembolso será processado se ainda não foi feito.
                             </p>
@@ -102,7 +102,7 @@ export default function TicketPage() {
                 <div
                     className={cn(
                         'mt-8 rounded-sm p-4',
-                        ticket.event.is_cancelled
+                        ticket.event.isCancelled
                             ? 'bg-red-50 border-red-100 border'
                             : 'bg-blue-50 border-blue-100 border',
                     )}
@@ -110,13 +110,13 @@ export default function TicketPage() {
                     <h3
                         className={cn(
                             'text-sm font-medium',
-                            ticket.event.is_cancelled ? 'text-red-900' : 'text-blue-900',
+                            ticket.event.isCancelled ? 'text-red-900' : 'text-blue-900',
                         )}
                     >
                         Precisa de Ajuda?
                     </h3>
-                    <p className={cn('mt-1 text-sm', ticket.event.is_cancelled ? 'text-red-700' : 'text-blue-700')}>
-                        {ticket.event.is_cancelled
+                    <p className={cn('mt-1 text-sm', ticket.event.isCancelled ? 'text-red-700' : 'text-blue-700')}>
+                        {ticket.event.isCancelled
                             ? 'Para dúvidas sobre reembolsos ou cancelamentos, entre em contato com nossa equipe de suporte em team@papareact-tickr.com'
                             : 'Se você tiver algum problema com seu ingresso, entre em contato com nossa equipe de suporte em team@papareact-tickr.com'}
                     </p>

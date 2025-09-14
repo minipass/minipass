@@ -71,7 +71,7 @@ function SellerEventCard({
         <Card
             className={cn(
                 'hover:border-gray-300 hover:shadow-sm transition-all duration-200 overflow-hidden',
-                event.is_cancelled ? 'border-red-200' : '',
+                event.isCancelled ? 'border-red-200' : '',
             )}
         >
             <div className="p-6">
@@ -89,7 +89,7 @@ function SellerEventCard({
                             <div>
                                 <h3 className="text-xl font-semibold text-gray-900">{event.name}</h3>
                                 <p className="mt-1 text-gray-500">{event.description}</p>
-                                {event.is_cancelled && (
+                                {event.isCancelled && (
                                     <div className="mt-2">
                                         <Badge variant="destructive" className="flex items-center gap-1">
                                             <Ban className="w-3 h-3" />
@@ -99,7 +99,7 @@ function SellerEventCard({
                                 )}
                             </div>
                             <div className="flex items-center gap-2">
-                                {!isPastEvent && !event.is_cancelled && (
+                                {!isPastEvent && !event.isCancelled && (
                                     <>
                                         <Button variant="secondary" size="sm" asChild>
                                             <Link href={`/seller/events/${event._id}/edit`}>
@@ -118,11 +118,11 @@ function SellerEventCard({
                                 <div className="flex items-center gap-2 text-gray-600 mb-2">
                                     <Ticket className="w-4 h-4" />
                                     <span className="text-sm font-medium">
-                                        {event.is_cancelled ? 'Ingressos Reembolsados' : 'Ingressos Vendidos'}
+                                        {event.isCancelled ? 'Ingressos Reembolsados' : 'Ingressos Vendidos'}
                                     </span>
                                 </div>
                                 <p className="text-2xl font-semibold text-gray-900">
-                                    {event.is_cancelled ? (
+                                    {event.isCancelled ? (
                                         <>
                                             {event.metrics.refundedTickets}
                                             <span className="text-sm text-gray-500 font-normal"> reembolsados</span>
@@ -142,12 +142,12 @@ function SellerEventCard({
                                 <div className="flex items-center gap-2 text-gray-600 mb-2">
                                     <Banknote className="w-4 h-4" />
                                     <span className="text-sm font-medium">
-                                        {event.is_cancelled ? 'Valor Reembolsado' : 'Receita'}
+                                        {event.isCancelled ? 'Valor Reembolsado' : 'Receita'}
                                     </span>
                                 </div>
                                 <p className="text-2xl font-semibold text-gray-900">
                                     R$
-                                    {event.is_cancelled
+                                    {event.isCancelled
                                         ? event.metrics.refundedTickets * event.price
                                         : event.metrics.revenue}
                                 </p>
@@ -169,10 +169,10 @@ function SellerEventCard({
                                     <span className="text-sm font-medium">Status</span>
                                 </div>
                                 <Badge
-                                    variant={event.is_cancelled ? 'destructive' : isPastEvent ? 'default' : 'success'}
+                                    variant={event.isCancelled ? 'destructive' : isPastEvent ? 'default' : 'success'}
                                     className="text-xs"
                                 >
-                                    {event.is_cancelled ? 'Cancelado' : isPastEvent ? 'Terminado' : 'Ativo'}
+                                    {event.isCancelled ? 'Cancelado' : isPastEvent ? 'Terminado' : 'Ativo'}
                                 </Badge>
                             </div>
                         </div>

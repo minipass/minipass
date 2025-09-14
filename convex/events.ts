@@ -27,7 +27,7 @@ export const get = query({
     handler: async ctx => {
         return await ctx.db
             .query('events')
-            .filter(q => q.eq(q.field('is_cancelled'), undefined))
+            .filter(q => q.eq(q.field('isCancelled'), undefined))
             .collect()
     },
 })
@@ -218,7 +218,7 @@ export const purchaseTicket = mutation({
             throw new Error('Evento não encontrado')
         }
 
-        if (event.is_cancelled) {
+        if (event.isCancelled) {
             console.error('Attempted purchase of cancelled event', { eventId })
             throw new Error('Evento não está mais ativo')
         }
@@ -385,7 +385,7 @@ export const search = query({
     handler: async (ctx, { searchTerm }) => {
         const events = await ctx.db
             .query('events')
-            .filter(q => q.eq(q.field('is_cancelled'), undefined))
+            .filter(q => q.eq(q.field('isCancelled'), undefined))
             .collect()
 
         return events.filter(event => {
@@ -493,7 +493,7 @@ export const cancelEvent = mutation({
 
         // Mark event as cancelled
         await ctx.db.patch(eventId, {
-            is_cancelled: true,
+            isCancelled: true,
         })
 
         // Delete any waiting list entries

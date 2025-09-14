@@ -27,7 +27,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
     }
 
     return (
-        <Card className={cn('overflow-hidden', ticket.event.is_cancelled ? 'border-red-200' : '')}>
+        <Card className={cn('overflow-hidden', ticket.event.isCancelled ? 'border-red-200' : '')}>
             {/* Event Header with Image */}
             <div className="relative">
                 {imageUrl && (
@@ -36,7 +36,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                             src={imageUrl}
                             alt={ticket.event.name}
                             fill
-                            className={cn('object-cover object-center', ticket.event.is_cancelled && 'opacity-50')}
+                            className={cn('object-cover object-center', ticket.event.isCancelled && 'opacity-50')}
                             priority
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/90" />
@@ -47,7 +47,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                         'px-6 py-4',
                         imageUrl
                             ? 'absolute bottom-0 left-0 right-0'
-                            : ticket.event.is_cancelled
+                            : ticket.event.isCancelled
                               ? 'bg-red-600'
                               : 'bg-blue-600',
                     )}
@@ -55,7 +55,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                     <h2 className={cn('text-2xl font-bold', imageUrl ? 'text-white' : 'text-black')}>
                         {ticket.event.name}
                     </h2>
-                    {ticket.event.is_cancelled && <p className="text-red-300 mt-1">Este evento foi cancelado</p>}
+                    {ticket.event.isCancelled && <p className="text-red-300 mt-1">Este evento foi cancelado</p>}
                 </div>
             </div>
 
@@ -68,7 +68,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <CalendarDays
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.is_cancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
                                 )}
                             />
                             <div>
@@ -81,7 +81,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <MapPin
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.is_cancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
                                 )}
                             />
                             <div>
@@ -94,7 +94,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <User
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.is_cancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
                                 )}
                             />
                             <div>
@@ -108,7 +108,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <IdCard
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.is_cancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
                                 )}
                             />
                             <div>
@@ -121,7 +121,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <TicketIcon
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.is_cancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
                                 )}
                             />
                             <div>
@@ -136,7 +136,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                         <div
                             className={cn(
                                 'bg-gray-50 border border-gray-200 p-4 rounded-sm',
-                                ticket.event.is_cancelled && 'opacity-50',
+                                ticket.event.isCancelled && 'opacity-50',
                             )}
                         >
                             <QRCode value={ticket._id} className="w-32 h-32" />
@@ -150,7 +150,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                 {/* Additional Information */}
                 <div className="mt-6 pt-6 border-t border-gray-200">
                     <h3 className="text-sm font-medium text-gray-900 mb-2">Informações Importantes</h3>
-                    {ticket.event.is_cancelled ? (
+                    {ticket.event.isCancelled ? (
                         <p className="text-sm text-red-600">
                             Este evento foi cancelado. Um reembolso será processado se ainda não foi feito.
                         </p>
@@ -168,14 +168,14 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
             <div
                 className={cn(
                     'px-6 py-4 flex justify-between items-center border-t border-gray-200',
-                    ticket.event.is_cancelled ? 'bg-red-50' : 'bg-gray-50',
+                    ticket.event.isCancelled ? 'bg-red-50' : 'bg-gray-50',
                 )}
             >
                 <span className="text-sm text-gray-500">
                     Data da Compra: {new Date(ticket.purchasedAt).toLocaleString()}
                 </span>
-                <Badge variant={ticket.event.is_cancelled ? 'destructive' : 'success'}>
-                    {ticket.event.is_cancelled ? 'Cancelado' : 'Ingresso Válido'}
+                <Badge variant={ticket.event.isCancelled ? 'destructive' : 'success'}>
+                    {ticket.event.isCancelled ? 'Cancelado' : 'Ingresso Válido'}
                 </Badge>
             </div>
         </Card>

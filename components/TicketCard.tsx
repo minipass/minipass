@@ -21,7 +21,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
     const isPastEvent = ticket.event.eventDate < Date.now()
 
     const getStatusVariant = () => {
-        if (ticket.event!.is_cancelled) return 'destructive'
+        if (ticket.event!.isCancelled) return 'destructive'
         if (ticket.status === 'valid') return isPastEvent ? 'default' : 'success'
         if (ticket.status === 'used') return 'default'
         if (ticket.status === 'refunded' || ticket.status === 'cancelled') return 'destructive'
@@ -40,7 +40,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
             href={`/tickets/${ticketId}`}
             className={cn(
                 'block hover:border-gray-300 hover:shadow-sm transition-all duration-200 overflow-hidden',
-                ticket.event.is_cancelled ? 'border-red-200' : '',
+                ticket.event.isCancelled ? 'border-red-200' : '',
                 isPastEvent && 'opacity-75 hover:opacity-100',
             )}
         >
@@ -52,7 +52,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <p className="text-sm text-gray-500 mt-1">
                                 Comprado em {new Date(ticket.purchasedAt).toLocaleDateString()}
                             </p>
-                            {ticket.event.is_cancelled && (
+                            {ticket.event.isCancelled && (
                                 <p className="text-sm text-red-600 mt-1 flex items-center gap-1">
                                     <AlertTriangle className="w-4 h-4" />
                                     Evento Cancelado
@@ -61,9 +61,9 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                         </div>
                         <div className="flex flex-col items-end gap-2">
                             <Badge variant={getStatusVariant()} className="text-sm font-medium">
-                                {ticket.event.is_cancelled ? 'Cancelado' : statusText[ticket.status]}
+                                {ticket.event.isCancelled ? 'Cancelado' : statusText[ticket.status]}
                             </Badge>
-                            {isPastEvent && !ticket.event.is_cancelled && (
+                            {isPastEvent && !ticket.event.isCancelled && (
                                 <Badge variant="default" className="text-xs">
                                     <Clock className="w-3 h-3 mr-1" />
                                     Evento Passado
@@ -74,11 +74,11 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
 
                     <div className="space-y-2">
                         <div className="flex items-center text-gray-600">
-                            <CalendarDays className={cn('w-4 h-4 mr-2', ticket.event.is_cancelled && 'text-red-600')} />
+                            <CalendarDays className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-red-600')} />
                             <span className="text-sm">{new Date(ticket.event.eventDate).toLocaleDateString()}</span>
                         </div>
                         <div className="flex items-center text-gray-600">
-                            <MapPin className={cn('w-4 h-4 mr-2', ticket.event.is_cancelled && 'text-red-600')} />
+                            <MapPin className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-red-600')} />
                             <span className="text-sm">{ticket.event.location}</span>
                         </div>
                     </div>
@@ -87,7 +87,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                         <span
                             className={cn(
                                 'font-medium',
-                                ticket.event.is_cancelled
+                                ticket.event.isCancelled
                                     ? 'text-red-600'
                                     : isPastEvent
                                       ? 'text-gray-600'

@@ -144,9 +144,9 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                             <img
                                 src={imageUrl}
                                 alt={group.event.name}
-                                className={cn('w-full h-full object-cover', group.event.is_cancelled && 'opacity-50')}
+                                className={cn('w-full h-full object-cover', group.event.isCancelled && 'opacity-50')}
                             />
-                            {group.event.is_cancelled && (
+                            {group.event.isCancelled && (
                                 <div className="absolute inset-0 bg-red-600 bg-opacity-75 flex items-center justify-center">
                                     <Badge variant="destructive" className="text-xs">
                                         Cancelado
