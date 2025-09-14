@@ -161,7 +161,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                 <span className="text-sm text-muted-foreground">
                     Data da Compra: {new Date(ticket.purchasedAt).toLocaleString()}
                 </span>
-                <Badge variant={ticket.event.isCancelled ? 'destructive' : 'success'}>
+                <Badge variant={ticket.event.isCancelled ? 'destructive' : 'primary'}>
                     {ticket.event.isCancelled ? 'Cancelado' : 'Ingresso Válido'}
                 </Badge>
             </div>

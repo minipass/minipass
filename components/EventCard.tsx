@@ -200,7 +200,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     {/* Price Tag */}
                     <div className="flex flex-col items-end gap-2 ml-4">
                         <Badge
-                            variant={isPastEvent ? 'default' : 'success'}
+                            variant={isPastEvent ? 'default' : 'primary'}
                             className="px-4 py-1.5 text-base font-semibold"
                         >
                             R${event.price.toFixed(2)}

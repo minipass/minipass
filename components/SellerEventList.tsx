@@ -172,7 +172,7 @@ function SellerEventCard({
                                     <span className="text-sm font-medium">Status</span>
                                 </div>
                                 <Badge
-                                    variant={event.isCancelled ? 'destructive' : isPastEvent ? 'default' : 'success'}
+                                    variant={event.isCancelled ? 'destructive' : isPastEvent ? 'default' : 'primary'}
                                     className="text-xs"
                                 >
                                     {event.isCancelled ? 'Cancelado' : isPastEvent ? 'Terminado' : 'Ativo'}

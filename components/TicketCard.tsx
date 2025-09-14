@@ -22,7 +22,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
 
     const getStatusVariant = () => {
         if (ticket.event!.isCancelled) return 'destructive'
-        if (ticket.status === 'valid') return isPastEvent ? 'default' : 'success'
+        if (ticket.status === 'valid') return isPastEvent ? 'default' : 'primary'
         if (ticket.status === 'used') return 'default'
         if (ticket.status === 'refunded' || ticket.status === 'cancelled') return 'destructive'
         return 'default'
