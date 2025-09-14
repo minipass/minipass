@@ -16,6 +16,8 @@ import { cn } from '@/lib/css'
 import AccountSetupForm from './AccountSetupForm'
 import PaymentProviderSelector, { PROVIDER_CONFIGS } from './PaymentProviderSelector'
 import Spinner from './Spinner'
+import { Button } from './ui/button'
+import { Card } from './ui/card'
 
 export default function SellerDashboard() {
     const [accountCreatePending, setAccountCreatePending] = useState(false)
@@ -106,38 +108,38 @@ export default function SellerDashboard() {
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="max-w-4xl mx-auto p-6">
+            <Card className="overflow-hidden">
                 {/* Header Section */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-8 text-white">
-                    <h2 className="text-2xl font-bold">Painel do Vendedor</h2>
-                    <p className="text-blue-100 mt-2">Gerencie seu perfil de vendedor e configurações de pagamento</p>
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-10 text-white">
+                    <h2 className="text-3xl font-bold">Painel do Vendedor</h2>
+                    <p className="text-blue-100 mt-2 text-lg">
+                        Gerencie seu perfil de vendedor e configurações de pagamento
+                    </p>
                 </div>
 
                 {/* Main Content */}
                 {isSetup && (
                     <>
-                        <div className="bg-white p-8 rounded-lg">
+                        <div className="bg-white p-8">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                                 Venda ingressos para seus eventos
                             </h2>
                             <p className="text-gray-600 mb-8">Liste seus ingressos à venda e gerencie suas listagens</p>
-                            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                            <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
                                 <div className="flex justify-center gap-4">
-                                    <Link
-                                        href="/seller/new-event"
-                                        className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                                    >
-                                        <Plus className="w-5 h-5" />
-                                        Criar Evento
-                                    </Link>
-                                    <Link
-                                        href="/seller/events"
-                                        className="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
-                                    >
-                                        <CalendarDays className="w-5 h-5" />
-                                        Ver Meus Eventos
-                                    </Link>
+                                    <Button asChild>
+                                        <Link href="/seller/new-event">
+                                            <Plus className="w-5 h-5" />
+                                            Criar Evento
+                                        </Link>
+                                    </Button>
+                                    <Button variant="secondary" asChild>
+                                        <Link href="/seller/events">
+                                            <CalendarDays className="w-5 h-5" />
+                                            Ver Meus Eventos
+                                        </Link>
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -149,12 +151,12 @@ export default function SellerDashboard() {
                     {/* Provider Status Section */}
                     {isSetup ? (
                         <div className="text-center py-8">
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
-                                <div className="flex items-center justify-center space-x-3 mb-4">
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-8 mb-6">
+                                <div className="flex items-center justify-center space-x-3 mb-6">
                                     <div
                                         className={cn(
-                                            'w-8 h-8 rounded-full flex items-center justify-center text-white text-lg ',
-                                            selectedProvider === 'stripe' ? 'bg-blue-500' : 'bg-green-500',
+                                            'w-12 h-12 rounded-full flex items-center justify-center text-white text-lg ',
+                                            selectedProvider === 'stripe' ? 'bg-blue-600' : 'bg-emerald-600',
                                         )}
                                     >
                                         {selectedProvider && (
@@ -168,23 +170,25 @@ export default function SellerDashboard() {
                                         )}
                                     </div>
                                     <div>
-                                        <div className="font-medium text-gray-900">
+                                        <div className="font-semibold text-gray-900 text-lg">
                                             {selectedProvider === 'stripe' ? 'Stripe' : 'Asaas'}
                                         </div>
                                     </div>
                                 </div>
-                                <p className="text-green-800 mb-4">
+                                <p className="text-emerald-800 mb-4 text-lg">
                                     Seu provedor de pagamento está configurado e pronto para aceitar pagamentos.
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-sm text-gray-600">
                                     Precisa trocar de provedor? Entre em contato com o suporte para assistência.
                                 </p>
                             </div>
                         </div>
                     ) : (
                         <div className="text-center py-8">
-                            <h3 className="text-xl font-semibold mb-4">Escolha Seu Provedor de Pagamento</h3>
-                            <p className="text-gray-600 mb-6">
+                            <h3 className="text-2xl font-semibold mb-4 text-gray-900">
+                                Escolha Seu Provedor de Pagamento
+                            </h3>
+                            <p className="text-gray-600 mb-8 text-lg">
                                 Selecione um provedor de pagamento para começar a aceitar pagamentos.
                             </p>
                             <PaymentProviderSelector
@@ -192,7 +196,7 @@ export default function SellerDashboard() {
                                 onProviderChange={handleProviderSelect}
                                 availableProviders={['stripe', 'asaas']}
                             />
-                            <p className="text-xs text-gray-500 mt-4">
+                            <p className="text-sm text-gray-500 mt-6">
                                 Precisa trocar de provedor? Entre em contato com o suporte para assistência.
                             </p>
                         </div>
@@ -212,7 +216,7 @@ export default function SellerDashboard() {
                         <div className="text-center py-4 text-gray-600">Configurando sua conta de pagamento...</div>
                     )}
                 </div>
-            </div>
+            </Card>
         </div>
     )
 }

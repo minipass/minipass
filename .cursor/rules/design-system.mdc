@@ -1,0 +1,284 @@
+# Modern Design System - MiniPass
+
+## Design Philosophy
+
+The MiniPass platform uses a modern, clean design system focused on clarity, accessibility, and user experience. The design emphasizes subtle borders, minimal shadows, and a sophisticated color palette that creates visual hierarchy without overwhelming users.
+
+## Core Design Principles
+
+### 1. Minimalism & Clarity
+
+-   Remove heavy shadows and replace with subtle borders
+-   Use clean, geometric shapes with moderate border radius
+-   Prioritize content over decorative elements
+-   Maintain generous white space for breathing room
+
+### 2. Modern Card System
+
+-   Cards use subtle borders instead of shadows
+-   Border radius: `rounded-lg` (8px) for standard cards, `rounded-xl` (12px) for featured cards
+-   Background: Pure white (`bg-white`) with subtle border (`border border-gray-200`)
+-   Hover states: Subtle border color change and minimal shadow (`hover:border-gray-300 hover:shadow-sm`)
+
+### 3. Color Palette
+
+#### Primary Colors
+
+-   **Primary**: `#2563eb` (Blue 600) - Main actions, links, and highlights
+-   **Primary Hover**: `#1d4ed8` (Blue 700) - Hover states for primary elements
+-   **Primary Light**: `#dbeafe` (Blue 100) - Light backgrounds for primary elements
+
+#### Neutral Colors
+
+-   **Background**: `#ffffff` (White) - Main background
+-   **Surface**: `#f8fafc` (Slate 50) - Card backgrounds and sections
+-   **Border**: `#e2e8f0` (Slate 200) - Standard borders
+-   **Border Hover**: `#cbd5e1` (Slate 300) - Hover border states
+-   **Text Primary**: `#0f172a` (Slate 900) - Main text
+-   **Text Secondary**: `#64748b` (Slate 500) - Secondary text
+-   **Text Muted**: `#94a3b8` (Slate 400) - Muted text
+
+#### Status Colors
+
+-   **Success**: `#059669` (Emerald 600) with `#d1fae5` (Emerald 100) background
+-   **Warning**: `#d97706` (Amber 600) with `#fef3c7` (Amber 100) background
+-   **Error**: `#dc2626` (Red 600) with `#fee2e2` (Red 100) background
+-   **Info**: `#0284c7` (Sky 600) with `#e0f2fe` (Sky 100) background
+
+## Component Guidelines
+
+### Cards
+
+```typescript
+// Standard Card
+className =
+    'bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-200'
+
+// Featured Card (larger, more prominent)
+className =
+    'bg-white border border-gray-200 rounded-xl p-8 hover:border-gray-300 hover:shadow-sm transition-all duration-200'
+
+// Interactive Card (clickable)
+className =
+    'bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-200 cursor-pointer'
+```
+
+### Buttons
+
+```typescript
+// Primary Button
+className =
+    'bg-blue-600 text-white border-0 rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+
+// Secondary Button
+className =
+    'bg-white text-gray-700 border border-gray-300 rounded-md px-4 py-2 font-medium hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+
+// Outline Button
+className =
+    'bg-transparent text-blue-600 border border-blue-600 rounded-md px-4 py-2 font-medium hover:bg-blue-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+
+// Ghost Button
+className =
+    'bg-transparent text-gray-600 border-0 rounded-md px-4 py-2 font-medium hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+```
+
+### Badges
+
+```typescript
+// Status Badge
+className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border'
+
+// Success Badge
+className = 'bg-emerald-100 text-emerald-800 border-emerald-200'
+
+// Warning Badge
+className = 'bg-amber-100 text-amber-800 border-amber-200'
+
+// Error Badge
+className = 'bg-red-100 text-red-800 border-red-200'
+
+// Info Badge
+className = 'bg-sky-100 text-sky-800 border-sky-200'
+
+// Neutral Badge
+className = 'bg-gray-100 text-gray-800 border-gray-200'
+```
+
+### Form Elements
+
+```typescript
+// Input Field
+className =
+    'w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200'
+
+// Textarea
+className =
+    'w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-vertical'
+
+// Label
+className = 'text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+```
+
+## Layout Patterns
+
+### Container
+
+```typescript
+// Main Container
+className = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+
+// Content Container
+className = 'max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'
+
+// Narrow Container
+className = 'max-w-2xl mx-auto px-4 sm:px-6 lg:px-8'
+```
+
+### Grid Systems
+
+```typescript
+// Card Grid
+className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+
+// Feature Grid
+className = 'grid grid-cols-1 md:grid-cols-2 gap-8'
+
+// Stats Grid
+className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4'
+```
+
+## Typography
+
+### Headings
+
+-   **H1**: `text-4xl font-bold text-gray-900` (36px, bold)
+-   **H2**: `text-3xl font-bold text-gray-900` (30px, bold)
+-   **H3**: `text-2xl font-semibold text-gray-900` (24px, semibold)
+-   **H4**: `text-xl font-semibold text-gray-900` (20px, semibold)
+-   **H5**: `text-lg font-medium text-gray-900` (18px, medium)
+-   **H6**: `text-base font-medium text-gray-900` (16px, medium)
+
+### Body Text
+
+-   **Large**: `text-lg text-gray-700` (18px)
+-   **Base**: `text-base text-gray-700` (16px)
+-   **Small**: `text-sm text-gray-600` (14px)
+-   **Extra Small**: `text-xs text-gray-500` (12px)
+
+## Spacing System
+
+### Padding
+
+-   **xs**: `p-2` (8px)
+-   **sm**: `p-4` (16px)
+-   **md**: `p-6` (24px)
+-   **lg**: `p-8` (32px)
+-   **xl**: `p-12` (48px)
+
+### Margins
+
+-   **xs**: `m-2` (8px)
+-   **sm**: `m-4` (16px)
+-   **md**: `m-6` (24px)
+-   **lg**: `m-8` (32px)
+-   **xl**: `m-12` (48px)
+
+### Gaps
+
+-   **xs**: `gap-2` (8px)
+-   **sm**: `gap-4` (16px)
+-   **md**: `gap-6` (24px)
+-   **lg**: `gap-8` (32px)
+-   **xl**: `gap-12` (48px)
+
+## Animation & Transitions
+
+### Standard Transitions
+
+```typescript
+// Hover Transitions
+className = 'transition-all duration-200'
+
+// Color Transitions
+className = 'transition-colors duration-200'
+
+// Transform Transitions
+className = 'transition-transform duration-200'
+```
+
+### Hover Effects
+
+-   **Cards**: Subtle border color change and minimal shadow
+-   **Buttons**: Background color darkening
+-   **Links**: Color change with underline
+-   **Interactive Elements**: Subtle scale transform (scale-105)
+
+## Accessibility
+
+### Focus States
+
+-   All interactive elements must have visible focus indicators
+-   Use `focus:ring-2 focus:ring-blue-500 focus:ring-offset-2` for focus rings
+-   Ensure sufficient color contrast (4.5:1 minimum)
+
+### Color Usage
+
+-   Never rely solely on color to convey information
+-   Use icons and text labels alongside color coding
+-   Provide alternative indicators for colorblind users
+
+## Utility Function
+
+Always use the `cn` utility function from [lib/css.ts](mdc:lib/css.ts) for combining classes:
+
+```typescript
+import { cn } from '@/lib/css'
+
+const className = cn('base-classes', condition && 'conditional-classes', variant && 'variant-classes')
+```
+
+## Component States
+
+### Loading States
+
+-   **Loading**: `animate-spin`, `opacity-50`
+-   **Disabled**: `disabled:opacity-50`, `disabled:pointer-events-none`
+-   **Hover**: `hover:bg-accent`, `hover:text-accent-foreground`
+-   **Focus**: `focus-visible:outline-none`, `focus-visible:ring-2`
+
+### Animation Classes
+
+-   **Color Transitions**: `transition-colors duration-200`
+-   **Shadow Transitions**: `transition-shadow duration-200`
+-   **All Transitions**: `transition-all duration-200`
+-   **Loading Indicators**: `animate-spin`
+-   **Skeleton Loading**: `animate-pulse`
+
+## Responsive Design
+
+### Mobile-First Approach
+
+-   **Text Sizing**: `text-sm md:text-base lg:text-lg`
+-   **Breakpoints**: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
+-   **Hide/Show Elements**: `hidden md:block`, `block md:hidden`
+-   **Responsive Spacing**: `p-4 lg:p-6`
+
+## Implementation Notes
+
+1. **Consistency**: Use the `cn` utility function for combining classes
+2. **Responsive**: Always consider mobile-first design
+3. **Performance**: Use CSS transitions instead of JavaScript animations
+4. **Accessibility**: Test with screen readers and keyboard navigation
+5. **Dark Mode**: Prepare for future dark mode implementation with CSS variables
+6. **Screen Reader Support**: Use `sr-only` for screen reader only content
+
+## File Structure
+
+-   Core components: `components/ui/`
+-   Business components: `components/`
+-   Global styles: `app/globals.css`
+-   Design tokens: `tailwind.config.ts`
+-   Utility functions: `lib/css.ts`
+
+This design system ensures a cohesive, modern, and accessible user experience across the entire MiniPass platform.

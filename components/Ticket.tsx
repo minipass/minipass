@@ -12,6 +12,8 @@ import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
 
 import Spinner from './Spinner'
+import { Badge } from './ui/badge'
+import { Card } from './ui/card'
 
 export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
     const ticket = useQuery(api.tickets.getTicketWithDetails, { ticketId })
@@ -25,12 +27,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
     }
 
     return (
-        <div
-            className={cn(
-                'bg-white rounded-xl overflow-hidden shadow-xl border',
-                ticket.event.is_cancelled ? 'border-red-200' : 'border-gray-100',
-            )}
-        >
+        <Card className={cn('overflow-hidden', ticket.event.is_cancelled ? 'border-red-200' : '')}>
             {/* Event Header with Image */}
             <div className="relative">
                 {imageUrl && (
@@ -136,7 +133,12 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
 
                     {/* Right Column - QR Code */}
                     <div className="flex flex-col items-center justify-center border-l border-gray-200 pl-6">
-                        <div className={cn('bg-gray-100 p-4 rounded-lg', ticket.event.is_cancelled && 'opacity-50')}>
+                        <div
+                            className={cn(
+                                'bg-gray-50 border border-gray-200 p-4 rounded-lg',
+                                ticket.event.is_cancelled && 'opacity-50',
+                            )}
+                        >
                             <QRCode value={ticket._id} className="w-32 h-32" />
                         </div>
                         <p className="mt-2 text-sm text-gray-500 break-all text-center max-w-[200px] md:max-w-full">
@@ -165,19 +167,17 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
             {/* Ticket Footer */}
             <div
                 className={cn(
-                    'px-6 py-4 flex justify-between items-center',
+                    'px-6 py-4 flex justify-between items-center border-t border-gray-200',
                     ticket.event.is_cancelled ? 'bg-red-50' : 'bg-gray-50',
                 )}
             >
                 <span className="text-sm text-gray-500">
                     Data da Compra: {new Date(ticket.purchasedAt).toLocaleString()}
                 </span>
-                <span
-                    className={cn('text-sm font-medium', ticket.event.is_cancelled ? 'text-red-600' : 'text-blue-600')}
-                >
+                <Badge variant={ticket.event.is_cancelled ? 'destructive' : 'success'}>
                     {ticket.event.is_cancelled ? 'Cancelado' : 'Ingresso Válido'}
-                </span>
+                </Badge>
             </div>
-        </div>
+        </Card>
     )
 }

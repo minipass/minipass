@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 
 import { api } from '@/convex/_generated/api'
 
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
 
@@ -49,12 +51,12 @@ export default function MyTicketsPage() {
             <div className="max-w-4xl mx-auto">
                 {/* Success Message */}
                 {showSuccessMessage && (
-                    <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-lg p-4">
                         <div className="flex items-center">
-                            <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
+                            <CheckCircle className="w-5 h-5 text-emerald-600 mr-3" />
                             <div>
-                                <h3 className="text-sm font-medium text-green-800">Compra Realizada com Sucesso!</h3>
-                                <p className="text-sm text-green-700 mt-1">
+                                <h3 className="text-sm font-medium text-emerald-800">Compra Realizada com Sucesso!</h3>
+                                <p className="text-sm text-emerald-700 mt-1">
                                     Seus ingressos foram confirmados e estão prontos para uso.
                                 </p>
                             </div>
@@ -69,12 +71,12 @@ export default function MyTicketsPage() {
                             Gerencie e visualize todos os seus ingressos em um só lugar
                         </p>
                     </div>
-                    <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+                    <Card className="px-4 py-2">
                         <div className="flex items-center gap-2 text-gray-600">
                             <Ticket className="w-5 h-5" />
                             <span className="font-medium">{totalTickets} Ingressos Totais</span>
                         </div>
-                    </div>
+                    </Card>
                 </div>
 
                 {upcomingGroupedTickets.length > 0 && (
@@ -129,9 +131,9 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
 
     return (
         <Link href={`/event/${group.event._id}`}>
-            <div
+            <Card
                 className={cn(
-                    'bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 cursor-pointer overflow-hidden',
+                    'hover:border-gray-300 hover:shadow-sm transition-all duration-200 cursor-pointer overflow-hidden',
                     isPastEvent && 'opacity-75 hover:opacity-100',
                 )}
             >
@@ -146,7 +148,9 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                             />
                             {group.event.is_cancelled && (
                                 <div className="absolute inset-0 bg-red-600 bg-opacity-75 flex items-center justify-center">
-                                    <span className="text-white text-xs font-medium">Cancelado</span>
+                                    <Badge variant="destructive" className="text-xs">
+                                        Cancelado
+                                    </Badge>
                                 </div>
                             )}
                         </div>
@@ -189,7 +193,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Card>
         </Link>
     )
 }

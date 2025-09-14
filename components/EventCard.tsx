@@ -23,6 +23,9 @@ import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
 
 import PurchaseTicket from './PurchaseTicket'
+import { Badge } from './ui/badge'
+import { Button } from './ui/button'
+import { Card } from './ui/card'
 
 export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
     const { user } = useUser()
@@ -52,10 +55,10 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
         if (availability.purchasedCount >= availability.totalTickets) {
             return (
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="flex items-center">
-                        <Ticket className="w-5 h-5 text-gray-400 mr-2" />
-                        <span className="text-gray-600">Evento esgotado</span>
+                        <Ticket className="w-5 h-5 text-gray-500 mr-2" />
+                        <span className="text-gray-700 font-medium">Evento esgotado</span>
                     </div>
                 </div>
             )
@@ -63,30 +66,30 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
         if (queuePosition.position === 2) {
             return (
-                <div className="flex flex-col lg:flex-row items-center justify-between p-3 bg-amber-50 rounded-lg border border-amber-100">
+                <div className="flex flex-col lg:flex-row items-center justify-between p-4 bg-amber-50 rounded-lg border border-amber-200">
                     <div className="flex items-center">
-                        <CircleArrowRight className="w-5 h-5 text-amber-500 mr-2" />
-                        <span className="text-amber-700 font-medium">
+                        <CircleArrowRight className="w-5 h-5 text-amber-600 mr-2" />
+                        <span className="text-amber-800 font-medium">
                             Você é o próximo na fila! (Posição na fila: {queuePosition.position})
                         </span>
                     </div>
                     <div className="flex items-center">
-                        <LoaderCircle className="w-4 h-4 mr-1 animate-spin text-amber-500" />
-                        <span className="text-amber-600 text-sm">Aguardando ingresso</span>
+                        <LoaderCircle className="w-4 h-4 mr-1 animate-spin text-amber-600" />
+                        <span className="text-amber-700 text-sm">Aguardando ingresso</span>
                     </div>
                 </div>
             )
         }
 
         return (
-            <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
+            <div className="flex items-center justify-between p-4 bg-sky-50 rounded-lg border border-sky-200">
                 <div className="flex items-center">
-                    <LoaderCircle className="w-4 h-4 mr-2 animate-spin text-blue-500" />
-                    <span className="text-blue-700">Posição na fila</span>
+                    <LoaderCircle className="w-4 h-4 mr-2 animate-spin text-sky-600" />
+                    <span className="text-sky-800 font-medium">Posição na fila</span>
                 </div>
-                <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
+                <Badge variant="info" className="font-medium">
                     #{queuePosition.position}
-                </span>
+                </Badge>
             </div>
         )
     }
@@ -97,33 +100,35 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
         if (isEventOwner) {
             return (
                 <div className="mt-4">
-                    <button
+                    <Button
+                        variant="secondary"
                         onClick={e => {
                             e.stopPropagation()
                             router.push(`/seller/events/${eventId}/edit`)
                         }}
-                        className="w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200 shadow-sm flex items-center justify-center gap-2"
+                        className="w-full"
                     >
                         <PencilIcon className="w-5 h-5" />
                         Editar Evento
-                    </button>
+                    </Button>
                 </div>
             )
         }
 
         if (userTicket) {
             return (
-                <div className="mt-4 flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
+                <div className="mt-4 flex items-center justify-between p-4 bg-emerald-50 rounded-lg border border-emerald-200">
                     <div className="flex items-center">
-                        <Check className="w-5 h-5 text-green-600 mr-2" />
-                        <span className="text-green-700 font-medium">Você tem ingressos para este evento!</span>
+                        <Check className="w-5 h-5 text-emerald-600 mr-2" />
+                        <span className="text-emerald-800 font-medium">Você tem ingressos para este evento!</span>
                     </div>
-                    <button
+                    <Button
+                        size="sm"
                         onClick={() => router.push('/tickets')}
-                        className="text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-full font-medium shadow-sm transition-colors duration-200 flex items-center gap-1"
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white"
                     >
                         Ver seus ingressos
-                    </button>
+                    </Button>
                 </div>
             )
         }
@@ -135,8 +140,8 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         {queuePosition.status === 'offered' && <PurchaseTicket eventId={eventId} />}
                         {renderQueuePosition()}
                         {queuePosition.status === 'expired' && (
-                            <div className="p-3 bg-red-50 rounded-lg border border-red-100">
-                                <span className="text-red-700 font-medium flex items-center">
+                            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+                                <span className="text-red-800 font-medium flex items-center">
                                     <XCircle className="w-5 h-5 mr-2" />
                                     Oferta expirada
                                 </span>
@@ -151,10 +156,10 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
     }
 
     return (
-        <div
+        <Card
             onClick={() => router.push(`/event/${eventId}`)}
             className={cn(
-                'bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 cursor-pointer overflow-hidden relative',
+                'cursor-pointer overflow-hidden relative hover:border-gray-300 hover:shadow-sm transition-all duration-200',
                 isPastEvent && 'opacity-75 hover:opacity-100',
             )}
         >
@@ -171,34 +176,32 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     <div>
                         <div className="flex flex-col items-start gap-2">
                             {isEventOwner && (
-                                <span className="inline-flex items-center gap-1 bg-blue-600/90 text-white px-2 py-1 rounded-full text-xs font-medium">
-                                    <StarIcon className="w-3 h-3" />
+                                <Badge variant="secondary" className="bg-blue-600 text-white border-blue-600">
+                                    <StarIcon className="w-3 h-3 mr-1" />
                                     Seu Evento
-                                </span>
+                                </Badge>
                             )}
                             <h2 className="text-2xl font-bold text-gray-900">{event.name}</h2>
                         </div>
                         {isPastEvent && (
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mt-2">
+                            <Badge variant="default" className="mt-2">
                                 Evento Passado
-                            </span>
+                            </Badge>
                         )}
                     </div>
 
                     {/* Price Tag */}
                     <div className="flex flex-col items-end gap-2 ml-4">
-                        <span
-                            className={cn(
-                                'px-4 py-1.5 font-semibold rounded-full',
-                                isPastEvent ? 'bg-gray-50 text-gray-500' : 'bg-green-50 text-green-700',
-                            )}
+                        <Badge
+                            variant={isPastEvent ? 'default' : 'success'}
+                            className="px-4 py-1.5 text-base font-semibold"
                         >
                             £{event.price.toFixed(2)}
-                        </span>
+                        </Badge>
                         {availability.purchasedCount >= availability.totalTickets && (
-                            <span className="px-4 py-1.5 bg-red-50 text-red-700 font-semibold rounded-full text-sm">
+                            <Badge variant="destructive" className="px-4 py-1.5 text-sm font-semibold">
                                 Esgotado
-                            </span>
+                            </Badge>
                         )}
                     </div>
                 </div>
@@ -235,6 +238,6 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
                 <div onClick={e => e.stopPropagation()}>{!isPastEvent && renderTicketStatus()}</div>
             </div>
-        </div>
+        </Card>
     )
 }
