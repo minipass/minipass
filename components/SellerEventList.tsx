@@ -11,6 +11,7 @@ import { Doc } from '@/convex/_generated/dataModel'
 import { Metrics } from '@/convex/events'
 
 import { useStorageUrl } from '@/hooks/useStorageUrl'
+import { cn } from '@/lib/css'
 
 import CancelEventButton from './CancelEventButton'
 
@@ -65,7 +66,10 @@ function SellerEventCard({
 
     return (
         <div
-            className={`bg-white rounded-lg shadow-sm border ${event.is_cancelled ? 'border-red-200' : 'border-gray-200'} overflow-hidden`}
+            className={cn(
+                'bg-white rounded-lg shadow-sm border overflow-hidden',
+                event.is_cancelled ? 'border-red-200' : 'border-gray-200',
+            )}
         >
             <div className="p-6">
                 <div className="flex items-start gap-6">

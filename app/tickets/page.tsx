@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 
 import { useStorageUrl } from '@/hooks/useStorageUrl'
+import { cn } from '@/lib/css'
 
 export default function MyTicketsPage() {
     const { user } = useUser()
@@ -129,7 +130,10 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
     return (
         <Link href={`/event/${group.event._id}`}>
             <div
-                className={`bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 cursor-pointer overflow-hidden ${isPastEvent ? 'opacity-75 hover:opacity-100' : ''}`}
+                className={cn(
+                    'bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 cursor-pointer overflow-hidden',
+                    isPastEvent && 'opacity-75 hover:opacity-100',
+                )}
             >
                 <div className="flex">
                     {/* Event Image */}
@@ -138,7 +142,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                             <img
                                 src={imageUrl}
                                 alt={group.event.name}
-                                className={`w-full h-full object-cover ${group.event.is_cancelled ? 'opacity-50' : ''}`}
+                                className={cn('w-full h-full object-cover', group.event.is_cancelled && 'opacity-50')}
                             />
                             {group.event.is_cancelled && (
                                 <div className="absolute inset-0 bg-red-600 bg-opacity-75 flex items-center justify-center">

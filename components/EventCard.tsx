@@ -20,6 +20,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
 import { useStorageUrl } from '@/hooks/useStorageUrl'
+import { cn } from '@/lib/css'
 
 import PurchaseTicket from './PurchaseTicket'
 
@@ -152,9 +153,10 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
     return (
         <div
             onClick={() => router.push(`/event/${eventId}`)}
-            className={`bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 cursor-pointer overflow-hidden relative ${
-                isPastEvent ? 'opacity-75 hover:opacity-100' : ''
-            }`}
+            className={cn(
+                'bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 cursor-pointer overflow-hidden relative',
+                isPastEvent && 'opacity-75 hover:opacity-100',
+            )}
         >
             {/* Event Image */}
             {imageUrl && (
@@ -164,7 +166,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                 </div>
             )}
 
-            <div className={`p-6 ${imageUrl ? 'relative' : ''}`}>
+            <div className={cn('p-6', imageUrl && 'relative')}>
                 <div className="flex justify-between items-start">
                     <div>
                         <div className="flex flex-col items-start gap-2">
@@ -186,9 +188,10 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     {/* Price Tag */}
                     <div className="flex flex-col items-end gap-2 ml-4">
                         <span
-                            className={`px-4 py-1.5 font-semibold rounded-full ${
-                                isPastEvent ? 'bg-gray-50 text-gray-500' : 'bg-green-50 text-green-700'
-                            }`}
+                            className={cn(
+                                'px-4 py-1.5 font-semibold rounded-full',
+                                isPastEvent ? 'bg-gray-50 text-gray-500' : 'bg-green-50 text-green-700',
+                            )}
                         >
                             £{event.price.toFixed(2)}
                         </span>

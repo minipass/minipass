@@ -11,6 +11,8 @@ import React, { useEffect, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { PaymentProvider } from '@/convex/types'
 
+import { cn } from '@/lib/css'
+
 import AccountSetupForm from './AccountSetupForm'
 import PaymentProviderSelector, { PROVIDER_CONFIGS } from './PaymentProviderSelector'
 import Spinner from './Spinner'
@@ -150,7 +152,10 @@ export default function SellerDashboard() {
                             <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
                                 <div className="flex items-center justify-center space-x-3 mb-4">
                                     <div
-                                        className={`w-8 h-8 rounded-full ${selectedProvider === 'stripe' ? 'bg-blue-500' : 'bg-green-500'} flex items-center justify-center text-white text-lg`}
+                                        className={cn(
+                                            'w-8 h-8 rounded-full flex items-center justify-center text-white text-lg ',
+                                            selectedProvider === 'stripe' ? 'bg-blue-500' : 'bg-green-500',
+                                        )}
                                     >
                                         {selectedProvider && (
                                             <Image

@@ -2,6 +2,7 @@ import Image, { StaticImageData } from 'next/image'
 
 import { PaymentProvider } from '@/convex/types'
 
+import { cn } from '@/lib/css'
 import asaasLogo from '@/public/images/asaas-logo.png'
 import stripeLogo from '@/public/images/stripe-logo.png'
 
@@ -49,9 +50,10 @@ export default function PaymentProviderSelector({
                         <button
                             key={provider}
                             onClick={() => onProviderChange(provider)}
-                            className={`p-4 border-2 rounded-lg transition-all ${
-                                isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                            }`}
+                            className={cn(
+                                'p-4 border-2 rounded-lg transition-all',
+                                isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300',
+                            )}
                         >
                             <div className="flex items-center space-x-3">
                                 <div className="w-8 h-8 rounded-full flex items-center justify-center">

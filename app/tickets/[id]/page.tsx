@@ -11,6 +11,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
 import Ticket from '@/components/Ticket'
+import { cn } from '@/lib/css'
 
 export default function TicketPage() {
     const params = useParams()
@@ -64,7 +65,10 @@ export default function TicketPage() {
 
                     {/* Event Info Summary */}
                     <div
-                        className={`bg-white p-6 rounded-lg shadow-sm border ${ticket.event.is_cancelled ? 'border-red-200' : 'border-gray-100'}`}
+                        className={cn(
+                            'bg-white p-6 rounded-lg shadow-sm border',
+                            ticket.event.is_cancelled ? 'border-red-200' : 'border-gray-100',
+                        )}
                     >
                         <h1 className="text-2xl font-bold text-gray-900">{ticket.event.name}</h1>
                         <p className="mt-1 text-gray-600">
@@ -72,9 +76,10 @@ export default function TicketPage() {
                         </p>
                         <div className="mt-4 flex items-center gap-4">
                             <span
-                                className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                    ticket.event.is_cancelled ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
-                                }`}
+                                className={cn(
+                                    'px-3 py-1 rounded-full text-sm font-medium',
+                                    ticket.event.is_cancelled ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700',
+                                )}
                             >
                                 {ticket.event.is_cancelled ? 'Cancelado' : 'Ingresso Válido'}
                             </span>
@@ -95,20 +100,22 @@ export default function TicketPage() {
 
                 {/* Additional Information */}
                 <div
-                    className={`mt-8 rounded-lg p-4 ${
+                    className={cn(
+                        'mt-8 rounded-lg p-4',
                         ticket.event.is_cancelled
                             ? 'bg-red-50 border-red-100 border'
-                            : 'bg-blue-50 border-blue-100 border'
-                    }`}
+                            : 'bg-blue-50 border-blue-100 border',
+                    )}
                 >
                     <h3
-                        className={`text-sm font-medium ${
-                            ticket.event.is_cancelled ? 'text-red-900' : 'text-blue-900'
-                        }`}
+                        className={cn(
+                            'text-sm font-medium',
+                            ticket.event.is_cancelled ? 'text-red-900' : 'text-blue-900',
+                        )}
                     >
                         Precisa de Ajuda?
                     </h3>
-                    <p className={`mt-1 text-sm ${ticket.event.is_cancelled ? 'text-red-700' : 'text-blue-700'}`}>
+                    <p className={cn('mt-1 text-sm', ticket.event.is_cancelled ? 'text-red-700' : 'text-blue-700')}>
                         {ticket.event.is_cancelled
                             ? 'Para dúvidas sobre reembolsos ou cancelamentos, entre em contato com nossa equipe de suporte em team@papareact-tickr.com'
                             : 'Se você tiver algum problema com seu ingresso, entre em contato com nossa equipe de suporte em team@papareact-tickr.com'}

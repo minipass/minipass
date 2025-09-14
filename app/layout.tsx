@@ -7,6 +7,7 @@ import { ConvexClientProvider } from '@/components/ConvexClientProvider'
 import Header from '@/components/Header'
 import SyncUserWithConvex from '@/components/SyncUserWithConvex'
 import { Toaster } from '@/components/ui/toaster'
+import { cn } from '@/lib/css'
 
 import './globals.css'
 
@@ -40,7 +41,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="pt-BR">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
                 <ClerkProvider localization={ptBR}>
                     <ConvexClientProvider>
                         <Header />
