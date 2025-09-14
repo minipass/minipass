@@ -196,7 +196,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                             variant={isPastEvent ? 'default' : 'success'}
                             className="px-4 py-1.5 text-base font-semibold"
                         >
-                            £{event.price.toFixed(2)}
+                            R${event.price.toFixed(2)}
                         </Badge>
                         {availability.purchasedCount >= availability.totalTickets && (
                             <Badge variant="destructive" className="px-4 py-1.5 text-sm font-semibold">
