@@ -1,7 +1,6 @@
 import Stripe from 'stripe'
 
-import { Doc } from '@/convex/_generated/dataModel'
-
+import { Doc } from '../../../convex/_generated/dataModel'
 import { CheckoutSession, PaymentProvider } from '../../../convex/types'
 import { stripe } from '../../stripe'
 import { PaymentProviderBase } from './base'

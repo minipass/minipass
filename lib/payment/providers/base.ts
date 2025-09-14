@@ -1,5 +1,4 @@
-import { Doc } from '@/convex/_generated/dataModel'
-
+import { Doc } from '../../../convex/_generated/dataModel'
 import { CheckoutSession, PaymentProvider } from '../../../convex/types'
 
 export abstract class PaymentProviderBase {
