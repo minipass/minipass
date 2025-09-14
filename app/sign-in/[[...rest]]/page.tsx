@@ -2,7 +2,7 @@ import { SignIn } from '@clerk/nextjs'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
-import logo from '@/images/logo.png'
+import logo from '@/images/minipass-full.svg'
 
 function SignInForm() {
     return (
