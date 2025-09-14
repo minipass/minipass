@@ -27,6 +27,7 @@ const formSchema = z.object({
     eventDate: z.date().min(new Date(new Date().setHours(0, 0, 0, 0)), 'Data do evento deve ser no futuro'),
     price: z.number().min(0, 'Preço deve ser 0 ou maior'),
     totalTickets: z.number().min(1, 'Deve ter pelo menos 1 ingresso'),
+    displayTotalTickets: z.boolean(),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -39,6 +40,7 @@ interface InitialEventData {
     eventDate: number
     price: number
     totalTickets: number
+    displayTotalTickets: boolean
     imageStorageId?: Id<'_storage'>
 }
 
@@ -75,6 +77,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
             eventDate: initialData ? new Date(initialData.eventDate) : new Date(),
             price: initialData?.price ?? 0,
             totalTickets: initialData?.totalTickets ?? 1,
+            displayTotalTickets: initialData?.displayTotalTickets ?? false,
         },
     })
 
@@ -288,6 +291,30 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                     />
                                 </FormControl>
                                 <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="displayTotalTickets"
+                        render={({ field }) => (
+                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                <FormControl>
+                                    <input
+                                        type="checkbox"
+                                        checked={field.value}
+                                        onChange={field.onChange}
+                                        className="mt-1"
+                                    />
+                                </FormControl>
+                                <div className="space-y-1 leading-none">
+                                    <FormLabel>Exibir disponibilidade de ingressos</FormLabel>
+                                    <p className="text-sm text-gray-600">
+                                        Quando desabilitado, a disponibilidade de ingressos não será mostrada
+                                        publicamente
+                                    </p>
+                                </div>
                             </FormItem>
                         )}
                     />

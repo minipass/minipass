@@ -53,7 +53,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
     const renderQueuePosition = () => {
         if (!queuePosition || queuePosition.status !== 'waiting') return null
 
-        if (availability.purchasedCount >= availability.totalTickets) {
+        if (!availability.availabilityHidden && availability.purchasedCount >= availability.totalTickets) {
             return (
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-sm border border-gray-200">
                     <div className="flex items-center">
@@ -198,11 +198,12 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         >
                             R${event.price.toFixed(2)}
                         </Badge>
-                        {availability.purchasedCount >= availability.totalTickets && (
-                            <Badge variant="destructive" className="px-4 py-1.5 text-sm font-semibold">
-                                Esgotado
-                            </Badge>
-                        )}
+                        {!availability.availabilityHidden &&
+                            availability.purchasedCount >= availability.totalTickets && (
+                                <Badge variant="destructive" className="px-4 py-1.5 text-sm font-semibold">
+                                    Esgotado
+                                </Badge>
+                            )}
                     </div>
                 </div>
 
@@ -219,19 +220,21 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         </span>
                     </div>
 
-                    <div className="flex items-center text-gray-600">
-                        <Ticket className="w-4 h-4 mr-2" />
-                        <span>
-                            {availability.totalTickets - availability.purchasedCount} / {availability.totalTickets}{' '}
-                            disponíveis
-                            {!isPastEvent && availability.activeOffers > 0 && (
-                                <span className="text-amber-600 text-sm ml-2">
-                                    ({availability.activeOffers}{' '}
-                                    {availability.activeOffers === 1 ? 'pessoa' : 'pessoas'} tentando comprar)
-                                </span>
-                            )}
-                        </span>
-                    </div>
+                    {!availability.availabilityHidden && (
+                        <div className="flex items-center text-gray-600">
+                            <Ticket className="w-4 h-4 mr-2" />
+                            <span>
+                                {availability.totalTickets - availability.purchasedCount} / {availability.totalTickets}{' '}
+                                disponíveis
+                                {!isPastEvent && availability.activeOffers > 0 && (
+                                    <span className="text-amber-600 text-sm ml-2">
+                                        ({availability.activeOffers}{' '}
+                                        {availability.activeOffers === 1 ? 'pessoa' : 'pessoas'} tentando comprar)
+                                    </span>
+                                )}
+                            </span>
+                        </div>
+                    )}
                 </div>
 
                 <p className="mt-4 text-gray-600 text-sm line-clamp-2">{event.description}</p>

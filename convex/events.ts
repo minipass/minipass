@@ -47,6 +47,7 @@ export const create = mutation({
         eventDate: v.number(), // Store as timestamp
         price: v.number(),
         totalTickets: v.number(),
+        displayTotalTickets: v.boolean(),
         userId: v.string(),
     },
     handler: async (ctx, args) => {
@@ -57,6 +58,7 @@ export const create = mutation({
             eventDate: args.eventDate,
             price: args.price,
             totalTickets: args.totalTickets,
+            displayTotalTickets: args.displayTotalTickets,
             userId: args.userId,
         })
         return eventId
@@ -372,10 +374,11 @@ export const getEventAvailability = query({
 
         return {
             isSoldOut: totalReserved >= event.totalTickets,
-            totalTickets: event.totalTickets,
-            purchasedCount,
-            activeOffers,
-            remainingTickets: Math.max(0, event.totalTickets - totalReserved),
+            totalTickets: event.displayTotalTickets ? event.totalTickets : 0,
+            purchasedCount: event.displayTotalTickets ? purchasedCount : 0,
+            activeOffers: event.displayTotalTickets ? activeOffers : 0,
+            remainingTickets: event.displayTotalTickets ? Math.max(0, event.totalTickets - totalReserved) : 0,
+            availabilityHidden: !event.displayTotalTickets,
         }
     },
 })
@@ -446,6 +449,7 @@ export const updateEvent = mutation({
         eventDate: v.number(),
         price: v.number(),
         totalTickets: v.number(),
+        displayTotalTickets: v.boolean(),
     },
     handler: async (ctx, args) => {
         const { eventId, ...updates } = args

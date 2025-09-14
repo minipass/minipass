@@ -88,7 +88,7 @@ export default function EventPage() {
                                     <h2 className="text-xl font-semibold text-gray-900 mb-6">Informações do Evento</h2>
 
                                     <div className="space-y-4">
-                                        <div className="flex items-center py-3 border-b border-gray-100">
+                                        <div className="flex items-center py-3">
                                             <CalendarDays className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
                                             <div>
                                                 <span className="text-sm font-medium text-gray-600">Data</span>
@@ -103,7 +103,7 @@ export default function EventPage() {
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center py-3 border-b border-gray-100">
+                                        <div className="flex items-center py-3 border-t border-gray-100">
                                             <MapPin className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
                                             <div>
                                                 <span className="text-sm font-medium text-gray-600">Local</span>
@@ -111,7 +111,7 @@ export default function EventPage() {
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center py-3 border-b border-gray-100">
+                                        <div className="flex items-center py-3 border-t border-gray-100">
                                             <Ticket className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
                                             <div>
                                                 <span className="text-sm font-medium text-gray-600">Preço</span>
@@ -119,18 +119,20 @@ export default function EventPage() {
                                             </div>
                                         </div>
 
-                                        <div className="flex items-center py-3">
-                                            <Users className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
-                                            <div>
-                                                <span className="text-sm font-medium text-gray-600">
-                                                    Disponibilidade
-                                                </span>
-                                                <p className="text-gray-900 font-medium">
-                                                    {availability.totalTickets - availability.purchasedCount} de{' '}
-                                                    {availability.totalTickets} ingressos restantes
-                                                </p>
+                                        {!availability.availabilityHidden && (
+                                            <div className="flex items-center py-3 border-t border-gray-100">
+                                                <Users className="w-5 h-5 mr-3 text-blue-600 flex-shrink-0" />
+                                                <div>
+                                                    <span className="text-sm font-medium text-gray-600">
+                                                        Disponibilidade
+                                                    </span>
+                                                    <p className="text-gray-900 font-medium">
+                                                        {availability.totalTickets - availability.purchasedCount} de{' '}
+                                                        {availability.totalTickets} ingressos restantes
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -206,13 +208,15 @@ export default function EventPage() {
                                             <div className="text-4xl font-bold text-gray-900 mb-3">
                                                 R$ {event.price.toFixed(2)}
                                             </div>
-                                            <div className="flex items-center justify-center text-sm text-gray-600 mb-2">
-                                                <Users className="w-4 h-4 mr-2" />
-                                                <span>
-                                                    {availability.totalTickets - availability.purchasedCount} de{' '}
-                                                    {availability.totalTickets} ingressos restantes
-                                                </span>
-                                            </div>
+                                            {!availability.availabilityHidden && (
+                                                <div className="flex items-center justify-center text-sm text-gray-600 mb-2">
+                                                    <Users className="w-4 h-4 mr-2" />
+                                                    <span>
+                                                        {availability.totalTickets - availability.purchasedCount} de{' '}
+                                                        {availability.totalTickets} ingressos restantes
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="space-y-4">

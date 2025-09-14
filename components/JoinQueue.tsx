@@ -13,6 +13,9 @@ import { useToast } from '@/hooks/useToast'
 
 import Spinner from './Spinner'
 
+const MAX_QUANTITY = 10
+const MAX_QUANTITY_HIDDEN = 10
+
 export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; userId: string }) {
     const [quantity, setQuantity] = useState(1)
     const [isLoading, setIsLoading] = useState(false)
@@ -33,7 +36,10 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
     const isEventOwner = userId === event?.userId
 
     const handleQuantityChange = (newQuantity: number) => {
-        if (newQuantity >= 1 && newQuantity <= 10) {
+        if (
+            newQuantity >= 1 &&
+            newQuantity <= (!availability?.availabilityHidden ? MAX_QUANTITY : MAX_QUANTITY_HIDDEN)
+        ) {
             setQuantity(newQuantity)
         }
     }
@@ -115,7 +121,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                             <Clock className="w-5 h-5" />
                             <span>Evento terminou</span>
                         </div>
-                    ) : availability.purchasedCount >= availability?.totalTickets ? (
+                    ) : availability.isSoldOut ? (
                         <div className="text-center p-4">
                             <p className="text-lg font-semibold text-red-600">Desculpe, este evento está esgotado</p>
                         </div>
@@ -125,7 +131,9 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                             <div className="bg-gray-50 p-4 rounded-sm">
                                 <div className="flex items-center justify-between mb-2">
                                     <label className="text-sm font-medium text-gray-700">Número de Ingressos</label>
-                                    <span className="text-sm text-gray-500">{availableTickets} disponíveis</span>
+                                    {!availability.availabilityHidden && (
+                                        <span className="text-sm text-gray-500">{availableTickets} disponíveis</span>
+                                    )}
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <button
@@ -138,7 +146,12 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                                     <span className="text-lg font-semibold px-4">{quantity}</span>
                                     <button
                                         onClick={() => handleQuantityChange(quantity + 1)}
-                                        disabled={quantity >= Math.min(10, availableTickets)}
+                                        disabled={
+                                            quantity >=
+                                            (!availability.availabilityHidden
+                                                ? Math.min(MAX_QUANTITY, availableTickets)
+                                                : MAX_QUANTITY_HIDDEN)
+                                        }
                                         className="w-8 h-8 rounded-sm bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <Plus className="w-4 h-4" />
