@@ -14,23 +14,32 @@ if (!process.env.ASAAS_WEBHOOK_SIGNATURE) {
 export class Asaas {
     apiKey: string
     baseUrl: string
+    apiUrl: string
     walletId: string
     webhookSignature: string
 
     constructor() {
         this.apiKey = process.env.ASAAS_API_KEY!
-        this.baseUrl = process.env.ASAAS_BASE_URL || 'https://www.asaas.com/api/v3'
+        this.baseUrl = process.env.ASAAS_BASE_URL || 'https://sandbox.asaas.com'
+        this.apiUrl = `${this.baseUrl}/api/v3`
         this.walletId = process.env.ASAAS_WALLET_ID!
         this.webhookSignature = process.env.ASAAS_WEBHOOK_SIGNATURE!
     }
 
-    async makeRequest(endpoint: string, options: RequestInit = {}): Promise<any> {
-        const url = `${this.baseUrl}${endpoint}`
+    /**
+     * Make a request to the Asaas API
+     * @param endpoint - The endpoint to make the request to
+     * @param options - The options for the request
+     * @param overrideApiKey - The API key to use for the request, used when we are running a request in name of a subaccount
+     * @returns The response from the Asaas API
+     */
+    async makeRequest(endpoint: string, options: RequestInit = {}, overrideApiKey?: string): Promise<any> {
+        const url = `${this.apiUrl}${endpoint}`
         const response = await fetch(url, {
             ...options,
             headers: {
                 'Content-Type': 'application/json',
-                access_token: this.apiKey,
+                access_token: overrideApiKey || this.apiKey,
                 ...options.headers,
             },
         })

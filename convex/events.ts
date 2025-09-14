@@ -161,7 +161,7 @@ export const joinWaitingList = mutation({
                 ? WAITING_LIST_STATUS.OFFERED // If available, status is offered
                 : WAITING_LIST_STATUS.WAITING, // If not available, status is waiting
             message: available
-                ? `${ticketText} offered - you have 15 minutes to purchase`
+                ? `${ticketText} offered - you have 30 minutes to purchase`
                 : `Added to waiting list for ${ticketText} - you'll be notified when tickets become available`,
         }
     },

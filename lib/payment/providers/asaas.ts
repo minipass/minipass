@@ -1,6 +1,7 @@
-import { Asaas, asaas } from '@/lib/asaas'
+import { Doc } from '@/convex/_generated/dataModel'
 
-import { AccountStatus, CheckoutSession, PaymentProvider } from '../../../convex/types'
+import { CheckoutSession, PaymentProvider } from '../../../convex/types'
+import { Asaas, asaas } from '../../asaas'
 import { PaymentProviderBase } from './base'
 
 export class AsaasProvider extends PaymentProviderBase {
@@ -12,44 +13,47 @@ export class AsaasProvider extends PaymentProviderBase {
         this.asaas = asaas
     }
 
-    // TODO: Implement webhook handling
-    async createAccount(
-        userId: string,
-        accountData: {
-            name: string
-            email: string
-            cpfCnpj: string
-            mobilePhone: string
-            incomeValue: number
-            address: string
-            addressNumber: string
-            province: string
-            postalCode: string
-            personType: 'FISICA' | 'JURIDICA'
-        },
-    ) {
-        // Create a subaccount in Asaas (similar to Stripe Connect accounts)
+    // Asaas doesn't have account links like Stripe
+    // This is a hardcoded page explaining that people need to configure their Asaas account in their email
+    async createAccountLink(): Promise<{ url: string }> {
+        return { url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/asaas/success` }
+    }
+
+    async createAccount(accountData: {
+        name: string
+        email: string
+        birthDate: string
+        cpfCnpj: string
+        mobilePhone: string
+        incomeValue: number
+        address: string
+        addressNumber: string
+        province: string
+        postalCode: string
+    }) {
         const subaccountData = {
             name: accountData.name,
             email: accountData.email,
-            phone: '',
+            birthDate: accountData.birthDate, // Crazy that this is required
+            cpfCnpj: accountData.cpfCnpj,
             mobilePhone: accountData.mobilePhone,
+            incomeValue: accountData.incomeValue, // Monthly billing value - required from May 30, 2024
             address: accountData.address,
             addressNumber: accountData.addressNumber,
-            complement: '',
             province: accountData.province,
             postalCode: accountData.postalCode,
-            cpfCnpj: accountData.cpfCnpj,
-            personType: accountData.personType, // FISICA for individual, JURIDICA for business
-            companyEmail: '',
-            municipalInscription: '',
-            stateInscription: '',
-            observations: '',
-            externalReference: userId,
-            notificationDisabled: false,
-            additionalEmails: '',
-            // Required fields for subaccount creation
-            incomeValue: accountData.incomeValue, // Monthly billing value - required from May 30, 2024
+            webhooks: [
+                {
+                    name: 'minipass - DO NOT DELETE',
+                    url: `${process.env.NEXT_PUBLIC_APP_URL}/api/asaas/webhook`,
+                    email: accountData.email,
+                    enabled: true,
+                    interrupted: false,
+                    sendType: 'SEQUENTIALLY',
+                    events: ['CHECKOUT_PAID'],
+                    authToken: this.asaas.webhookSignature,
+                },
+            ],
         }
 
         const subaccount = await this.asaas.makeRequest('/accounts', {
@@ -63,114 +67,57 @@ export class AsaasProvider extends PaymentProviderBase {
         }
     }
 
-    async getAccountStatus(accountId: string): Promise<AccountStatus> {
-        // Check subaccount status in Asaas
-        try {
-            const subaccount = await this.asaas.makeRequest(`/accounts/${accountId}`)
-
-            // For Asaas subaccounts, we check if the account is active
-            // and can receive payments
-            return {
-                isActive: subaccount.active, // Check if subaccount is active
-                requiresInformation: false, // Asaas doesn't have requirements like Stripe
-                requirements: {
-                    currently_due: [],
-                    eventually_due: [],
-                    past_due: [],
-                },
-                chargesEnabled: subaccount.active, // Active subaccounts can receive charges
-                payoutsEnabled: subaccount.active, // Active subaccounts can receive payouts
-            }
-        } catch {
-            // If subaccount doesn't exist, return inactive status
-            return {
-                isActive: false,
-                requiresInformation: false,
-                requirements: {
-                    currently_due: [],
-                    eventually_due: [],
-                    past_due: [],
-                },
-                chargesEnabled: false,
-                payoutsEnabled: false,
-            }
-        }
-    }
-
-    // TODO: Handle this by redirecting to the user's email
-    async createAccountLink(accountId: string): Promise<{ url: string }> {
-        // Asaas doesn't have account links like Stripe
-        // You'd redirect to their onboarding flow or create a custom form
-        return { url: `${process.env.NEXT_PUBLIC_APP_URL}/asaas/onboarding/${accountId}` }
-    }
-
-    // TODO: Handle this by redirecting to the user's email
-    async createLoginLink(accountId: string): Promise<string> {
-        // Asaas doesn't have login links like Stripe
-        // You'd redirect to their dashboard or create a custom interface
-        return `${process.env.NEXT_PUBLIC_APP_URL}/asaas/dashboard/${accountId}`
-    }
-
-    // TODO: Implement checkout session creation
     async createCheckoutSession(params: {
-        eventId: string
-        quantity: number
         accountId: string
-        metadata: any
+        event: Doc<'events'>
+        quantity: number
+        feePercentage: number
     }): Promise<CheckoutSession> {
-        // Create a payment link in Asaas for the subaccount
-        const paymentData = {
-            customer: params.accountId, // This will be the subaccount ID
-            billingType: 'PIX', // Can be PIX, BOLETO, CREDIT_CARD, etc.
-            value: (params.metadata.price * params.quantity).toFixed(2),
-            dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0], // Due tomorrow
-            description: `${params.metadata.eventName} - ${params.quantity} ticket(s)`,
-            externalReference: `${params.eventId}_${params.metadata.userId}_${Date.now()}`,
-            notificationEnabled: true,
-            callback: `${process.env.NEXT_PUBLIC_APP_URL}/api/asaas/webhook`,
-            // TODO: Implement split for the payment properly by using the user account
-            split: {
-                walletId: this.asaas.walletId, // Your main wallet ID
-                fixedValue: (params.metadata.price * params.quantity * 0.01).toFixed(2), // 1% fee
+        // If the fee percentage is 0, we don't need to add a split
+        // Configure splits for our own account, the rest will go to the subaccount
+        const splits =
+            params.feePercentage === 0
+                ? []
+                : [
+                      {
+                          walletId: this.asaas.walletId,
+                          percentageValue: params.feePercentage,
+                      },
+                  ]
+
+        // Create a checkout session in Asaas for the subaccount
+        const checkoutSessionData = {
+            billingTypes: ['CREDIT_CARD', 'PIX'],
+            chargeTypes: ['DETACHED'],
+            minutesToExpire: 60,
+            callback: {
+                successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/tickets/purchase-success`,
+                expiredUrl: `${process.env.NEXT_PUBLIC_APP_URL}/tickets/purchase-expired`,
+                cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/event/${params.event._id}`,
             },
-            // Additional metadata
-            meta: {
-                eventId: params.eventId,
-                userId: params.metadata.userId,
-                waitingListId: params.metadata.waitingListId,
-                eventName: params.metadata.eventName,
-                eventDescription: params.metadata.eventDescription,
-                quantity: params.quantity.toString(),
-            },
+            splits,
+            items: [
+                {
+                    name: params.event.name,
+                    description: params.event.description,
+                    quantity: params.quantity,
+                    value: params.event.price.toFixed(2),
+                },
+            ],
         }
 
-        const payment = await this.asaas.makeRequest('/payments', {
-            method: 'POST',
-            body: JSON.stringify(paymentData),
-        })
-
-        // Create a payment link for the subaccount to pay
-        const paymentLinkData = {
-            customer: params.accountId,
-            billingType: paymentData.billingType,
-            value: paymentData.value,
-            dueDate: paymentData.dueDate,
-            description: paymentData.description,
-            externalReference: paymentData.externalReference,
-            notificationEnabled: true,
-            callback: paymentData.callback,
-            split: paymentData.split,
-            meta: paymentData.meta,
-        }
-
-        const paymentLink = await this.asaas.makeRequest('/paymentLinks', {
-            method: 'POST',
-            body: JSON.stringify(paymentLinkData),
-        })
+        const checkoutSession = await this.asaas.makeRequest(
+            '/checkouts',
+            {
+                method: 'POST',
+                body: JSON.stringify(checkoutSessionData),
+            },
+            params.accountId, // Make sure the charge is done in the name of the subaccount
+        )
 
         return {
-            sessionId: payment.id,
-            sessionUrl: paymentLink.url,
+            sessionId: checkoutSession.id,
+            sessionUrl: `${this.asaas.baseUrl}/checkoutSession/show?id=${checkoutSession.id}`,
             provider: this.provider,
         }
     }
@@ -182,10 +129,14 @@ export class AsaasProvider extends PaymentProviderBase {
             description: 'Refund requested by customer',
         }
 
-        await this.asaas.makeRequest(`/payments/${paymentId}/refund`, {
-            method: 'POST',
-            body: JSON.stringify(refundData),
-        })
+        await this.asaas.makeRequest(
+            `/payments/${paymentId}/refund`,
+            {
+                method: 'POST',
+                body: JSON.stringify(refundData),
+            },
+            accountId,
+        )
     }
 
     async verifyWebhook(body: string, signature: string) {

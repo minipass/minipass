@@ -3,6 +3,7 @@
 import { useUser } from '@clerk/nextjs'
 import { useAction, useQuery } from 'convex/react'
 import { CalendarDays, Plus } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -11,7 +12,7 @@ import { api } from '@/convex/_generated/api'
 import { PaymentProvider } from '@/convex/types'
 
 import AccountSetupForm from './AccountSetupForm'
-import PaymentProviderSelector from './PaymentProviderSelector'
+import PaymentProviderSelector, { PROVIDER_CONFIGS } from './PaymentProviderSelector'
 import Spinner from './Spinner'
 
 export default function SellerDashboard() {
@@ -23,12 +24,15 @@ export default function SellerDashboard() {
     const router = useRouter()
     const { user } = useUser()
 
+    console.log('this is the user', user)
+
     // Convex actions and queries
     const paymentAccounts = useQuery(api.payment.getUsersPaymentAccounts, {
         userId: user?.id || '',
     })
 
     const createPaymentAccount = useAction(api.payment.createPaymentAccount)
+    const createAccountLink = useAction(api.payment.createAccountLink)
 
     // Determine setup status
     useEffect(() => {
@@ -54,6 +58,7 @@ export default function SellerDashboard() {
     const handleCreateAccount = async (accountData: {
         name: string
         email: string
+        birthDate: string
         cpfCnpj: string
         mobilePhone: string
         incomeValue: number
@@ -67,14 +72,20 @@ export default function SellerDashboard() {
 
         setAccountCreatePending(true)
         try {
-            const result = await createPaymentAccount({
+            const paymentAccount = await createPaymentAccount({
                 userId: user.id,
                 provider: selectedProvider,
                 accountData,
             })
+
+            const accountLink = await createAccountLink({
+                provider: selectedProvider,
+                accountId: paymentAccount.account,
+            })
+
             // Redirect to the setup URL returned from the backend
-            if (result.url) {
-                router.push(result.url)
+            if (accountLink.url) {
+                router.push(accountLink.url)
             }
         } catch (error) {
             console.error('Error creating payment account:', error)
@@ -139,13 +150,20 @@ export default function SellerDashboard() {
                                     <div
                                         className={`w-8 h-8 rounded-full ${selectedProvider === 'stripe' ? 'bg-blue-500' : 'bg-green-500'} flex items-center justify-center text-white text-lg`}
                                     >
-                                        {selectedProvider === 'stripe' ? '💳' : '🇧🇷'}
+                                        {selectedProvider && (
+                                            <Image
+                                                src={PROVIDER_CONFIGS[selectedProvider].logo}
+                                                alt={`${PROVIDER_CONFIGS[selectedProvider].name} logo`}
+                                                width={32}
+                                                height={32}
+                                                className="rounded-full"
+                                            />
+                                        )}
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-900">
                                             {selectedProvider === 'stripe' ? 'Stripe' : 'Asaas'}
                                         </div>
-                                        <div className="text-sm text-gray-500">Payment provider configured</div>
                                     </div>
                                 </div>
                                 <p className="text-green-800 mb-4">
@@ -156,22 +174,12 @@ export default function SellerDashboard() {
                                 </p>
                             </div>
                         </div>
-                    ) : showAccountForm && selectedProvider ? (
-                        <AccountSetupForm
-                            provider={selectedProvider}
-                            onSubmit={handleCreateAccount}
-                            onCancel={handleCancelAccountSetup}
-                            isLoading={accountCreatePending}
-                        />
                     ) : (
                         <div className="text-center py-8">
                             <h3 className="text-xl font-semibold mb-4">Choose Your Payment Provider</h3>
-                            <p className="text-gray-600 mb-6">
-                                Select a payment provider to start accepting payments. This choice cannot be changed
-                                later.
-                            </p>
+                            <p className="text-gray-600 mb-6">Select a payment provider to start accepting payments.</p>
                             <PaymentProviderSelector
-                                selectedProvider="stripe"
+                                selectedProvider={selectedProvider}
                                 onProviderChange={handleProviderSelect}
                                 availableProviders={['stripe', 'asaas']}
                             />
@@ -179,6 +187,15 @@ export default function SellerDashboard() {
                                 Need to switch providers? Contact support for assistance.
                             </p>
                         </div>
+                    )}
+
+                    {showAccountForm && (
+                        <AccountSetupForm
+                            provider={selectedProvider}
+                            onSubmit={handleCreateAccount}
+                            onCancel={handleCancelAccountSetup}
+                            isLoading={accountCreatePending}
+                        />
                     )}
 
                     {/* Loading State */}

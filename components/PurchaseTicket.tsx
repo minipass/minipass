@@ -62,7 +62,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
             setIsLoading(true)
             const { sessionUrl } = await createCheckoutSession({
                 eventId,
-                quantity: queuePosition.quantity,
+                quantity: queuePosition!.quantity,
             })
 
             if (sessionUrl) {

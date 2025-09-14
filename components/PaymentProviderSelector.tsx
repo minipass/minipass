@@ -6,7 +6,7 @@ import asaasLogo from '@/public/images/asaas-logo.png'
 import stripeLogo from '@/public/images/stripe-logo.png'
 
 interface PaymentProviderSelectorProps {
-    selectedProvider: PaymentProvider
+    selectedProvider: PaymentProvider | null
     onProviderChange: (provider: PaymentProvider) => void
     availableProviders: PaymentProvider[]
 }
@@ -18,7 +18,7 @@ interface ProviderConfig {
     color: string
 }
 
-const PROVIDER_CONFIGS: Record<PaymentProvider, ProviderConfig> = {
+export const PROVIDER_CONFIGS: Record<PaymentProvider, ProviderConfig> = {
     stripe: {
         name: 'Stripe',
         logo: stripeLogo,
@@ -40,7 +40,6 @@ export default function PaymentProviderSelector({
 }: PaymentProviderSelectorProps) {
     return (
         <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">Choose Payment Provider</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {availableProviders.map(provider => {
                     const config = PROVIDER_CONFIGS[provider]

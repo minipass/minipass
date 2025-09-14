@@ -1,5 +1,6 @@
 'use client'
 
+import { useUser } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useState } from 'react'
@@ -12,105 +13,69 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { ToggleGroup } from '@/components/ui/toggle-group'
+import { formatCNPJ, formatCPF, validateCNPJ, validateCPF } from '@/lib/format'
 
-// CPF validation function
-function validateCPF(cpf: string): boolean {
-    // Remove non-digits
-    const cleanCPF = cpf.replace(/\D/g, '')
-
-    // Check if it has 11 digits
-    if (cleanCPF.length !== 11) return false
-
-    // Check if all digits are the same
-    if (/^(\d)\1{10}$/.test(cleanCPF)) return false
-
-    // Validate first digit
-    let sum = 0
-    for (let i = 0; i < 9; i++) {
-        sum += parseInt(cleanCPF.charAt(i)) * (10 - i)
-    }
-    let remainder = (sum * 10) % 11
-    if (remainder === 10 || remainder === 11) remainder = 0
-    if (remainder !== parseInt(cleanCPF.charAt(9))) return false
-
-    // Validate second digit
-    sum = 0
-    for (let i = 0; i < 10; i++) {
-        sum += parseInt(cleanCPF.charAt(i)) * (11 - i)
-    }
-    remainder = (sum * 10) % 11
-    if (remainder === 10 || remainder === 11) remainder = 0
-    if (remainder !== parseInt(cleanCPF.charAt(10))) return false
-
-    return true
-}
-
-// CNPJ validation function
-function validateCNPJ(cnpj: string): boolean {
-    // Remove non-digits
-    const cleanCNPJ = cnpj.replace(/\D/g, '')
-
-    // Check if it has 14 digits
-    if (cleanCNPJ.length !== 14) return false
-
-    // Check if all digits are the same
-    if (/^(\d)\1{13}$/.test(cleanCNPJ)) return false
-
-    // Validate first digit
-    const weights1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-    let sum = 0
-    for (let i = 0; i < 12; i++) {
-        sum += parseInt(cleanCNPJ.charAt(i)) * weights1[i]
-    }
-    let remainder = sum % 11
-    let digit1 = remainder < 2 ? 0 : 11 - remainder
-    if (digit1 !== parseInt(cleanCNPJ.charAt(12))) return false
-
-    // Validate second digit
-    const weights2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-    sum = 0
-    for (let i = 0; i < 13; i++) {
-        sum += parseInt(cleanCNPJ.charAt(i)) * weights2[i]
-    }
-    remainder = sum % 11
-    let digit2 = remainder < 2 ? 0 : 11 - remainder
-    if (digit2 !== parseInt(cleanCNPJ.charAt(13))) return false
-
-    return true
-}
-
-const formSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    email: z.string().email('Please enter a valid email address'),
-    personType: z.enum(['FISICA', 'JURIDICA'], {
-        required_error: 'Please select a person type',
-    }),
-    cpfCnpj: z.string().min(1, 'CPF/CNPJ is required'),
-    mobilePhone: z.string().min(1, 'Mobile phone is required'),
-    incomeValue: z.number().min(0.01, 'Monthly income must be greater than 0'),
-    address: z.string().min(1, 'Address is required'),
-    addressNumber: z.string().min(1, 'Address number is required'),
-    province: z.string().min(1, 'State/Province is required'),
-    postalCode: z.string().min(1, 'Postal code is required'),
-})
+const formSchema = z
+    .object({
+        name: z.string().min(1, 'Name is required'),
+        email: z.string().email('Please enter a valid email address'),
+        birthDate: z
+            .string()
+            .min(1, 'Birth date is required')
+            .regex(/^\d{4}-\d{2}-\d{2}$/, 'Birth date must be in YYYY-MM-DD format')
+            .refine(date => {
+                const parsedDate = new Date(date)
+                const today = new Date()
+                const minDate = new Date('1900-01-01')
+                return parsedDate <= today && parsedDate >= minDate
+            }, 'Please enter a valid birth date'),
+        personType: z.enum(['FISICA', 'JURIDICA'], {
+            required_error: 'Please select a person type',
+        }),
+        cpfCnpj: z.string().min(1, 'CPF/CNPJ is required'),
+        mobilePhone: z.string().min(1, 'Mobile phone is required'),
+        incomeValue: z.number().min(0.01, 'Monthly income must be greater than 0'),
+        address: z.string().min(1, 'Address is required'),
+        addressNumber: z.string().min(1, 'Address number is required'),
+        province: z.string().min(1, 'State/Province is required'),
+        postalCode: z.string().min(1, 'Postal code is required'),
+    })
+    .refine(
+        data => {
+            if (data.personType === 'FISICA') {
+                return validateCPF(data.cpfCnpj)
+            } else if (data.personType === 'JURIDICA') {
+                return validateCNPJ(data.cpfCnpj)
+            }
+            return true
+        },
+        {
+            message: 'Please enter a valid CPF/CNPJ',
+            path: ['cpfCnpj'],
+        },
+    )
 
 type FormData = z.infer<typeof formSchema>
 
 interface AccountSetupFormProps {
-    provider: PaymentProvider
+    provider: PaymentProvider | null
     onSubmit: (accountData: FormData) => void
     onCancel: () => void
     isLoading?: boolean
 }
 
 export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoading = false }: AccountSetupFormProps) {
+    const { user } = useUser()
     const [personType, setPersonType] = useState<'FISICA' | 'JURIDICA'>('FISICA')
+
+    const initialUserAddress = user?.emailAddresses[0]?.emailAddress
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: '',
-            email: '',
+            email: initialUserAddress ?? '',
+            birthDate: '',
             personType: 'FISICA',
             cpfCnpj: '',
             mobilePhone: '',
@@ -123,27 +88,10 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
     })
 
     function handleSubmit(values: FormData) {
-        // Validate CPF/CNPJ based on person type
-        if (values.personType === 'FISICA') {
-            if (!validateCPF(values.cpfCnpj)) {
-                form.setError('cpfCnpj', {
-                    type: 'manual',
-                    message: 'Please enter a valid CPF',
-                })
-                return
-            }
-        } else if (values.personType === 'JURIDICA') {
-            if (!validateCNPJ(values.cpfCnpj)) {
-                form.setError('cpfCnpj', {
-                    type: 'manual',
-                    message: 'Please enter a valid CNPJ',
-                })
-                return
-            }
-        }
-
         onSubmit(values)
     }
+
+    if (!provider) return null
 
     return (
         <div className="bg-white rounded-lg shadow-lg p-6">
@@ -178,7 +126,28 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
-                                        <Input {...field} type="email" placeholder="Enter your email" />
+                                        <span>
+                                            <Input {...field} type="email" placeholder="Enter your email" />
+                                            {initialUserAddress && form.getValues().email === initialUserAddress && (
+                                                <p className="text-sm text-gray-500">
+                                                    This is your default email address.
+                                                </p>
+                                            )}
+                                        </span>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="birthDate"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Birth Date</FormLabel>
+                                    <FormControl>
+                                        <Input {...field} type="date" placeholder="YYYY-MM-DD" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -220,6 +189,13 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                         <Input
                                             {...field}
                                             placeholder={`Enter your ${personType === 'FISICA' ? 'CPF' : 'CNPJ'}`}
+                                            onChange={e => {
+                                                const value = e.target.value
+                                                const formattedValue =
+                                                    personType === 'FISICA' ? formatCPF(value) : formatCNPJ(value)
+                                                field.onChange(formattedValue)
+                                            }}
+                                            maxLength={personType === 'FISICA' ? 14 : 18}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -249,13 +225,19 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                     <FormLabel>Monthly Income (R$)</FormLabel>
                                     <FormControl>
                                         <div className="relative">
-                                            <span className="absolute left-2 top-1/2 -translate-y-1/2">R$</span>
+                                            <span
+                                                className="absolute left-2 
+                                            top-1/2 -translate-y-1/2"
+                                            >
+                                                R$
+                                            </span>
                                             <Input
                                                 type="number"
                                                 {...field}
                                                 onChange={e => field.onChange(Number(e.target.value))}
-                                                className="pl-6"
-                                                placeholder="Enter your monthly income"
+                                                className="pl-8"
+                                                placeholder="Enter your 
+                                                monthly income"
                                             />
                                         </div>
                                     </FormControl>

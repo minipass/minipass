@@ -37,6 +37,20 @@ export default defineSchema({
         .index('by_user_event', ['userId', 'eventId'])
         .index('by_user', ['userId']),
 
+    checkoutSessions: defineTable({
+        provider: v.union(v.literal('stripe'), v.literal('asaas')),
+        sessionId: v.string(),
+        sessionUrl: v.string(),
+        metadata: v.object({
+            eventId: v.id('events'),
+            userId: v.string(),
+            waitingListId: v.id('waitingList'),
+            eventName: v.string(),
+            eventDescription: v.string(),
+            price: v.number(),
+        }),
+    }).index('by_session_id_and_provider', ['sessionId', 'provider']),
+
     users: defineTable({
         name: v.string(),
         email: v.string(),
@@ -44,6 +58,7 @@ export default defineSchema({
         stripeConnectId: v.optional(v.string()),
         asaasSubaccountId: v.optional(v.string()),
         asaasWalletId: v.optional(v.string()),
+        feePercentage: v.number(),
     })
         .index('by_user_id', ['userId'])
         .index('by_email', ['email']),

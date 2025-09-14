@@ -1,13 +1,15 @@
 import { v } from 'convex/values'
 
 import { PaymentProviderFactory } from '../lib/payment/provider-factory'
-import { api } from './_generated/api'
+import { api, internal } from './_generated/api'
+import { Doc } from './_generated/dataModel'
 import { action, internalMutation, query } from './_generated/server'
 
 // Get user's payment accounts
 type GetUsersPaymentAccountsResult = {
     stripeConnectId: string | undefined
     asaasSubaccountId: string | undefined
+    feePercentage: number
 }
 export const getUsersPaymentAccounts = query({
     args: { userId: v.string() },
@@ -17,9 +19,14 @@ export const getUsersPaymentAccounts = query({
             .withIndex('by_user_id', q => q.eq('userId', userId))
             .first()
 
+        if (!user) {
+            throw new Error('User not found')
+        }
+
         return {
-            stripeConnectId: user?.stripeConnectId,
-            asaasSubaccountId: user?.asaasSubaccountId,
+            stripeConnectId: user.stripeConnectId,
+            asaasSubaccountId: user.asaasSubaccountId,
+            feePercentage: user.feePercentage,
         }
     },
 })
@@ -32,6 +39,7 @@ export const createPaymentAccount = action({
         accountData: v.object({
             name: v.string(),
             email: v.string(),
+            birthDate: v.string(),
             cpfCnpj: v.string(),
             mobilePhone: v.string(),
             incomeValue: v.number(),
@@ -64,15 +72,16 @@ export const createPaymentAccount = action({
         }
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
-        const result = await paymentProvider.createAccount(userId, accountData)
+        const account = await paymentProvider.createAccount(accountData)
 
-        await ctx.runMutation(api.payment.updateUserPaymentAccount, {
+        await ctx.runMutation(internal.payment.updateUserPaymentAccount, {
             userId,
             provider,
-            accountId: result.account,
+            accountId: account.accountId,
+            walletId: account.walletId,
         })
 
-        return { account: result.account }
+        return { account: account.accountId }
     },
 })
 
@@ -90,34 +99,17 @@ export const updateUserPaymentAccount = internalMutation({
             .withIndex('by_user_id', q => q.eq('userId', userId))
             .first()
 
+        if (!user) {
+            throw new Error('User not found')
+        }
+
         const updateData = {
             stripeConnectId: provider === 'stripe' ? accountId : undefined,
             asaasSubaccountId: provider === 'asaas' ? accountId : undefined,
             asaasWalletId: provider === 'asaas' ? walletId : undefined,
         }
 
-        if (user) {
-            await ctx.db.patch(user._id, updateData)
-        } else {
-            await ctx.db.insert('users', {
-                name: '',
-                email: '',
-                userId,
-                ...updateData,
-            })
-        }
-    },
-})
-
-// Get account status
-export const getAccountStatus = action({
-    args: {
-        provider: v.union(v.literal('stripe'), v.literal('asaas')),
-        accountId: v.string(),
-    },
-    handler: async (ctx, { provider, accountId }) => {
-        const paymentProvider = PaymentProviderFactory.getProvider(provider)
-        return await paymentProvider.getAccountStatus(accountId)
+        await ctx.db.patch(user._id, updateData)
     },
 })
 
@@ -133,27 +125,28 @@ export const createAccountLink = action({
     },
 })
 
-// Create login link
-export const createLoginLink = action({
+// Checkout session manipulation
+export const getCheckoutSession = query({
     args: {
+        sessionId: v.string(),
         provider: v.union(v.literal('stripe'), v.literal('asaas')),
-        accountId: v.string(),
     },
-    handler: async (ctx, { provider, accountId }) => {
-        const paymentProvider = PaymentProviderFactory.getProvider(provider)
-        return await paymentProvider.createLoginLink(accountId)
+    handler: async (ctx, { sessionId, provider }) => {
+        return await ctx.db
+            .query('checkoutSessions')
+            .withIndex('by_session_id_and_provider', q => q.eq('sessionId', sessionId).eq('provider', provider))
+            .first()
     },
 })
 
-// Create checkout session
 export const createCheckoutSession = action({
     args: {
         eventId: v.id('events'),
         quantity: v.number(),
     },
     handler: async (ctx, { eventId, quantity }) => {
-        const user = await ctx.auth.getUserIdentity()
-        if (!user) throw new Error('User not found')
+        const userIdentity = await ctx.auth.getUserIdentity()
+        if (!userIdentity) throw new Error('User not authenticated')
 
         // Get event details
         const event = await ctx.runQuery(api.events.getById, { eventId })
@@ -162,7 +155,7 @@ export const createCheckoutSession = action({
         // Get waiting list entry for current user
         const waitingListEntry = await ctx.runQuery(api.waitingList.getQueuePosition, {
             eventId,
-            userId: user.id,
+            userId: userIdentity.subject,
         })
 
         if (!waitingListEntry || waitingListEntry.status !== 'offered') {
@@ -182,21 +175,27 @@ export const createCheckoutSession = action({
         const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasSubaccountId
         if (!accountId) throw new Error('Payment account not found for owner of the event!')
 
-        const metadata = {
-            eventId,
-            userId: user.id,
-            waitingListId: waitingListEntry._id,
-            eventName: event.name,
-            eventDescription: event.description,
-            price: event.price,
-        }
-
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
         const session = await paymentProvider.createCheckoutSession({
-            eventId,
+            event,
             quantity,
             accountId,
-            metadata,
+            feePercentage: eventOwner.feePercentage,
+        })
+
+        // After session was created, make sure we store the metadata
+        await ctx.runMutation(internal.payment.storeCheckoutSessionMetadata, {
+            sessionId: session.sessionId,
+            sessionUrl: session.sessionUrl,
+            provider,
+            metadata: {
+                eventId,
+                userId: userIdentity.subject,
+                waitingListId: waitingListEntry._id,
+                eventName: event.name,
+                eventDescription: event.description,
+                price: event.price * quantity,
+            },
         })
 
         return session
@@ -227,7 +226,7 @@ export const processRefunds = action({
         if (!accountId) throw new Error('Payment account not found for owner of the event!')
 
         // Get all valid tickets for this event
-        const tickets = await ctx.runQuery(api.tickets.getValidTicketsForEvent, { eventId })
+        const tickets: Doc<'tickets'>[] = await ctx.runQuery(api.tickets.getValidTicketsForEvent, { eventId })
 
         // Process refunds for each ticket
         const results = await Promise.allSettled(
@@ -258,5 +257,30 @@ export const processRefunds = action({
         const allSuccessful = results.every(result => result.status === 'fulfilled' && result.value.success)
 
         return { success: allSuccessful, results }
+    },
+})
+
+// Store checkout session metadata for future reference
+export const storeCheckoutSessionMetadata = internalMutation({
+    args: {
+        sessionId: v.string(),
+        sessionUrl: v.string(),
+        provider: v.union(v.literal('stripe'), v.literal('asaas')),
+        metadata: v.object({
+            eventId: v.id('events'),
+            userId: v.string(),
+            waitingListId: v.id('waitingList'),
+            eventName: v.string(),
+            eventDescription: v.string(),
+            price: v.number(),
+        }),
+    },
+    handler: async (ctx, { sessionId, sessionUrl, provider, metadata }) => {
+        await ctx.db.insert('checkoutSessions', {
+            sessionId,
+            sessionUrl,
+            provider,
+            metadata,
+        })
     },
 })

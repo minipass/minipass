@@ -20,8 +20,6 @@ export default function Refresh() {
                 setAccountLinkCreatePending(true)
                 setError(false)
                 try {
-                    // Determine provider from account ID format or user data
-                    // For now, we'll assume it's Stripe since this is a Stripe-specific route
                     const { url } = await createAccountLink({
                         provider: 'stripe',
                         accountId: connectedAccountId,

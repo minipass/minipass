@@ -1,6 +1,6 @@
 import { v } from 'convex/values'
 
-import { mutation, query } from './_generated/server'
+import { internalQuery, mutation, query } from './_generated/server'
 
 export const getUsersStripeConnectId = query({
     args: { userId: v.string() },
@@ -57,7 +57,7 @@ export const updateUser = mutation({
             userId,
             name,
             email,
-            stripeConnectId: undefined,
+            feePercentage: 2.0, // Default fee percentage is 2%
         })
 
         return newUserId
@@ -72,6 +72,17 @@ export const getUserById = query({
             .withIndex('by_user_id', q => q.eq('userId', userId))
             .first()
 
+        return user
+    },
+})
+
+export const getUserByEmail = internalQuery({
+    args: { email: v.string() },
+    handler: async (ctx, { email }) => {
+        const user = await ctx.db
+            .query('users')
+            .withIndex('by_email', q => q.eq('email', email))
+            .first()
         return user
     },
 })

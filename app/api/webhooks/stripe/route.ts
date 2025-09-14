@@ -1,4 +1,5 @@
 import { headers } from 'next/headers'
+import Stripe from 'stripe'
 
 import { api } from '@/convex/_generated/api'
 
@@ -14,13 +15,13 @@ export async function POST(req: Request) {
 
     console.log('Webhook signature:', signature ? 'Present' : 'Missing')
 
-    let event: any
+    let stripeEvent: Stripe.Event
 
     try {
         console.log('Attempting to construct webhook event')
         const stripeProvider = PaymentProviderFactory.getProvider('stripe')
-        event = await stripeProvider.verifyWebhook(body, signature)
-        console.log('Webhook event constructed successfully:', event.type)
+        stripeEvent = await stripeProvider.verifyWebhook(body, signature)
+        console.log('Webhook event constructed successfully:', stripeEvent.type)
     } catch (err) {
         console.error('Webhook construction failed:', err)
         return new Response(`Webhook Error: ${(err as Error).message}`, {
@@ -30,17 +31,32 @@ export async function POST(req: Request) {
 
     const convex = getConvexClient()
 
-    if (event.type === 'checkout.session.completed') {
+    if (stripeEvent.type === 'checkout.session.completed') {
         console.log('Processing checkout.session.completed')
-        const session = event.data.object
-        const metadata = session.metadata
-        console.log('Session metadata:', metadata)
+        const session = stripeEvent.data.object
+
+        // Get checkout session from database
+        const checkoutSession = await convex.query(api.payment.getCheckoutSession, {
+            sessionId: session.id,
+            provider: 'stripe',
+        })
+        if (!checkoutSession) {
+            console.error('Checkout session not found')
+            return new Response('Checkout session not found', { status: 404 })
+        }
+
+        // Get event from database
+        const event = await convex.query(api.events.getById, { eventId: checkoutSession.metadata.eventId })
+        if (!event) {
+            console.error('Event not found')
+            return new Response('Event not found', { status: 404 })
+        }
 
         try {
             const result = await convex.mutation(api.events.purchaseTicket, {
-                eventId: metadata.eventId,
-                userId: metadata.userId,
-                waitingListId: metadata.waitingListId,
+                eventId: checkoutSession.metadata.eventId,
+                userId: checkoutSession.metadata.userId,
+                waitingListId: checkoutSession.metadata.waitingListId,
                 paymentInfo: {
                     paymentIntentId: session.payment_intent as string,
                     amount: session.amount_total ?? 0,

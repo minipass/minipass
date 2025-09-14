@@ -1,4 +1,5 @@
 import { ClerkProvider } from '@clerk/nextjs'
+import { Authenticated } from 'convex/react'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 
@@ -40,15 +41,15 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <ConvexClientProvider>
-                    <ClerkProvider>
+                <ClerkProvider>
+                    <ConvexClientProvider>
                         <Header />
                         <SyncUserWithConvex />
                         {children}
 
                         <Toaster />
-                    </ClerkProvider>
-                </ConvexClientProvider>
+                    </ConvexClientProvider>
+                </ClerkProvider>
             </body>
         </html>
     )

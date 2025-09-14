@@ -1,4 +1,7 @@
-import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
+'use client'
+
+import { SignInButton, UserButton } from '@clerk/nextjs'
+import { Authenticated, Unauthenticated } from 'convex/react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -16,16 +19,16 @@ function Header() {
                     </Link>
 
                     <div className="lg:hidden">
-                        <SignedIn>
+                        <Authenticated>
                             <UserButton />
-                        </SignedIn>
-                        <SignedOut>
+                        </Authenticated>
+                        <Unauthenticated>
                             <SignInButton mode="modal">
                                 <button className="bg-gray-100 text-gray-800 px-3 py-1.5 text-sm rounded-lg hover:bg-gray-200 transition border border-gray-300">
                                     Sign In
                                 </button>
                             </SignInButton>
-                        </SignedOut>
+                        </Unauthenticated>
                     </div>
                 </div>
 
@@ -35,7 +38,7 @@ function Header() {
                 </div>
 
                 <div className="hidden lg:block ml-auto">
-                    <SignedIn>
+                    <Authenticated>
                         <div className="flex items-center gap-3">
                             <Link href="/seller">
                                 <button className="bg-blue-600 text-white px-3 py-1.5 text-sm rounded-lg hover:bg-blue-700 transition">
@@ -50,20 +53,20 @@ function Header() {
                             </Link>
                             <UserButton />
                         </div>
-                    </SignedIn>
+                    </Authenticated>
 
-                    <SignedOut>
+                    <Unauthenticated>
                         <SignInButton mode="modal">
                             <button className="bg-gray-100 text-gray-800 px-3 py-1.5 text-sm rounded-lg hover:bg-gray-200 transition border border-gray-300">
                                 Sign In
                             </button>
                         </SignInButton>
-                    </SignedOut>
+                    </Unauthenticated>
                 </div>
 
                 {/* Mobile Action Buttons */}
                 <div className="lg:hidden w-full flex justify-center gap-3">
-                    <SignedIn>
+                    <Authenticated>
                         <Link href="/seller" className="flex-1">
                             <button className="w-full bg-blue-600 text-white px-3 py-1.5 text-sm rounded-lg hover:bg-blue-700 transition">
                                 Sell Tickets
@@ -75,7 +78,7 @@ function Header() {
                                 My Tickets
                             </button>
                         </Link>
-                    </SignedIn>
+                    </Authenticated>
                 </div>
             </div>
         </div>

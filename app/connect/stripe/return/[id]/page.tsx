@@ -24,6 +24,7 @@ export default function Return() {
                                     <li>• You can now create and sell tickets for events</li>
                                     <li>• Payments will be processed through your Stripe account</li>
                                     <li>• Funds will be transferred automatically</li>
+                                    <li>• minipass will charge a tiny 2% fee on every transaction</li>
                                 </ul>
                             </div>
 

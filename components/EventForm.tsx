@@ -260,7 +260,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                 <FormLabel>Price per Ticket</FormLabel>
                                 <FormControl>
                                     <div className="relative">
-                                        <span className="absolute left-2 top-1/2 -translate-y-1/2">£</span>
+                                        <span className="absolute left-2 top-1/2 -translate-y-1/2">R$</span>
                                         <Input
                                             type="number"
                                             {...field}
