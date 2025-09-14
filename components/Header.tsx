@@ -1,6 +1,6 @@
 'use client'
 
-import { SignInButton, UserButton } from '@clerk/nextjs'
+import { UserButton } from '@clerk/nextjs'
 import { Authenticated, Unauthenticated } from 'convex/react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -20,14 +20,14 @@ function Header() {
 
                     <div className="lg:hidden">
                         <Authenticated>
-                            <UserButton />
+                            <UserButton appearance={{ layout: { shimmer: false } }} />
                         </Authenticated>
                         <Unauthenticated>
-                            <SignInButton mode="modal">
+                            <Link href="/sign-in">
                                 <button className="bg-gray-100 text-gray-800 px-3 py-1.5 text-sm rounded-lg hover:bg-gray-200 transition border border-gray-300">
                                     Entrar
                                 </button>
-                            </SignInButton>
+                            </Link>
                         </Unauthenticated>
                     </div>
                 </div>
@@ -51,16 +51,16 @@ function Header() {
                                     Meus Ingressos
                                 </button>
                             </Link>
-                            <UserButton />
+                            <UserButton appearance={{ layout: { shimmer: false } }} />
                         </div>
                     </Authenticated>
 
                     <Unauthenticated>
-                        <SignInButton mode="modal">
+                        <Link href="/sign-in">
                             <button className="bg-gray-100 text-gray-800 px-3 py-1.5 text-sm rounded-lg hover:bg-gray-200 transition border border-gray-300">
                                 Entrar
                             </button>
-                        </SignInButton>
+                        </Link>
                     </Unauthenticated>
                 </div>
 

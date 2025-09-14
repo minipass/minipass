@@ -60,16 +60,7 @@ A modern, real-time event ticketing platform built with Next.js 14, Convex, Cler
 
 ### Environment Variables
 
-Create a `.env.local` file with:
-
-```bash
-NEXT_PUBLIC_CONVEX_URL=your_convex_url
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_key
-CLERK_SECRET_KEY=your_clerk_secret
-STRIPE_SECRET_KEY=your_stripe_secret
-STRIPE_WEBHOOK_SECRET=your_webhook_secret
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
+Create a `.env.local` file following the examples from `.env.example`.
 
 ### Installation
 

@@ -42,7 +42,7 @@ export default function RootLayout({
     return (
         <html lang="pt-BR">
             <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
-                <ClerkProvider localization={ptBR}>
+                <ClerkProvider localization={ptBR} appearance={{ baseTheme: 'simple' }}>
                     <ConvexClientProvider>
                         <Header />
                         <SyncUserWithConvex />
