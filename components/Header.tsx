@@ -1,12 +1,10 @@
-'use client'
-
-import { UserButton } from '@clerk/nextjs'
-import { Authenticated, Unauthenticated } from 'convex/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import logo from '@/images/logo.png'
 
+import AuthActions from './AuthActions'
 import SearchBar from './SearchBar'
 
 function Header() {
@@ -25,28 +23,15 @@ function Header() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-2 shrink-0">
-                    <Authenticated>
-                        <Link href="/seller">
-                            <button className="bg-blue-600 text-white px-2 py-1 text-xs rounded hover:bg-blue-700 transition hidden sm:block">
-                                Vender
-                            </button>
-                        </Link>
-
-                        <Link href="/tickets">
-                            <button className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded hover:bg-gray-200 transition border border-gray-300 hidden lg:block">
-                                Meus Ingressos
-                            </button>
-                        </Link>
-                        <UserButton appearance={{ layout: { shimmer: false } }} />
-                    </Authenticated>
-
-                    <Unauthenticated>
-                        <Link href="/sign-in">
-                            <button className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded hover:bg-gray-200 transition border border-gray-300">
-                                Entrar
-                            </button>
-                        </Link>
-                    </Unauthenticated>
+                    <Suspense
+                        fallback={
+                            <div className="flex items-center gap-2">
+                                <div className="w-6 h-6 bg-gray-200 rounded animate-pulse"></div>
+                            </div>
+                        }
+                    >
+                        <AuthActions />
+                    </Suspense>
                 </div>
             </div>
         </div>

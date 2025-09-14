@@ -1,9 +1,38 @@
-'use client'
-
 import { SignUp } from '@clerk/nextjs'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import logo from '@/images/logo.png'
+
+function SignUpForm() {
+    return (
+        <div className="mt-8 flex w-full justify-center">
+            <SignUp
+                appearance={{
+                    layout: {
+                        logoImageUrl: logo.src,
+                        helpPageUrl: '/help',
+                        privacyPageUrl: '/privacy',
+                        termsPageUrl: '/terms',
+                    },
+                    elements: {
+                        formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-sm normal-case',
+                        card: 'shadow-none border-none bg-transparent',
+                        headerTitle: 'hidden',
+                        headerSubtitle: 'hidden',
+                        socialButtonsBlockButton: 'border border-gray-300 hover:bg-gray-50',
+                        formFieldInput: 'border border-gray-300 focus:border-blue-500 focus:ring-blue-500',
+                        footerActionLink: 'text-blue-600 hover:text-blue-500',
+                        rootBox: 'shadow-none',
+                        main: 'shadow-none',
+                    },
+                }}
+                fallbackRedirectUrl="/"
+                signInUrl="/sign-in"
+            />
+        </div>
+    )
+}
 
 export default function SignUpPage() {
     return (
@@ -18,31 +47,21 @@ export default function SignUpPage() {
                 </p>
             </div>
 
-            <div className="mt-8 flex w-full justify-center">
-                <SignUp
-                    appearance={{
-                        layout: {
-                            logoImageUrl: logo.src,
-                            helpPageUrl: '/help',
-                            privacyPageUrl: '/privacy',
-                            termsPageUrl: '/terms',
-                        },
-                        elements: {
-                            formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-sm normal-case',
-                            card: 'shadow-none border-none bg-transparent',
-                            headerTitle: 'hidden',
-                            headerSubtitle: 'hidden',
-                            socialButtonsBlockButton: 'border border-gray-300 hover:bg-gray-50',
-                            formFieldInput: 'border border-gray-300 focus:border-blue-500 focus:ring-blue-500',
-                            footerActionLink: 'text-blue-600 hover:text-blue-500',
-                            rootBox: 'shadow-none',
-                            main: 'shadow-none',
-                        },
-                    }}
-                    fallbackRedirectUrl="/"
-                    signInUrl="/sign-in"
-                />
-            </div>
+            <Suspense
+                fallback={
+                    <div className="mt-8 flex w-full justify-center">
+                        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 w-full max-w-md">
+                            <div className="flex flex-col items-center space-y-4">
+                                <div className="w-8 h-8 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="w-48 h-4 bg-gray-200 rounded animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            >
+                <SignUpForm />
+            </Suspense>
         </div>
     )
 }
