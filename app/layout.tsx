@@ -23,8 +23,64 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-    title: 'minipass',
-    description: 'Seu mini marketplace de ingressos',
+    title: {
+        default: 'minipass - Seu mini marketplace de ingressos',
+        template: '%s | minipass',
+    },
+    description:
+        'A plataforma com as menores taxas do mercado para comprar e vender ingressos. Apenas 2% de taxa para vendedores. Simples, seguro e econômico.',
+    keywords: ['ingressos', 'eventos', 'marketplace', 'venda', 'compra', 'tickets', 'brasil'],
+    authors: [
+        { name: 'minipass', url: 'https://minipass.com.br' },
+        { name: 'Rafael Audibert', url: 'https://rafaaudibert.dev' },
+    ],
+    creator: 'minipass',
+    publisher: 'minipass',
+    formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
+    },
+    metadataBase: new URL('https://minipass.com.br'),
+    alternates: {
+        canonical: '/',
+    },
+    openGraph: {
+        type: 'website',
+        locale: 'pt_BR',
+        url: 'https://minipass.com.br',
+        title: 'minipass - Seu mini marketplace de ingressos',
+        description:
+            'A plataforma com as menores taxas do mercado para comprar e vender ingressos. Apenas 2% de taxa para vendedores. Simples, seguro e econômico.',
+        siteName: 'minipass',
+        images: [
+            {
+                url: '/images/og-image.png',
+                width: 1200,
+                height: 630,
+                alt: 'minipass - Marketplace de ingressos com as menores taxas',
+            },
+        ],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'minipass - Seu mini marketplace de ingressos',
+        description:
+            'A plataforma com as menores taxas do mercado para comprar e vender ingressos. Apenas 2% de taxa para vendedores.',
+        images: ['/images/og-image.png'],
+        creator: '@minipass',
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
 }
 
 export const viewport: Viewport = {

@@ -1,9 +1,6 @@
-import type { Metadata } from 'next'
+import { commonMetadata, generateMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-    title: 'Política de Privacidade - minipass',
-    description: 'Política de privacidade do minipass - como protegemos seus dados',
-}
+export const metadata = generateMetadata(commonMetadata.privacy)
 
 export default function PrivacyPage() {
     return (

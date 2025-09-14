@@ -1,9 +1,6 @@
-import type { Metadata } from 'next'
+import { commonMetadata, generateMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-    title: 'Termos de Serviço - minipass',
-    description: 'Termos de serviço do minipass - condições de uso da plataforma',
-}
+export const metadata = generateMetadata(commonMetadata.terms)
 
 export default function TermsPage() {
     return (

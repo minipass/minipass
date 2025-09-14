@@ -1,9 +1,6 @@
-import type { Metadata } from 'next'
+import { commonMetadata, generateMetadata } from '@/lib/metadata'
 
-export const metadata: Metadata = {
-    title: 'Ajuda - minipass',
-    description: 'Central de ajuda do minipass - seu mini marketplace de ingressos',
-}
+export const metadata = generateMetadata(commonMetadata.help)
 
 export default function HelpPage() {
     return (
