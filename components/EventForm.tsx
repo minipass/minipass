@@ -118,7 +118,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         })
                     }
 
-                    router.push(`/event/${eventId}`)
+                    router.push(`/dashboard/event/${eventId}`)
                 } else {
                     // Ensure initialData exists before proceeding with update
                     if (!initialData) {
@@ -146,7 +146,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         description: 'Seu evento foi atualizado com sucesso.',
                     })
 
-                    router.push(`/event/${initialData._id}`)
+                    router.push(`/dashboard/event/${initialData._id}`)
                 }
             } catch (error) {
                 console.error('Failed to handle event:', error)
@@ -310,7 +310,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                 </FormControl>
                                 <div className="space-y-1 leading-none">
                                     <FormLabel>Exibir disponibilidade de ingressos</FormLabel>
-                                    <p className="text-sm text-gray-600">
+                                    <p className="text-sm text-muted-foreground">
                                         Quando desabilitado, a disponibilidade de ingressos não será mostrada
                                         publicamente
                                     </p>
@@ -321,7 +321,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
 
                     {/* Image Upload */}
                     <div className="space-y-4">
-                        <label className="block text-sm font-medium text-gray-700">Imagem do Evento</label>
+                        <label className="block text-sm font-medium text-foreground">Imagem do Evento</label>
                         <div className="mt-1 flex items-center gap-4">
                             {imagePreview || (!removedCurrentImage && currentImageUrl) ? (
                                 <div className="relative w-32 aspect-square bg-gray-100 rounded-sm">
@@ -341,7 +341,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                                 imageInput.current.value = ''
                                             }
                                         }}
-                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-sm w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
+                                        className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground rounded-sm w-6 h-6 flex items-center justify-center hover:bg-destructive/90 transition-colors"
                                     >
                                         ×
                                     </button>
@@ -352,12 +352,12 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     ref={imageInput}
-                                    className="block w-full text-sm text-gray-500
+                                    className="block w-full text-sm text-muted-foreground
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-sm file:border-0
                     file:text-sm file:font-semibold
-                    file:bg-blue-50 file:text-blue-700
-                    hover:file:bg-blue-100"
+                    file:bg-primary/10 file:text-primary
+                    hover:file:bg-primary/20"
                                 />
                             )}
                         </div>
@@ -367,7 +367,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                 <Button
                     type="submit"
                     disabled={isPending}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-sm transition-all duration-200 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-medium py-2 px-4 rounded-sm transition-all duration-200 flex items-center justify-center gap-2"
                 >
                     {isPending ? (
                         <>

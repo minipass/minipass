@@ -25,8 +25,8 @@ export function ToggleGroup<T extends string>({ options, value, onChange, classN
                     className={cn(
                         'px-4 py-2 rounded-md text-sm font-medium transition-all duration-200',
                         value === option.value
-                            ? 'bg-white text-blue-600 shadow-sm'
-                            : 'text-gray-600 hover:text-gray-900',
+                            ? 'bg-background text-primary shadow-sm'
+                            : 'text-muted-foreground hover:text-foreground',
                     )}
                 >
                     {option.label}

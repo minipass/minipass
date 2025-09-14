@@ -66,13 +66,13 @@ export default function MyTicketsPage() {
 
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">Meus Ingressos</h1>
-                        <p className="mt-2 text-gray-600">
+                        <h1 className="text-3xl font-bold text-foreground">Meus Ingressos</h1>
+                        <p className="mt-2 text-muted-foreground">
                             Gerencie e visualize todos os seus ingressos em um só lugar
                         </p>
                     </div>
                     <Card className="px-4 py-2">
-                        <div className="flex items-center gap-2 text-gray-600">
+                        <div className="flex items-center gap-2 text-muted-foreground">
                             <Ticket className="w-5 h-5" />
                             <span className="font-medium">{totalTickets} Ingressos Totais</span>
                         </div>
@@ -81,7 +81,7 @@ export default function MyTicketsPage() {
 
                 {upcomingGroupedTickets.length > 0 && (
                     <div className="mb-12">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Próximos Eventos</h2>
+                        <h2 className="text-xl font-semibold text-foreground mb-4">Próximos Eventos</h2>
                         <div className="space-y-4">
                             {upcomingGroupedTickets.map(group => (
                                 <EventCard key={group.event._id} group={group} />
@@ -92,7 +92,7 @@ export default function MyTicketsPage() {
 
                 {pastGroupedTickets.length > 0 && (
                     <div className="mb-12">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Eventos Passados</h2>
+                        <h2 className="text-xl font-semibold text-foreground mb-4">Eventos Passados</h2>
                         <div className="space-y-4">
                             {pastGroupedTickets.map(group => (
                                 <EventCard key={group.event._id} group={group} />
@@ -103,7 +103,7 @@ export default function MyTicketsPage() {
 
                 {otherGroupedTickets.length > 0 && (
                     <div>
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Outros Ingressos</h2>
+                        <h2 className="text-xl font-semibold text-foreground mb-4">Outros Ingressos</h2>
                         <div className="space-y-4">
                             {otherGroupedTickets.map(group => (
                                 <EventCard key={group.event._id} group={group} />
@@ -114,9 +114,11 @@ export default function MyTicketsPage() {
 
                 {groupedTickets.length === 0 && (
                     <div className="text-center py-12">
-                        <Ticket className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900">Nenhum ingresso ainda</h3>
-                        <p className="text-gray-600 mt-1">Quando você comprar ingressos, eles aparecerão aqui</p>
+                        <Ticket className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <h3 className="text-lg font-medium text-foreground">Nenhum ingresso ainda</h3>
+                        <p className="text-muted-foreground mt-1">
+                            Quando você comprar ingressos, eles aparecerão aqui
+                        </p>
                     </div>
                 )}
             </div>
@@ -147,7 +149,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                                 className={cn('w-full h-full object-cover', group.event.isCancelled && 'opacity-50')}
                             />
                             {group.event.isCancelled && (
-                                <div className="absolute inset-0 bg-red-600 bg-opacity-75 flex items-center justify-center">
+                                <div className="absolute inset-0 bg-destructive bg-opacity-75 flex items-center justify-center">
                                     <Badge variant="destructive" className="text-xs">
                                         Cancelado
                                     </Badge>
@@ -160,23 +162,23 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                     <div className="flex-1 p-6">
                         <div className="flex justify-between items-start">
                             <div className="flex-1">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-2">{group.event.name}</h3>
+                                <h3 className="text-lg font-semibold text-foreground mb-2">{group.event.name}</h3>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-3">
-                                    <div className="flex items-center text-gray-600">
-                                        <CalendarDays className="w-4 h-4 mr-2 text-blue-600" />
+                                    <div className="flex items-center text-muted-foreground">
+                                        <CalendarDays className="w-4 h-4 mr-2 text-primary" />
                                         <span className="text-sm">
                                             {new Date(group.event.eventDate).toLocaleDateString()}
                                         </span>
                                     </div>
 
-                                    <div className="flex items-center text-gray-600">
-                                        <MapPin className="w-4 h-4 mr-2 text-blue-600" />
+                                    <div className="flex items-center text-muted-foreground">
+                                        <MapPin className="w-4 h-4 mr-2 text-primary" />
                                         <span className="text-sm">{group.event.location}</span>
                                     </div>
 
-                                    <div className="flex items-center text-gray-600">
-                                        <Ticket className="w-4 h-4 mr-2 text-blue-600" />
+                                    <div className="flex items-center text-muted-foreground">
+                                        <Ticket className="w-4 h-4 mr-2 text-primary" />
                                         <span className="text-sm">
                                             {group.tickets.length} ingresso{group.tickets.length > 1 ? 's' : ''}
                                         </span>
@@ -184,10 +186,10 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                                 </div>
 
                                 <div className="flex items-center justify-between">
-                                    <span className="text-sm text-gray-500">
+                                    <span className="text-sm text-muted-foreground">
                                         Total pago: R$ {(group.event.price * group.tickets.length).toFixed(2)}
                                     </span>
-                                    <ArrowRight className="w-5 h-5 text-gray-400" />
+                                    <ArrowRight className="w-5 h-5 text-muted-foreground" />
                                 </div>
                             </div>
                         </div>

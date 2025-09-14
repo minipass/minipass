@@ -44,8 +44,8 @@ export default function RootLayout({
             <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
                 <ClerkProvider localization={ptBR} appearance={{ baseTheme: 'simple' }}>
                     <ConvexClientProvider>
-                        <Header />
                         <SyncUserWithConvex />
+                        <Header />
                         {children}
 
                         <Toaster />

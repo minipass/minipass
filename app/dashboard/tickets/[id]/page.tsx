@@ -26,11 +26,11 @@ export default function TicketPage() {
         }
 
         if (!ticket || ticket.userId !== user.id) {
-            redirect('/tickets')
+            redirect('/dashboard/tickets')
         }
 
         if (!ticket.event) {
-            redirect('/tickets')
+            redirect('/dashboard/tickets')
         }
     }, [user, ticket])
 
@@ -45,18 +45,18 @@ export default function TicketPage() {
                     {/* Navigation and Actions */}
                     <div className="flex items-center justify-between">
                         <Link
-                            href="/tickets"
-                            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                            href="/dashboard/tickets"
+                            className="flex items-center text-muted-foreground hover:text-foreground transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
                             Voltar aos Meus Ingressos
                         </Link>
                         <div className="flex items-center gap-4">
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-sm hover:bg-gray-100">
+                            <button className="flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors rounded-sm hover:bg-accent">
                                 <Download className="w-4 h-4" />
                                 <span className="text-sm">Salvar</span>
                             </button>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-sm hover:bg-gray-100">
+                            <button className="flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors rounded-sm hover:bg-accent">
                                 <Share2 className="w-4 h-4" />
                                 <span className="text-sm">Compartilhar</span>
                             </button>
@@ -66,12 +66,12 @@ export default function TicketPage() {
                     {/* Event Info Summary */}
                     <div
                         className={cn(
-                            'bg-white p-6 rounded-sm shadow-sm border',
-                            ticket.event.isCancelled ? 'border-red-200' : 'border-gray-100',
+                            'bg-card p-6 rounded-sm shadow-sm border',
+                            ticket.event.isCancelled ? 'border-destructive/20' : 'border-border',
                         )}
                     >
-                        <h1 className="text-2xl font-bold text-gray-900">{ticket.event.name}</h1>
-                        <p className="mt-1 text-gray-600">
+                        <h1 className="text-2xl font-bold text-foreground">{ticket.event.name}</h1>
+                        <p className="mt-1 text-muted-foreground">
                             {new Date(ticket.event.eventDate).toLocaleDateString()} at {ticket.event.location}
                         </p>
                         <div className="mt-4 flex items-center gap-4">
@@ -83,7 +83,7 @@ export default function TicketPage() {
                             >
                                 {ticket.event.isCancelled ? 'Cancelado' : 'Ingresso Válido'}
                             </span>
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-muted-foreground">
                                 Comprado em {new Date(ticket.purchasedAt).toLocaleDateString()}
                             </span>
                         </div>

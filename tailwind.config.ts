@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss'
 
 export default {
-    darkMode: ['class'],
+    darkMode: 'media',
     content: [
         './pages/**/*.{js,ts,jsx,tsx,mdx}',
         './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -49,6 +49,33 @@ export default {
                     '3': 'hsl(var(--chart-3))',
                     '4': 'hsl(var(--chart-4))',
                     '5': 'hsl(var(--chart-5))',
+                },
+                // Override default blue and red colors with proper minipass color scales
+                blue: {
+                    50: '#f0f2ff', // Very light blue
+                    100: '#e0e7ff', // Light blue
+                    200: '#c7d2fe', // Lighter blue
+                    300: '#a5b4fc', // Light-medium blue
+                    400: '#818cf8', // Medium-light blue
+                    500: '#374375', // Main minipass blue
+                    600: '#374375', // Main minipass blue
+                    700: '#2d3660', // Darker blue
+                    800: '#252a4b', // Dark blue
+                    900: '#1e2336', // Very dark blue
+                    950: '#131620', // Darkest blue
+                },
+                red: {
+                    50: '#f8eeed', // Very light red
+                    100: '#f1ddd9', // Light red
+                    200: '#e2bbb3', // Lighter red
+                    300: '#d2998d', // Light-medium red
+                    400: '#c27767', // Medium-light red
+                    500: '#845158', // Main minipass red
+                    600: '#845158', // Main minipass red
+                    700: '#6a4146', // Darker red
+                    800: '#503134', // Dark red
+                    900: '#362122', // Very dark red
+                    950: '#1c1112', // Darkest red
                 },
             },
             borderRadius: {

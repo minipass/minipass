@@ -27,7 +27,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
     }
 
     return (
-        <Card className={cn('overflow-hidden', ticket.event.isCancelled ? 'border-red-200' : '')}>
+        <Card className={cn('overflow-hidden', ticket.event.isCancelled ? 'border-destructive/20' : '')}>
             {/* Event Header with Image */}
             <div className="relative">
                 {imageUrl && (
@@ -48,14 +48,14 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                         imageUrl
                             ? 'absolute bottom-0 left-0 right-0'
                             : ticket.event.isCancelled
-                              ? 'bg-red-600'
-                              : 'bg-blue-600',
+                              ? 'bg-destructive'
+                              : 'bg-primary',
                     )}
                 >
-                    <h2 className={cn('text-2xl font-bold', imageUrl ? 'text-white' : 'text-black')}>
+                    <h2 className={cn('text-2xl font-bold', imageUrl ? 'text-white' : 'text-foreground')}>
                         {ticket.event.name}
                     </h2>
-                    {ticket.event.isCancelled && <p className="text-red-300 mt-1">Este evento foi cancelado</p>}
+                    {ticket.event.isCancelled && <p className="text-destructive/80 mt-1">Este evento foi cancelado</p>}
                 </div>
             </div>
 
@@ -64,68 +64,68 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                 <div className="grid grid-cols-2 gap-6">
                     {/* Left Column - Event Details */}
                     <div className="space-y-4">
-                        <div className="flex items-center text-gray-600">
+                        <div className="flex items-center text-muted-foreground">
                             <CalendarDays
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-destructive' : 'text-primary',
                                 )}
                             />
                             <div>
-                                <p className="text-sm text-gray-500">Data</p>
+                                <p className="text-sm text-muted-foreground">Data</p>
                                 <p className="font-medium">{new Date(ticket.event.eventDate).toLocaleDateString()}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center text-gray-600">
+                        <div className="flex items-center text-muted-foreground">
                             <MapPin
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-destructive' : 'text-primary',
                                 )}
                             />
                             <div>
-                                <p className="text-sm text-gray-500">Local</p>
+                                <p className="text-sm text-muted-foreground">Local</p>
                                 <p className="font-medium">{ticket.event.location}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center text-gray-600">
+                        <div className="flex items-center text-muted-foreground">
                             <User
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-destructive' : 'text-primary',
                                 )}
                             />
                             <div>
-                                <p className="text-sm text-gray-500">Portador do Ingresso</p>
+                                <p className="text-sm text-muted-foreground">Portador do Ingresso</p>
                                 <p className="font-medium">{user.name}</p>
-                                <p className="text-sm text-gray-500">{user.email}</p>
+                                <p className="text-sm text-muted-foreground">{user.email}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center text-gray-600 break-all">
+                        <div className="flex items-center text-muted-foreground break-all">
                             <IdCard
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-destructive' : 'text-primary',
                                 )}
                             />
                             <div>
-                                <p className="text-sm text-gray-500">ID do Portador</p>
+                                <p className="text-sm text-muted-foreground">ID do Portador</p>
                                 <p className="font-medium">{user.userId}</p>
                             </div>
                         </div>
 
-                        <div className="flex items-center text-gray-600">
+                        <div className="flex items-center text-muted-foreground">
                             <TicketIcon
                                 className={cn(
                                     'w-5 h-5 mr-3',
-                                    ticket.event.isCancelled ? 'text-red-600' : 'text-blue-600',
+                                    ticket.event.isCancelled ? 'text-destructive' : 'text-primary',
                                 )}
                             />
                             <div>
-                                <p className="text-sm text-gray-500">Preço do Ingresso</p>
+                                <p className="text-sm text-muted-foreground">Preço do Ingresso</p>
                                 <p className="font-medium">R${ticket.event.price.toFixed(2)}</p>
                             </div>
                         </div>
@@ -141,7 +141,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                         >
                             <QRCode value={ticket._id} className="w-32 h-32" />
                         </div>
-                        <p className="mt-2 text-sm text-gray-500 break-all text-center max-w-[200px] md:max-w-full">
+                        <p className="mt-2 text-sm text-muted-foreground break-all text-center max-w-[200px] md:max-w-full">
                             ID do Ingresso: {ticket._id}
                         </p>
                     </div>
@@ -149,13 +149,13 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
 
                 {/* Additional Information */}
                 <div className="mt-6 pt-6 border-t border-gray-200">
-                    <h3 className="text-sm font-medium text-gray-900 mb-2">Informações Importantes</h3>
+                    <h3 className="text-sm font-medium text-foreground mb-2">Informações Importantes</h3>
                     {ticket.event.isCancelled ? (
-                        <p className="text-sm text-red-600">
+                        <p className="text-sm text-destructive">
                             Este evento foi cancelado. Um reembolso será processado se ainda não foi feito.
                         </p>
                     ) : (
-                        <ul className="text-sm text-gray-600 space-y-1">
+                        <ul className="text-sm text-muted-foreground space-y-1">
                             <li>• Por favor, chegue pelo menos 30 minutos antes do evento</li>
                             <li>• Tenha seu código QR do ingresso pronto para escaneamento</li>
                             <li>• Este ingresso não é transferível</li>
@@ -168,10 +168,10 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
             <div
                 className={cn(
                     'px-6 py-4 flex justify-between items-center border-t border-gray-200',
-                    ticket.event.isCancelled ? 'bg-red-50' : 'bg-gray-50',
+                    ticket.event.isCancelled ? 'bg-destructive/10' : 'bg-muted',
                 )}
             >
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-muted-foreground">
                     Data da Compra: {new Date(ticket.purchasedAt).toLocaleString()}
                 </span>
                 <Badge variant={ticket.event.isCancelled ? 'destructive' : 'success'}>

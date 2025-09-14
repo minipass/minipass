@@ -69,8 +69,8 @@ export class StripeProvider extends PaymentProviderBase {
                 payment_intent_data: paymentIntentData,
                 expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // 30 minutes
                 mode: 'payment',
-                success_url: `${process.env.NEXT_PUBLIC_APP_URL}/tickets/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/event/${params.event._id}`,
+                success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/tickets/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/event/${params.event._id}`,
             },
             {
                 stripeAccount: params.accountId,

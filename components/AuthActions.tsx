@@ -8,14 +8,14 @@ export default function AuthActions() {
     return (
         <>
             <Authenticated>
-                <Link href="/seller">
-                    <button className="bg-blue-600 text-white px-2 py-1 text-xs rounded hover:bg-blue-700 transition hidden sm:block">
+                <Link href="/dashboard/seller">
+                    <button className="bg-primary text-primary-foreground px-2 py-1 text-sm rounded border-2 border-primary hover:bg-primary/90 transition hidden sm:block">
                         Vender
                     </button>
                 </Link>
 
-                <Link href="/tickets">
-                    <button className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded hover:bg-gray-200 transition border border-gray-300 hidden lg:block">
+                <Link href="/dashboard/tickets">
+                    <button className="bg-secondary text-secondary-foreground px-2 py-1 text-sm rounded border-2 border-border hover:bg-secondary/80 transition hidden lg:block">
                         Meus Ingressos
                     </button>
                 </Link>
@@ -24,7 +24,7 @@ export default function AuthActions() {
 
             <Unauthenticated>
                 <Link href="/sign-in">
-                    <button className="bg-gray-100 text-gray-800 px-2 py-1 text-xs rounded hover:bg-gray-200 transition border border-gray-300">
+                    <button className="bg-secondary text-secondary-foreground px-2 py-1 text-sm rounded border-2 border-border hover:bg-secondary/80 transition">
                         Entrar
                     </button>
                 </Link>

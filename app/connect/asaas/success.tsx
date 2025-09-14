@@ -3,9 +3,9 @@ import Link from 'next/link'
 
 export default function Return() {
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4">
             <div className="max-w-md w-full">
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="bg-card rounded-lg shadow-lg overflow-hidden">
                     {/* Success Header */}
                     <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white text-center">
                         <div className="mb-4 flex justify-center">
@@ -31,8 +31,8 @@ export default function Return() {
                             </div>
 
                             <Link
-                                href="/seller"
-                                className="flex w-full bg-blue-600 text-white text-center py-3 px-4 rounded-sm font-medium hover:bg-blue-700 transition-colors duration-200 items-center justify-center gap-2"
+                                href="/dashboard/seller"
+                                className="flex w-full bg-primary text-primary-foreground text-center py-3 px-4 rounded-sm font-medium hover:bg-primary/90 transition-colors duration-200 items-center justify-center gap-2"
                             >
                                 Go to Seller Dashboard
                                 <ArrowRight className="w-4 h-4" />

@@ -94,11 +94,11 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
     if (!provider) return null
 
     return (
-        <div className="bg-white rounded-sm shadow-lg p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-card rounded-sm shadow-lg p-6">
+            <h3 className="text-lg font-semibold text-card-foreground mb-4">
                 Configurar Conta {provider === 'asaas' ? 'Asaas' : 'Stripe'}
             </h3>
-            <p className="text-sm text-gray-600 mb-6">
+            <p className="text-sm text-muted-foreground mb-6">
                 Por favor, forneça as informações necessárias para criar sua conta de pagamento.
             </p>
 
@@ -129,7 +129,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                         <span>
                                             <Input {...field} type="email" placeholder="Digite seu email" />
                                             {initialUserAddress && form.getValues().email === initialUserAddress && (
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-sm text-muted-foreground">
                                                     Este é seu endereço de email padrão.
                                                 </p>
                                             )}
@@ -307,7 +307,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                         <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
                             Cancelar
                         </Button>
-                        <Button type="submit" disabled={isLoading} className="bg-blue-600 hover:bg-blue-700">
+                        <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/90">
                             {isLoading ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />

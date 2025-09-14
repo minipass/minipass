@@ -40,7 +40,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
             href={`/tickets/${ticketId}`}
             className={cn(
                 'block hover:border-gray-300 hover:shadow-sm transition-all duration-200 overflow-hidden',
-                ticket.event.isCancelled ? 'border-red-200' : '',
+                ticket.event.isCancelled ? 'border-destructive/20' : '',
                 isPastEvent && 'opacity-75 hover:opacity-100',
             )}
         >
@@ -48,12 +48,12 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                 <div className="p-5">
                     <div className="flex justify-between items-start mb-4">
                         <div>
-                            <h3 className="text-lg font-semibold text-gray-900">{ticket.event.name}</h3>
-                            <p className="text-sm text-gray-500 mt-1">
+                            <h3 className="text-lg font-semibold text-foreground">{ticket.event.name}</h3>
+                            <p className="text-sm text-muted-foreground mt-1">
                                 Comprado em {new Date(ticket.purchasedAt).toLocaleDateString()}
                             </p>
                             {ticket.event.isCancelled && (
-                                <p className="text-sm text-red-600 mt-1 flex items-center gap-1">
+                                <p className="text-sm text-destructive mt-1 flex items-center gap-1">
                                     <AlertTriangle className="w-4 h-4" />
                                     Evento Cancelado
                                 </p>
@@ -73,12 +73,14 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                     </div>
 
                     <div className="space-y-2">
-                        <div className="flex items-center text-gray-600">
-                            <CalendarDays className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-red-600')} />
+                        <div className="flex items-center text-muted-foreground">
+                            <CalendarDays
+                                className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-destructive')}
+                            />
                             <span className="text-sm">{new Date(ticket.event.eventDate).toLocaleDateString()}</span>
                         </div>
-                        <div className="flex items-center text-gray-600">
-                            <MapPin className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-red-600')} />
+                        <div className="flex items-center text-muted-foreground">
+                            <MapPin className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-destructive')} />
                             <span className="text-sm">{ticket.event.location}</span>
                         </div>
                     </div>
@@ -88,15 +90,15 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                             className={cn(
                                 'font-medium',
                                 ticket.event.isCancelled
-                                    ? 'text-red-600'
+                                    ? 'text-destructive'
                                     : isPastEvent
-                                      ? 'text-gray-600'
-                                      : 'text-blue-600',
+                                      ? 'text-muted-foreground'
+                                      : 'text-primary',
                             )}
                         >
                             R$ {ticket.event.price.toFixed(2)}
                         </span>
-                        <span className="text-gray-600 flex items-center">
+                        <span className="text-muted-foreground flex items-center">
                             Ver Ingresso <ArrowRight className="w-4 h-4 ml-1" />
                         </span>
                     </div>

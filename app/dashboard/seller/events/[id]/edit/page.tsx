@@ -19,10 +19,10 @@ export default function EditEventPage() {
 
     return (
         <div className="max-w-3xl mx-auto p-6">
-            <div className="bg-white rounded-sm shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-blue-800 px-6 py-8 text-white">
+            <div className="bg-card rounded-sm shadow-lg overflow-hidden">
+                <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-8 text-primary-foreground">
                     <h2 className="text-2xl font-bold">Edit Event</h2>
-                    <p className="text-blue-100 mt-2">Update your event details</p>
+                    <p className="text-primary-foreground/80 mt-2">Update your event details</p>
                 </div>
 
                 <div className="p-6">

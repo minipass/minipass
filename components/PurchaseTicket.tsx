@@ -82,21 +82,21 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
     const ticketText = queuePosition.quantity === 1 ? 'Ingresso' : `${queuePosition.quantity} Ingressos`
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-lg border border-amber-200">
+        <div className="bg-card p-6 rounded-lg shadow-lg border border-amber-200">
             <div className="space-y-4">
-                <div className="bg-white rounded-sm p-6 border border-gray-200">
+                <div className="bg-card rounded-sm p-6 border border-border">
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-sm bg-amber-100 flex items-center justify-center">
                                 <Ticket className="w-6 h-6 text-amber-600" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">{ticketText} Reservado</h3>
-                                <p className="text-sm text-gray-500">Expira em {timeRemaining}</p>
+                                <h3 className="text-lg font-semibold text-foreground">{ticketText} Reservado</h3>
+                                <p className="text-sm text-muted-foreground">Expira em {timeRemaining}</p>
                             </div>
                         </div>
 
-                        <div className="text-sm text-gray-600 leading-relaxed">
+                        <div className="text-sm text-muted-foreground leading-relaxed">
                             {queuePosition.quantity === 1
                                 ? 'Um ingresso foi reservado para você. Complete sua compra antes do tempo expirar para garantir sua vaga neste evento.'
                                 : `${queuePosition.quantity} ingressos foram reservados para você. Complete sua compra antes do tempo expirar para garantir suas vagas neste evento.`}

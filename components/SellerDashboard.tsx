@@ -111,9 +111,9 @@ export default function SellerDashboard() {
         <div className="max-w-4xl mx-auto p-6">
             <Card className="overflow-hidden">
                 {/* Header Section */}
-                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-10 text-white">
+                <div className="bg-gradient-to-r from-primary to-primary/80 px-8 py-10 text-primary-foreground">
                     <h2 className="text-3xl font-bold">Painel do Vendedor</h2>
-                    <p className="text-blue-100 mt-2 text-lg">
+                    <p className="text-primary-foreground/80 mt-2 text-lg">
                         Gerencie seu perfil de vendedor e configurações de pagamento
                     </p>
                 </div>
@@ -121,21 +121,23 @@ export default function SellerDashboard() {
                 {/* Main Content */}
                 {isSetup && (
                     <>
-                        <div className="bg-white p-8">
-                            <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+                        <div className="bg-card p-8">
+                            <h2 className="text-2xl font-semibold text-card-foreground mb-6">
                                 Venda ingressos para seus eventos
                             </h2>
-                            <p className="text-gray-600 mb-8">Liste seus ingressos à venda e gerencie suas listagens</p>
-                            <div className="bg-gray-50 rounded-sm border border-gray-200 p-6">
+                            <p className="text-muted-foreground mb-8">
+                                Liste seus ingressos à venda e gerencie suas listagens
+                            </p>
+                            <div className="bg-muted rounded-sm border border-border p-6">
                                 <div className="flex justify-center gap-4">
                                     <Button asChild>
-                                        <Link href="/seller/new-event">
+                                        <Link href="/dashboard/seller/new-event">
                                             <Plus className="w-5 h-5" />
                                             Criar Evento
                                         </Link>
                                     </Button>
                                     <Button variant="secondary" asChild>
-                                        <Link href="/seller/events">
+                                        <Link href="/dashboard/seller/events">
                                             <CalendarDays className="w-5 h-5" />
                                             Ver Meus Eventos
                                         </Link>
@@ -155,8 +157,8 @@ export default function SellerDashboard() {
                                 <div className="flex items-center justify-center space-x-3 mb-6">
                                     <div
                                         className={cn(
-                                            'w-12 h-12 rounded-sm flex items-center justify-center text-white text-lg ',
-                                            selectedProvider === 'stripe' ? 'bg-blue-600' : 'bg-emerald-600',
+                                            'w-12 h-12 rounded-sm flex items-center justify-center text-primary-foreground text-lg ',
+                                            selectedProvider === 'stripe' ? 'bg-primary' : 'bg-emerald-600',
                                         )}
                                     >
                                         {selectedProvider && (
@@ -170,7 +172,7 @@ export default function SellerDashboard() {
                                         )}
                                     </div>
                                     <div>
-                                        <div className="font-semibold text-gray-900 text-lg">
+                                        <div className="font-semibold text-foreground text-lg">
                                             {selectedProvider === 'stripe' ? 'Stripe' : 'Asaas'}
                                         </div>
                                     </div>
@@ -178,17 +180,17 @@ export default function SellerDashboard() {
                                 <p className="text-emerald-800 mb-4 text-lg">
                                     Seu provedor de pagamento está configurado e pronto para aceitar pagamentos.
                                 </p>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-muted-foreground">
                                     Precisa trocar de provedor? Entre em contato com o suporte para assistência.
                                 </p>
                             </div>
                         </div>
                     ) : (
                         <div className="text-center py-8">
-                            <h3 className="text-2xl font-semibold mb-4 text-gray-900">
+                            <h3 className="text-2xl font-semibold mb-4 text-foreground">
                                 Escolha Seu Provedor de Pagamento
                             </h3>
-                            <p className="text-gray-600 mb-8 text-lg">
+                            <p className="text-muted-foreground mb-8 text-lg">
                                 Selecione um provedor de pagamento para começar a aceitar pagamentos.
                             </p>
                             <PaymentProviderSelector
@@ -196,7 +198,7 @@ export default function SellerDashboard() {
                                 onProviderChange={handleProviderSelect}
                                 availableProviders={['stripe', 'asaas']}
                             />
-                            <p className="text-sm text-gray-500 mt-6">
+                            <p className="text-sm text-muted-foreground mt-6">
                                 Precisa trocar de provedor? Entre em contato com o suporte para assistência.
                             </p>
                         </div>
@@ -213,7 +215,9 @@ export default function SellerDashboard() {
 
                     {/* Loading State */}
                     {accountCreatePending && (
-                        <div className="text-center py-4 text-gray-600">Configurando sua conta de pagamento...</div>
+                        <div className="text-center py-4 text-muted-foreground">
+                            Configurando sua conta de pagamento...
+                        </div>
                     )}
                 </div>
             </Card>

@@ -2,21 +2,21 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
-import logo from '@/images/minipass-full.svg'
+import logo from '@/images/minipass.svg'
 
 import AuthActions from './AuthActions'
 import SearchBar from './SearchBar'
 
 function Header() {
     return (
-        <div className="border-b h-12">
-            <div className="flex items-center gap-2 px-3 h-full">
+        <div className="border-b border-border bg-background/80 backdrop-blur-sm sticky top-0 z-50">
+            <div className="flex items-center gap-2 px-3 h-12">
                 {/* Logo and Search Bar Group */}
-                <div className="flex items-center gap-2 flex-1">
+                <div className="flex items-center gap-2 flex-1 min-w-0">
                     <Link href="/" className="font-bold shrink-0">
-                        <Image src={logo} alt="logo" className="w-32 lg:w-40" />
+                        <Image src={logo} alt="logo" className="h-8 w-auto" />
                     </Link>
-                    <div className="flex-1 max-w-2xl">
+                    <div className="flex-1 max-w-2xl hidden sm:block">
                         <SearchBar />
                     </div>
                 </div>
@@ -26,13 +26,18 @@ function Header() {
                     <Suspense
                         fallback={
                             <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="w-6 h-6 bg-muted rounded animate-pulse"></div>
                             </div>
                         }
                     >
                         <AuthActions />
                     </Suspense>
                 </div>
+            </div>
+
+            {/* Mobile Search Bar */}
+            <div className="px-3 pb-2 sm:hidden">
+                <SearchBar />
             </div>
         </div>
     )

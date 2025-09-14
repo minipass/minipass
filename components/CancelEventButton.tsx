@@ -47,7 +47,7 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
                 title: 'Evento cancelado',
                 description: 'Todos os ingressos foram reembolsados com sucesso.',
             })
-            router.push('/seller/events')
+            router.push('/dashboard/seller/events')
         } catch (error) {
             console.error('Failed to cancel event:', error)
             toast({
@@ -64,7 +64,7 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
         <button
             onClick={handleCancel}
             disabled={isCancelling}
-            className="flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-sm transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-destructive hover:text-destructive/80 hover:bg-destructive/10 rounded-sm transition-colors"
         >
             <Ban className="w-4 h-4" />
             <span>{isCancelling ? 'Processando...' : 'Cancelar Evento'}</span>

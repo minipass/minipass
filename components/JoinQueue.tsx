@@ -112,34 +112,38 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                     queuePosition.offerExpiresAt <= Date.now())) && (
                 <>
                     {isEventOwner ? (
-                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-sm">
+                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-muted text-muted-foreground rounded-sm">
                             <OctagonXIcon className="w-5 h-5" />
                             <span>Você não pode comprar um ingresso para seu próprio evento</span>
                         </div>
                     ) : isPastEvent ? (
-                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-sm cursor-not-allowed">
+                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-muted text-muted-foreground rounded-sm cursor-not-allowed">
                             <Clock className="w-5 h-5" />
                             <span>Evento terminou</span>
                         </div>
                     ) : availability.isSoldOut ? (
                         <div className="text-center p-4">
-                            <p className="text-lg font-semibold text-red-600">Desculpe, este evento está esgotado</p>
+                            <p className="text-lg font-semibold text-destructive">
+                                Desculpe, este evento está esgotado
+                            </p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {/* Quantity Selector */}
                             <div className="bg-gray-50 p-4 rounded-sm">
                                 <div className="flex items-center justify-between mb-2">
-                                    <label className="text-sm font-medium text-gray-700">Número de Ingressos</label>
+                                    <label className="text-sm font-medium text-foreground">Número de Ingressos</label>
                                     {!availability.availabilityHidden && (
-                                        <span className="text-sm text-gray-500">{availableTickets} disponíveis</span>
+                                        <span className="text-sm text-muted-foreground">
+                                            {availableTickets} disponíveis
+                                        </span>
                                     )}
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <button
                                         onClick={() => handleQuantityChange(quantity - 1)}
                                         disabled={quantity <= 1}
-                                        className="w-8 h-8 rounded-sm bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-8 h-8 rounded-sm bg-background border border-border flex items-center justify-center hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <Minus className="w-4 h-4" />
                                     </button>
@@ -152,12 +156,12 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                                                 ? Math.min(MAX_QUANTITY, availableTickets)
                                                 : MAX_QUANTITY_HIDDEN)
                                         }
-                                        className="w-8 h-8 rounded-sm bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-8 h-8 rounded-sm bg-background border border-border flex items-center justify-center hover:bg-accent disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <Plus className="w-4 h-4" />
                                     </button>
                                 </div>
-                                <div className="mt-2 text-sm text-gray-600">
+                                <div className="mt-2 text-sm text-muted-foreground">
                                     Total: R$ {(event.price * quantity).toFixed(2)}
                                 </div>
                             </div>
@@ -165,7 +169,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                             <button
                                 onClick={handleJoinQueue}
                                 disabled={isPastEvent || isEventOwner || isLoading}
-                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-sm font-medium hover:bg-blue-700 transition-colors duration-200 shadow-md flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                className="w-full bg-primary text-primary-foreground px-6 py-3 rounded-sm font-medium hover:bg-primary/90 transition-colors duration-200 shadow-md flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
                             >
                                 {isLoading ? <Spinner /> : `Comprar ${quantity} Ingresso${quantity > 1 ? 's' : ''}`}
                             </button>

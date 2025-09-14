@@ -24,7 +24,7 @@ export const PROVIDER_CONFIGS: Record<PaymentProvider, ProviderConfig> = {
         name: 'Stripe',
         logo: stripeLogo,
         description: 'Processamento global de pagamentos, suporta cartões de crédito e boleto',
-        color: 'bg-blue-500',
+        color: 'bg-primary',
     },
     asaas: {
         name: 'Asaas',
@@ -52,7 +52,7 @@ export default function PaymentProviderSelector({
                             onClick={() => onProviderChange(provider)}
                             className={cn(
                                 'p-4 border-2 rounded-sm transition-all',
-                                isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300',
+                                isSelected ? 'border-primary bg-primary/10' : 'border-border hover:border-border/80',
                             )}
                         >
                             <div className="flex items-center space-x-3">
@@ -66,8 +66,8 @@ export default function PaymentProviderSelector({
                                     />
                                 </div>
                                 <div className="text-left">
-                                    <div className="font-medium text-gray-900">{config.name}</div>
-                                    <div className="text-sm text-gray-500">{config.description}</div>
+                                    <div className="font-medium text-foreground">{config.name}</div>
+                                    <div className="text-sm text-muted-foreground">{config.description}</div>
                                 </div>
                             </div>
                         </button>

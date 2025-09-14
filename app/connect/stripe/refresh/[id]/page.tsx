@@ -37,13 +37,15 @@ export default function Refresh() {
     }, [connectedAccountId, createAccountLink])
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="min-h-screen bg-background flex items-center justify-center p-4">
             <div className="max-w-md w-full">
-                <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="bg-card rounded-lg shadow-lg overflow-hidden">
                     {/* Header */}
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+                    <div className="bg-gradient-to-r from-primary to-primary/80 p-6 text-primary-foreground">
                         <h2 className="text-2xl font-bold mb-2">Account Setup</h2>
-                        <p className="text-blue-100">Complete your account setup to start selling tickets</p>
+                        <p className="text-primary-foreground/80">
+                            Complete your account setup to start selling tickets
+                        </p>
                     </div>
 
                     {/* Content */}
@@ -62,13 +64,15 @@ export default function Refresh() {
                         ) : (
                             <div className="text-center py-8">
                                 <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-                                <p className="text-gray-600">
+                                <p className="text-primary">
                                     {accountLinkCreatePending
                                         ? 'Creating your account link...'
                                         : 'Redirecting to Stripe...'}
                                 </p>
                                 {connectedAccountId && (
-                                    <p className="text-xs text-gray-500 mt-4">Account ID: {connectedAccountId}</p>
+                                    <p className="text-xs text-muted-foreground mt-4">
+                                        Account ID: {connectedAccountId}
+                                    </p>
                                 )}
                             </div>
                         )}

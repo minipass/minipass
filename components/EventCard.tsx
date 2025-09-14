@@ -57,8 +57,8 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
             return (
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-sm border border-gray-200">
                     <div className="flex items-center">
-                        <Ticket className="w-5 h-5 text-gray-500 mr-2" />
-                        <span className="text-gray-700 font-medium">Evento esgotado</span>
+                        <Ticket className="w-5 h-5 text-muted-foreground mr-2" />
+                        <span className="text-foreground font-medium">Evento esgotado</span>
                     </div>
                 </div>
             )
@@ -104,7 +104,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         variant="secondary"
                         onClick={e => {
                             e.stopPropagation()
-                            router.push(`/seller/events/${eventId}/edit`)
+                            router.push(`/dashboard/seller/events/${eventId}/edit`)
                         }}
                         className="w-full"
                     >
@@ -124,7 +124,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     </div>
                     <Button
                         size="sm"
-                        onClick={() => router.push('/tickets')}
+                        onClick={() => router.push('/dashboard/tickets')}
                         className="bg-emerald-600 hover:bg-emerald-700 text-white"
                     >
                         Ver seus ingressos
@@ -140,8 +140,8 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         {queuePosition.status === 'offered' && <PurchaseTicket eventId={eventId} />}
                         {renderQueuePosition()}
                         {queuePosition.status === 'expired' && (
-                            <div className="p-4 bg-red-50 rounded-sm border border-red-200">
-                                <span className="text-red-800 font-medium flex items-center">
+                            <div className="p-4 bg-destructive/10 rounded-sm border border-destructive/20">
+                                <span className="text-destructive font-medium flex items-center">
                                     <XCircle className="w-5 h-5 mr-2" />
                                     Oferta expirada
                                 </span>
@@ -157,7 +157,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
     return (
         <Card
-            onClick={() => router.push(`/event/${eventId}`)}
+            onClick={() => router.push(`/dashboard/event/${eventId}`)}
             className={cn(
                 'cursor-pointer overflow-hidden relative hover:border-gray-300 hover:shadow-sm transition-all duration-200',
                 isPastEvent && 'opacity-75 hover:opacity-100',
@@ -176,12 +176,15 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     <div>
                         <div className="flex flex-col items-start gap-2">
                             {isEventOwner && (
-                                <Badge variant="secondary" className="bg-blue-600 text-white border-blue-600">
+                                <Badge
+                                    variant="secondary"
+                                    className="bg-primary text-primary-foreground border-primary"
+                                >
                                     <StarIcon className="w-3 h-3 mr-1" />
                                     Seu Evento
                                 </Badge>
                             )}
-                            <h2 className="text-2xl font-bold text-gray-900">{event.name}</h2>
+                            <h2 className="text-2xl font-bold text-foreground">{event.name}</h2>
                         </div>
                         {isPastEvent && (
                             <Badge variant="default" className="mt-2">
@@ -208,12 +211,12 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                 </div>
 
                 <div className="mt-4 space-y-3">
-                    <div className="flex items-center text-gray-600">
+                    <div className="flex items-center text-primary">
                         <MapPin className="w-4 h-4 mr-2" />
                         <span>{event.location}</span>
                     </div>
 
-                    <div className="flex items-center text-gray-600">
+                    <div className="flex items-center text-primary">
                         <CalendarDays className="w-4 h-4 mr-2" />
                         <span>
                             {new Date(event.eventDate).toLocaleDateString()} {isPastEvent && '(Terminado)'}
@@ -221,7 +224,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     </div>
 
                     {!availability.availabilityHidden && (
-                        <div className="flex items-center text-gray-600">
+                        <div className="flex items-center text-primary">
                             <Ticket className="w-4 h-4 mr-2" />
                             <span>
                                 {availability.totalTickets - availability.purchasedCount} / {availability.totalTickets}{' '}
@@ -237,7 +240,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     )}
                 </div>
 
-                <p className="mt-4 text-gray-600 text-sm line-clamp-2">{event.description}</p>
+                <p className="mt-4 text-primary text-sm line-clamp-2">{event.description}</p>
 
                 <div onClick={e => e.stopPropagation()}>{!isPastEvent && renderTicketStatus()}</div>
             </div>

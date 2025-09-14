@@ -33,19 +33,19 @@ export default function SellerEventList() {
         <div className="mx-auto space-y-8">
             {/* Upcoming Events */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Próximos Eventos</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-4">Próximos Eventos</h2>
                 <div className="grid grid-cols-1 gap-6">
                     {upcomingEvents.map(event => (
                         <SellerEventCard key={event._id} event={event} />
                     ))}
-                    {upcomingEvents.length === 0 && <p className="text-gray-500">Nenhum evento próximo</p>}
+                    {upcomingEvents.length === 0 && <p className="text-muted-foreground">Nenhum evento próximo</p>}
                 </div>
             </div>
 
             {/* Past Events */}
             {pastEvents.length > 0 && (
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Eventos Passados</h2>
+                    <h2 className="text-2xl font-bold text-foreground mb-4">Eventos Passados</h2>
                     <div className="grid grid-cols-1 gap-6">
                         {pastEvents.map(event => (
                             <SellerEventCard key={event._id} event={event} />
@@ -87,8 +87,8 @@ function SellerEventCard({
                     <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-4">
                             <div>
-                                <h3 className="text-xl font-semibold text-gray-900">{event.name}</h3>
-                                <p className="mt-1 text-gray-500">{event.description}</p>
+                                <h3 className="text-xl font-semibold text-foreground">{event.name}</h3>
+                                <p className="mt-1 text-muted-foreground">{event.description}</p>
                                 {event.isCancelled && (
                                     <div className="mt-2">
                                         <Badge variant="destructive" className="flex items-center gap-1">
@@ -115,22 +115,25 @@ function SellerEventCard({
 
                         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
-                                <div className="flex items-center gap-2 text-gray-600 mb-2">
+                                <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <Ticket className="w-4 h-4" />
                                     <span className="text-sm font-medium">
                                         {event.isCancelled ? 'Ingressos Reembolsados' : 'Ingressos Vendidos'}
                                     </span>
                                 </div>
-                                <p className="text-2xl font-semibold text-gray-900">
+                                <p className="text-2xl font-semibold text-foreground">
                                     {event.isCancelled ? (
                                         <>
                                             {event.metrics.refundedTickets}
-                                            <span className="text-sm text-gray-500 font-normal"> reembolsados</span>
+                                            <span className="text-sm text-muted-foreground font-normal">
+                                                {' '}
+                                                reembolsados
+                                            </span>
                                         </>
                                     ) : (
                                         <>
                                             {event.metrics.soldTickets}
-                                            <span className="text-sm text-gray-500 font-normal">
+                                            <span className="text-sm text-muted-foreground font-normal">
                                                 /{event.totalTickets}
                                             </span>
                                         </>
@@ -139,13 +142,13 @@ function SellerEventCard({
                             </div>
 
                             <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
-                                <div className="flex items-center gap-2 text-gray-600 mb-2">
+                                <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <Banknote className="w-4 h-4" />
                                     <span className="text-sm font-medium">
                                         {event.isCancelled ? 'Valor Reembolsado' : 'Receita'}
                                     </span>
                                 </div>
-                                <p className="text-2xl font-semibold text-gray-900">
+                                <p className="text-2xl font-semibold text-foreground">
                                     R$
                                     {event.isCancelled
                                         ? event.metrics.refundedTickets * event.price
@@ -154,17 +157,17 @@ function SellerEventCard({
                             </div>
 
                             <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
-                                <div className="flex items-center gap-2 text-gray-600 mb-2">
+                                <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <CalendarDays className="w-4 h-4" />
                                     <span className="text-sm font-medium">Data</span>
                                 </div>
-                                <p className="text-sm font-medium text-gray-900">
+                                <p className="text-sm font-medium text-foreground">
                                     {new Date(event.eventDate).toLocaleDateString()}
                                 </p>
                             </div>
 
                             <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
-                                <div className="flex items-center gap-2 text-gray-600 mb-2">
+                                <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <InfoIcon className="w-4 h-4" />
                                     <span className="text-sm font-medium">Status</span>
                                 </div>

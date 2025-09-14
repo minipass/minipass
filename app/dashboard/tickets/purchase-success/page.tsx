@@ -6,7 +6,7 @@ async function TicketSuccess() {
     if (!userId) redirect('/')
 
     // Redirect to the main tickets page to see all tickets grouped by event
-    redirect('/tickets?success=true')
+    redirect('/dashboard/tickets?success=true')
 }
 
 export default TicketSuccess

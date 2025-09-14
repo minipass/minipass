@@ -11,7 +11,7 @@ export default function PrivacyPage() {
             <h1 className="text-3xl font-bold mb-8">Política de Privacidade</h1>
 
             <div className="prose prose-gray max-w-none space-y-6">
-                <p className="text-sm text-gray-600 mb-8">
+                <p className="text-sm text-primary mb-8">
                     <strong>Última atualização:</strong> 14/09/2025
                 </p>
 
@@ -157,7 +157,7 @@ export default function PrivacyPage() {
 
                 <section>
                     <h2 className="text-2xl font-semibold mb-4">11. Contato</h2>
-                    <div className="bg-gray-50 p-6 rounded-sm">
+                    <div className="bg-primary/10 p-6 rounded-sm">
                         <p className="mb-4">
                             Para questões sobre esta Política de Privacidade ou para exercer seus direitos, entre em
                             contato conosco:

@@ -24,9 +24,9 @@ The MiniPass platform uses a modern, clean design system focused on clarity, acc
 
 #### Primary Colors
 
--   **Primary**: `#2563eb` (Blue 600) - Main actions, links, and highlights
--   **Primary Hover**: `#1d4ed8` (Blue 700) - Hover states for primary elements
--   **Primary Light**: `#dbeafe` (Blue 100) - Light backgrounds for primary elements
+-   **Primary**: `#374375` (blue-600) - Main actions, links, and highlights
+-   **Primary Hover**: `#374375` with 90% opacity - Hover states for primary elements
+-   **Primary Light**: `#bbbde3` (blue-200) - Light backgrounds for primary elements
 
 #### Neutral Colors
 
@@ -42,7 +42,7 @@ The MiniPass platform uses a modern, clean design system focused on clarity, acc
 
 -   **Success**: `#059669` (Emerald 600) with `#d1fae5` (Emerald 100) background
 -   **Warning**: `#d97706` (Amber 600) with `#fef3c7` (Amber 100) background
--   **Error**: `#dc2626` (Red 600) with `#fee2e2` (Red 100) background
+-   **Error**: `#845158` (red-600) with `#f8eeed` (red-50) background
 -   **Info**: `#0284c7` (Sky 600) with `#e0f2fe` (Sky 100) background
 
 ## Component Guidelines
@@ -68,7 +68,7 @@ className =
 ```typescript
 // Primary Button
 className =
-    'bg-blue-600 text-white border-0 rounded-md px-4 py-2 font-medium hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+    'bg-blue-600 text-white border-0 rounded-md px-4 py-2 font-medium hover:bg-blue-600/90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2'
 
 // Secondary Button
 className =

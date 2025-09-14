@@ -90,9 +90,9 @@ export class AsaasProvider extends PaymentProviderBase {
             chargeTypes: ['DETACHED'],
             minutesToExpire: 60,
             callback: {
-                successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/tickets/purchase-success`,
-                expiredUrl: `${process.env.NEXT_PUBLIC_APP_URL}/tickets/purchase-expired`,
-                cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/event/${params.event._id}`,
+                successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/tickets/purchase-success`,
+                expiredUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/tickets/purchase-expired`,
+                cancelUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/event/${params.event._id}`,
             },
             splits,
             items: [

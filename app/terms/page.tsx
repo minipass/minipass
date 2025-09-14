@@ -11,7 +11,7 @@ export default function TermsPage() {
             <h1 className="text-3xl font-bold mb-8">Termos de Serviço</h1>
 
             <div className="prose prose-gray max-w-none space-y-6">
-                <p className="text-sm text-gray-600 mb-8">
+                <p className="text-sm text-primary mb-8">
                     <strong>Última atualização:</strong> 14/09/2025
                 </p>
 
@@ -109,7 +109,7 @@ export default function TermsPage() {
                     </p>
 
                     <h3 className="text-lg font-medium mb-3 mt-6">6.3 Impostos e Obrigações Fiscais</h3>
-                    <div className="bg-gray-50 p-4 rounded-sm">
+                    <div className="bg-primary/10 p-4 rounded-sm">
                         <p className="mb-3">
                             <strong>Responsabilidade Fiscal:</strong> Todos os usuários são responsáveis por cumprir
                             suas obrigações fiscais de acordo com a legislação brasileira vigente.
@@ -132,7 +132,7 @@ export default function TermsPage() {
                             <li>É responsável por manter os comprovantes para fins fiscais</li>
                         </ul>
 
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-primary">
                             <strong>Importante:</strong> O minipass não atua como substituto tributário. Cada usuário
                             deve consultar um contador ou advogado tributário para orientação específica sobre suas
                             obrigações fiscais.
@@ -180,7 +180,7 @@ export default function TermsPage() {
                     <p>
                         Sua privacidade é importante para nós. Nossa coleta e uso de informações pessoais é regida por
                         nossa{' '}
-                        <a href="/privacy" className="text-blue-600 hover:underline">
+                        <a href="/privacy" className="text-primary hover:underline">
                             Política de Privacidade
                         </a>
                         , que faz parte integrante destes Termos.
@@ -226,7 +226,7 @@ export default function TermsPage() {
 
                 <section>
                     <h2 className="text-2xl font-semibold mb-4">14. Contato</h2>
-                    <div className="bg-gray-50 p-6 rounded-sm">
+                    <div className="bg-primary/10 p-6 rounded-sm">
                         <p className="mb-4">
                             Se você tiver dúvidas sobre estes Termos de Serviço, entre em contato conosco:
                         </p>
