@@ -263,12 +263,12 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                 <FormLabel>Preço por Ingresso</FormLabel>
                                 <FormControl>
                                     <div className="relative">
-                                        <span className="absolute left-2 top-1/2 -translate-y-1/2">R$</span>
+                                        <span className="absolute left-2 top-1/2 -translate-y-1/2 text-sm">R$</span>
                                         <Input
                                             type="number"
                                             {...field}
                                             onChange={e => field.onChange(Number(e.target.value))}
-                                            className="pl-6"
+                                            className="pl-8"
                                         />
                                     </div>
                                 </FormControl>
