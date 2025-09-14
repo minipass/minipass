@@ -7,7 +7,7 @@ import logo from '@/images/logo.png'
 
 export default function SignInPage() {
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="min-h-[calc(100dvh-var(--header-height))] bg-gray-50 flex flex-col justify-center lg:py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">Entre na sua conta</h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
@@ -18,7 +18,7 @@ export default function SignInPage() {
                 </p>
             </div>
 
-            <div className="mt-8 sm:mx-auto">
+            <div className="mt-8 flex w-full justify-center">
                 <SignIn
                     appearance={{
                         layout: {

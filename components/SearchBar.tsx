@@ -16,19 +16,19 @@ export default function SearchBar() {
     }
 
     return (
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full">
             <form onSubmit={handleSearch} className="relative">
                 <input
                     type="text"
                     value={query}
                     onChange={e => setQuery(e.target.value)}
                     placeholder="Buscar eventos..."
-                    className="w-full py-3 px-4 pl-12 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                    className="w-full py-1.5 px-3 pl-8 bg-white rounded border border-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-sm"
                 />
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <button
                     type="submit"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors duration-200"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 bg-blue-600 text-white px-2 py-1 rounded text-xs font-medium hover:bg-blue-700 transition-colors duration-200"
                 >
                     Buscar
                 </button>
