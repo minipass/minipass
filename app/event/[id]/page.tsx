@@ -183,7 +183,6 @@ export default function EventPage() {
                                     <ul className="space-y-2 text-blue-700">
                                         <li>• Por favor, chegue 30 minutos antes do evento começar</li>
                                         <li>• Ingressos não são reembolsáveis</li>
-                                        <li>• Restrição de idade: 18+</li>
                                     </ul>
                                 </div>
                             </div>
