@@ -48,16 +48,16 @@ export default function TicketPage() {
                             className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to My Tickets
+                            Voltar aos Meus Ingressos
                         </Link>
                         <div className="flex items-center gap-4">
                             <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100">
                                 <Download className="w-4 h-4" />
-                                <span className="text-sm">Save</span>
+                                <span className="text-sm">Salvar</span>
                             </button>
                             <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100">
                                 <Share2 className="w-4 h-4" />
-                                <span className="text-sm">Share</span>
+                                <span className="text-sm">Compartilhar</span>
                             </button>
                         </div>
                     </div>
@@ -76,16 +76,15 @@ export default function TicketPage() {
                                     ticket.event.is_cancelled ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'
                                 }`}
                             >
-                                {ticket.event.is_cancelled ? 'Cancelled' : 'Valid Ticket'}
+                                {ticket.event.is_cancelled ? 'Cancelado' : 'Ingresso Válido'}
                             </span>
                             <span className="text-sm text-gray-500">
-                                Purchased on {new Date(ticket.purchasedAt).toLocaleDateString()}
+                                Comprado em {new Date(ticket.purchasedAt).toLocaleDateString()}
                             </span>
                         </div>
                         {ticket.event.is_cancelled && (
                             <p className="mt-4 text-sm text-red-600">
-                                This event has been cancelled. A refund will be processed if it hasn&apos;t been
-                                already.
+                                Este evento foi cancelado. Um reembolso será processado se ainda não foi feito.
                             </p>
                         )}
                     </div>
@@ -107,12 +106,12 @@ export default function TicketPage() {
                             ticket.event.is_cancelled ? 'text-red-900' : 'text-blue-900'
                         }`}
                     >
-                        Need Help?
+                        Precisa de Ajuda?
                     </h3>
                     <p className={`mt-1 text-sm ${ticket.event.is_cancelled ? 'text-red-700' : 'text-blue-700'}`}>
                         {ticket.event.is_cancelled
-                            ? 'For questions about refunds or cancellations, please contact our support team at team@papareact-tickr.com'
-                            : 'If you have any issues with your ticket, please contact our support team at team@papareact-tickr.com'}
+                            ? 'Para dúvidas sobre reembolsos ou cancelamentos, entre em contato com nossa equipe de suporte em team@papareact-tickr.com'
+                            : 'Se você tiver algum problema com seu ingresso, entre em contato com nossa equipe de suporte em team@papareact-tickr.com'}
                     </p>
                 </div>
             </div>

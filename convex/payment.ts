@@ -20,7 +20,7 @@ export const getUsersPaymentAccounts = query({
             .first()
 
         if (!user) {
-            throw new Error('User not found')
+            throw new Error('Usuário não encontrado')
         }
 
         return {
@@ -64,11 +64,11 @@ export const createPaymentAccount = action({
 
         // Check if user already has an account for the other provider
         if (provider === 'stripe' && user.asaasSubaccountId) {
-            throw new Error('You already have an Asaas account. Please contact support to switch providers.')
+            throw new Error('Você já tem uma conta Asaas. Entre em contato com o suporte para trocar de provedor.')
         }
 
         if (provider === 'asaas' && user.stripeConnectId) {
-            throw new Error('You already have a Stripe account. Please contact support to switch providers.')
+            throw new Error('Você já tem uma conta Stripe. Entre em contato com o suporte para trocar de provedor.')
         }
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
@@ -100,7 +100,7 @@ export const updateUserPaymentAccount = internalMutation({
             .first()
 
         if (!user) {
-            throw new Error('User not found')
+            throw new Error('Usuário não encontrado')
         }
 
         const updateData = {
@@ -146,11 +146,11 @@ export const createCheckoutSession = action({
     },
     handler: async (ctx, { eventId, quantity }) => {
         const userIdentity = await ctx.auth.getUserIdentity()
-        if (!userIdentity) throw new Error('User not authenticated')
+        if (!userIdentity) throw new Error('Usuário não autenticado')
 
         // Get event details
         const event = await ctx.runQuery(api.events.getById, { eventId })
-        if (!event) throw new Error('Event not found')
+        if (!event) throw new Error('Evento não encontrado')
 
         // Get waiting list entry for current user
         const waitingListEntry = await ctx.runQuery(api.waitingList.getQueuePosition, {
@@ -159,7 +159,7 @@ export const createCheckoutSession = action({
         })
 
         if (!waitingListEntry || waitingListEntry.status !== 'offered') {
-            throw new Error('No valid ticket offer found')
+            throw new Error('Nenhuma oferta de ingresso válida encontrada')
         }
 
         // Get event owner's payment account
@@ -167,13 +167,13 @@ export const createCheckoutSession = action({
             userId: event.userId,
         })
 
-        if (!eventOwner) throw new Error('Event owner not found')
+        if (!eventOwner) throw new Error('Proprietário do evento não encontrado')
 
         const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasSubaccountId ? 'asaas' : null
-        if (!provider) throw new Error('Payment provider not found for owner of the event!')
+        if (!provider) throw new Error('Provedor de pagamento não encontrado para o proprietário do evento!')
 
         const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasSubaccountId
-        if (!accountId) throw new Error('Payment account not found for owner of the event!')
+        if (!accountId) throw new Error('Conta de pagamento não encontrada para o proprietário do evento!')
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
         const session = await paymentProvider.createCheckoutSession({
@@ -210,20 +210,20 @@ export const processRefunds = action({
     handler: async (ctx, { eventId }) => {
         // Get event details
         const event = await ctx.runQuery(api.events.getById, { eventId })
-        if (!event) throw new Error('Event not found')
+        if (!event) throw new Error('Evento não encontrado')
 
         // Get event owner's payment account
         const eventOwner = await ctx.runQuery(api.payment.getUsersPaymentAccounts, {
             userId: event.userId,
         })
 
-        if (!eventOwner) throw new Error('Event owner not found')
+        if (!eventOwner) throw new Error('Proprietário do evento não encontrado')
 
         const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasSubaccountId ? 'asaas' : null
-        if (!provider) throw new Error('Payment provider not found for owner of the event!')
+        if (!provider) throw new Error('Provedor de pagamento não encontrado para o proprietário do evento!')
 
         const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasSubaccountId
-        if (!accountId) throw new Error('Payment account not found for owner of the event!')
+        if (!accountId) throw new Error('Conta de pagamento não encontrada para o proprietário do evento!')
 
         // Get all valid tickets for this event
         const tickets: Doc<'tickets'>[] = await ctx.runQuery(api.tickets.getValidTicketsForEvent, { eventId })
@@ -233,7 +233,7 @@ export const processRefunds = action({
             tickets.map(async ticket => {
                 try {
                     if (!ticket.paymentIntentId) {
-                        throw new Error('Payment information not found')
+                        throw new Error('Informações de pagamento não encontradas')
                     }
 
                     const paymentProvider = PaymentProviderFactory.getProvider(provider)

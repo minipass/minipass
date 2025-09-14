@@ -87,7 +87,7 @@ export default function EventPage() {
                                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Date</span>
+                                            <span className="text-sm font-medium">Data</span>
                                         </div>
                                         <p className="text-gray-900">
                                             {new Date(event.eventDate).toLocaleDateString()}
@@ -97,7 +97,7 @@ export default function EventPage() {
                                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <MapPin className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Location</span>
+                                            <span className="text-sm font-medium">Local</span>
                                         </div>
                                         <p className="text-gray-900">{event.location}</p>
                                     </div>
@@ -105,19 +105,19 @@ export default function EventPage() {
                                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <Ticket className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Price</span>
+                                            <span className="text-sm font-medium">Preço</span>
                                         </div>
-                                        <p className="text-gray-900">£{event.price.toFixed(2)}</p>
+                                        <p className="text-gray-900">R$ {event.price.toFixed(2)}</p>
                                     </div>
 
                                     <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <Users className="w-5 h-5 mr-2 text-blue-600" />
-                                            <span className="text-sm font-medium">Availability</span>
+                                            <span className="text-sm font-medium">Disponibilidade</span>
                                         </div>
                                         <p className="text-gray-900">
                                             {availability.totalTickets - availability.purchasedCount} /{' '}
-                                            {availability.totalTickets} left
+                                            {availability.totalTickets} restantes
                                         </p>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@ export default function EventPage() {
                                         <div className="flex items-center mb-4">
                                             <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
                                             <h3 className="text-lg font-semibold text-green-900">
-                                                Your Tickets ({currentUserTickets.length})
+                                                Seus Ingressos ({currentUserTickets.length})
                                             </h3>
                                         </div>
 
@@ -152,13 +152,13 @@ export default function EventPage() {
                                                             <QRCode value={ticket._id} className="w-20 h-20" />
                                                         </div>
                                                         <p className="text-sm font-medium text-gray-900">
-                                                            Ticket {index + 1} of {currentUserTickets.length}
+                                                            Ingresso {index + 1} de {currentUserTickets.length}
                                                         </p>
                                                         <p className="text-xs text-gray-500 mt-1">
-                                                            £{event.price.toFixed(2)}
+                                                            R$ {event.price.toFixed(2)}
                                                         </p>
                                                         <p className="text-xs text-blue-600 mt-2 font-medium">
-                                                            Click to enlarge
+                                                            Clique para ampliar
                                                         </p>
                                                     </div>
                                                 </div>
@@ -166,11 +166,11 @@ export default function EventPage() {
                                         </div>
 
                                         <div className="text-sm text-green-700">
-                                            <p className="font-medium mb-2">Important:</p>
+                                            <p className="font-medium mb-2">Importante:</p>
                                             <ul className="space-y-1">
-                                                <li>• Have your QR codes ready for scanning</li>
-                                                <li>• Each ticket is non-transferable</li>
-                                                <li>• You can use any of your tickets for entry</li>
+                                                <li>• Tenha seus códigos QR prontos para escaneamento</li>
+                                                <li>• Cada ingresso não é transferível</li>
+                                                <li>• Você pode usar qualquer um dos seus ingressos para entrada</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -178,11 +178,11 @@ export default function EventPage() {
 
                                 {/* Additional Event Information */}
                                 <div className="bg-blue-50 border border-blue-100 rounded-lg p-6">
-                                    <h3 className="text-lg font-semibold text-blue-900 mb-2">Event Information</h3>
+                                    <h3 className="text-lg font-semibold text-blue-900 mb-2">Informações do Evento</h3>
                                     <ul className="space-y-2 text-blue-700">
-                                        <li>• Please arrive 30 minutes before the event starts</li>
-                                        <li>• Tickets are non-refundable</li>
-                                        <li>• Age restriction: 18+</li>
+                                        <li>• Por favor, chegue 30 minutos antes do evento começar</li>
+                                        <li>• Ingressos não são reembolsáveis</li>
+                                        <li>• Restrição de idade: 18+</li>
                                     </ul>
                                 </div>
                             </div>
@@ -197,7 +197,7 @@ export default function EventPage() {
                                     ) : (
                                         <SignInButton>
                                             <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
-                                                Sign in to buy tickets
+                                                Entrar para comprar ingressos
                                             </Button>
                                         </SignInButton>
                                     )}
@@ -216,7 +216,7 @@ export default function EventPage() {
                             <div>
                                 <h3 className="text-xl font-bold text-gray-900">{selectedQRCode.eventName}</h3>
                                 <p className="text-sm text-gray-600 mt-1">
-                                    Ticket {selectedQRCode.ticketNumber} of {selectedQRCode.totalTickets}
+                                    Ingresso {selectedQRCode.ticketNumber} de {selectedQRCode.totalTickets}
                                 </p>
                             </div>
                             <button
@@ -234,11 +234,11 @@ export default function EventPage() {
                         </div>
 
                         <div className="text-center">
-                            <p className="text-sm text-gray-500 mb-2">Ticket ID</p>
+                            <p className="text-sm text-gray-500 mb-2">ID do Ingresso</p>
                             <p className="text-xs text-gray-400 break-all font-mono bg-gray-50 p-2 rounded">
                                 {selectedQRCode.ticketId}
                             </p>
-                            <p className="text-sm text-gray-600 mt-3">£{selectedQRCode.price.toFixed(2)}</p>
+                            <p className="text-sm text-gray-600 mt-3">R$ {selectedQRCode.price.toFixed(2)}</p>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,5 @@
+import { ptBR } from '@clerk/localizations'
 import { ClerkProvider } from '@clerk/nextjs'
-import { Authenticated } from 'convex/react'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 
@@ -23,7 +23,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
     title: 'minipass',
-    description: 'Your mini ticket marketplace',
+    description: 'Seu mini marketplace de ingressos',
 }
 
 export const viewport: Viewport = {
@@ -39,9 +39,9 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <html lang="en">
+        <html lang="pt-BR">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <ClerkProvider>
+                <ClerkProvider localization={ptBR}>
                     <ConvexClientProvider>
                         <Header />
                         <SyncUserWithConvex />

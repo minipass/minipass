@@ -76,9 +76,9 @@ export const joinWaitingList = mutation({
         const status = await rateLimiter.limit(ctx, 'queueJoin', { key: userId })
         if (!status.ok) {
             throw new ConvexError(
-                `You've joined the waiting list too many times. Please wait ${Math.ceil(
+                `Você entrou na lista de espera muitas vezes. Por favor, aguarde ${Math.ceil(
                     status.retryAfter / (60 * 1000),
-                )} minutes before trying again.`,
+                )} minutos antes de tentar novamente.`,
             )
         }
 
@@ -92,12 +92,12 @@ export const joinWaitingList = mutation({
 
         // Don't allow duplicate entries
         if (existingEntry) {
-            throw new Error('Already in waiting list for this event')
+            throw new Error('Já está na lista de espera para este evento')
         }
 
         // Verify the event exists
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Event not found')
+        if (!event) throw new Error('Evento não encontrado')
 
         // Check if there are any available tickets right now
         // Calculate availability inline to avoid circular reference
@@ -125,7 +125,7 @@ export const joinWaitingList = mutation({
 
         // If not enough tickets available, throw a specific error
         if (!available && availableSpots > 0) {
-            throw new ConvexError(`There aren't ${quantity} tickets available. Try fewer tickets.`)
+            throw new ConvexError(`Não há ${quantity} ingressos disponíveis. Tente menos ingressos.`)
         }
 
         if (available) {
@@ -154,15 +154,15 @@ export const joinWaitingList = mutation({
         }
 
         // Return appropriate status message
-        const ticketText = quantity === 1 ? 'Ticket' : `${quantity} tickets`
+        const ticketText = quantity === 1 ? 'Ingresso' : `${quantity} ingressos`
         return {
             success: true,
             status: available
                 ? WAITING_LIST_STATUS.OFFERED // If available, status is offered
                 : WAITING_LIST_STATUS.WAITING, // If not available, status is waiting
             message: available
-                ? `${ticketText} offered - you have 30 minutes to purchase`
-                : `Added to waiting list for ${ticketText} - you'll be notified when tickets become available`,
+                ? `${ticketText} oferecido - você tem 30 minutos para comprar`
+                : `Adicionado à lista de espera para ${ticketText} - você será notificado quando os ingressos estiverem disponíveis`,
         }
     },
 })
@@ -191,14 +191,14 @@ export const purchaseTicket = mutation({
 
         if (!waitingListEntry) {
             console.error('Waiting list entry not found')
-            throw new Error('Waiting list entry not found')
+            throw new Error('Entrada da lista de espera não encontrada')
         }
 
         if (waitingListEntry.status !== WAITING_LIST_STATUS.OFFERED) {
             console.error('Invalid waiting list status', {
                 status: waitingListEntry.status,
             })
-            throw new Error('Invalid waiting list status - ticket offer may have expired')
+            throw new Error('Status inválido da lista de espera - a oferta de ingresso pode ter expirado')
         }
 
         if (waitingListEntry.userId !== userId) {
@@ -206,7 +206,7 @@ export const purchaseTicket = mutation({
                 waitingListUserId: waitingListEntry.userId,
                 requestUserId: userId,
             })
-            throw new Error('Waiting list entry does not belong to this user')
+            throw new Error('A entrada da lista de espera não pertence a este usuário')
         }
 
         // Verify event exists and is active
@@ -215,12 +215,12 @@ export const purchaseTicket = mutation({
 
         if (!event) {
             console.error('Event not found', { eventId })
-            throw new Error('Event not found')
+            throw new Error('Evento não encontrado')
         }
 
         if (event.is_cancelled) {
             console.error('Attempted purchase of cancelled event', { eventId })
-            throw new Error('Event is no longer active')
+            throw new Error('Evento não está mais ativo')
         }
 
         try {
@@ -256,7 +256,7 @@ export const purchaseTicket = mutation({
             console.log('Purchase ticket completed successfully')
         } catch (error) {
             console.error('Failed to complete ticket purchase:', error)
-            throw new Error(`Failed to complete ticket purchase: ${error}`)
+            throw new Error(`Falha ao completar a compra do ingresso: ${error}`)
         }
     },
 })
@@ -346,7 +346,7 @@ export const getEventAvailability = query({
     args: { eventId: v.id('events') },
     handler: async (ctx, { eventId }) => {
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Event not found')
+        if (!event) throw new Error('Evento não encontrado')
 
         // Count total purchased tickets
         const purchasedCount = await ctx.db
@@ -452,7 +452,7 @@ export const updateEvent = mutation({
 
         // Get current event to check tickets sold
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Event not found')
+        if (!event) throw new Error('Evento não encontrado')
 
         const soldTickets = await ctx.db
             .query('tickets')
@@ -462,7 +462,9 @@ export const updateEvent = mutation({
 
         // Ensure new total tickets is not less than sold tickets
         if (updates.totalTickets < soldTickets.length) {
-            throw new Error(`Cannot reduce total tickets below ${soldTickets.length} (number of tickets already sold)`)
+            throw new Error(
+                `Não é possível reduzir o total de ingressos abaixo de ${soldTickets.length} (número de ingressos já vendidos)`,
+            )
         }
 
         await ctx.db.patch(eventId, updates)
@@ -474,7 +476,7 @@ export const cancelEvent = mutation({
     args: { eventId: v.id('events') },
     handler: async (ctx, { eventId }) => {
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Event not found')
+        if (!event) throw new Error('Evento não encontrado')
 
         // Get all valid tickets for this event
         const tickets = await ctx.db
@@ -484,7 +486,9 @@ export const cancelEvent = mutation({
             .collect()
 
         if (tickets.length > 0) {
-            throw new Error('Cannot cancel event with active tickets. Please refund all tickets first.')
+            throw new Error(
+                'Não é possível cancelar evento com ingressos ativos. Por favor, reembolse todos os ingressos primeiro.',
+            )
         }
 
         // Mark event as cancelled

@@ -24,10 +24,10 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
     }
 
     const statusText = {
-        valid: isPastEvent ? 'Ended' : 'Valid',
-        used: 'Used',
-        refunded: 'Refunded',
-        cancelled: 'Cancelled',
+        valid: isPastEvent ? 'Terminado' : 'Válido',
+        used: 'Usado',
+        refunded: 'Reembolsado',
+        cancelled: 'Cancelado',
     }
 
     return (
@@ -42,12 +42,12 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900">{ticket.event.name}</h3>
                         <p className="text-sm text-gray-500 mt-1">
-                            Purchased on {new Date(ticket.purchasedAt).toLocaleDateString()}
+                            Comprado em {new Date(ticket.purchasedAt).toLocaleDateString()}
                         </p>
                         {ticket.event.is_cancelled && (
                             <p className="text-sm text-red-600 mt-1 flex items-center gap-1">
                                 <AlertTriangle className="w-4 h-4" />
-                                Event Cancelled
+                                Evento Cancelado
                             </p>
                         )}
                     </div>
@@ -59,12 +59,12 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                                     : statusColors[ticket.status]
                             }`}
                         >
-                            {ticket.event.is_cancelled ? 'Cancelled' : statusText[ticket.status]}
+                            {ticket.event.is_cancelled ? 'Cancelado' : statusText[ticket.status]}
                         </span>
                         {isPastEvent && !ticket.event.is_cancelled && (
                             <span className="flex items-center gap-1 text-xs text-gray-500">
                                 <Clock className="w-3 h-3" />
-                                Past Event
+                                Evento Passado
                             </span>
                         )}
                     </div>
@@ -87,10 +87,10 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                             ticket.event.is_cancelled ? 'text-red-600' : isPastEvent ? 'text-gray-600' : 'text-blue-600'
                         }`}
                     >
-                        £{ticket.event.price.toFixed(2)}
+                        R$ {ticket.event.price.toFixed(2)}
                     </span>
                     <span className="text-gray-600 flex items-center">
-                        View Ticket <ArrowRight className="w-4 h-4 ml-1" />
+                        Ver Ingresso <ArrowRight className="w-4 h-4 ml-1" />
                     </span>
                 </div>
             </div>

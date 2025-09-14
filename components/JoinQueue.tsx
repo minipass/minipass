@@ -45,7 +45,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
             if (result.success) {
                 console.log('Successfully joined waiting list')
                 toast({
-                    title: 'Success!',
+                    title: 'Sucesso!',
                     description: result.message,
                 })
             }
@@ -54,14 +54,14 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                 if (error.message.includes('joined the waiting list too many times')) {
                     toast({
                         variant: 'destructive',
-                        title: 'Slow down there!',
+                        title: 'Devagar aí!',
                         description: error.data,
                         duration: 5000,
                     })
                 } else if (error.message.includes("There aren't") && error.message.includes('tickets available')) {
                     toast({
                         variant: 'destructive',
-                        title: 'Not enough tickets available',
+                        title: 'Ingressos insuficientes disponíveis',
                         description: error.data,
                         duration: 5000,
                     })
@@ -69,16 +69,16 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                     console.error('Error joining waiting list:', error)
                     toast({
                         variant: 'destructive',
-                        title: 'Uh oh! Something went wrong.',
-                        description: error.data || 'Failed to join queue. Please try again later.',
+                        title: 'Ops! Algo deu errado.',
+                        description: error.data || 'Falha ao entrar na fila. Tente novamente mais tarde.',
                     })
                 }
             } else {
                 console.error('Error joining waiting list:', error)
                 toast({
                     variant: 'destructive',
-                    title: 'Uh oh! Something went wrong.',
-                    description: 'Failed to join queue. Please try again later.',
+                    title: 'Ops! Algo deu errado.',
+                    description: 'Falha ao entrar na fila. Tente novamente mais tarde.',
                 })
             }
         } finally {
@@ -108,24 +108,24 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                     {isEventOwner ? (
                         <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg">
                             <OctagonXIcon className="w-5 h-5" />
-                            <span>You cannot buy a ticket for your own event</span>
+                            <span>Você não pode comprar um ingresso para seu próprio evento</span>
                         </div>
                     ) : isPastEvent ? (
                         <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed">
                             <Clock className="w-5 h-5" />
-                            <span>Event has ended</span>
+                            <span>Evento terminou</span>
                         </div>
                     ) : availability.purchasedCount >= availability?.totalTickets ? (
                         <div className="text-center p-4">
-                            <p className="text-lg font-semibold text-red-600">Sorry, this event is sold out</p>
+                            <p className="text-lg font-semibold text-red-600">Desculpe, este evento está esgotado</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {/* Quantity Selector */}
                             <div className="bg-gray-50 p-4 rounded-lg">
                                 <div className="flex items-center justify-between mb-2">
-                                    <label className="text-sm font-medium text-gray-700">Number of Tickets</label>
-                                    <span className="text-sm text-gray-500">{availableTickets} available</span>
+                                    <label className="text-sm font-medium text-gray-700">Número de Ingressos</label>
+                                    <span className="text-sm text-gray-500">{availableTickets} disponíveis</span>
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <button
@@ -145,7 +145,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                                     </button>
                                 </div>
                                 <div className="mt-2 text-sm text-gray-600">
-                                    Total: £{(event.price * quantity).toFixed(2)}
+                                    Total: R$ {(event.price * quantity).toFixed(2)}
                                 </div>
                             </div>
 
@@ -154,7 +154,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                                 disabled={isPastEvent || isEventOwner || isLoading}
                                 className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 shadow-md flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
                             >
-                                {isLoading ? <Spinner /> : `Buy ${quantity} Ticket${quantity > 1 ? 's' : ''}`}
+                                {isLoading ? <Spinner /> : `Comprar ${quantity} Ingresso${quantity > 1 ? 's' : ''}`}
                             </button>
                         </div>
                     )}

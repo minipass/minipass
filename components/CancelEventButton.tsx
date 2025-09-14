@@ -23,7 +23,7 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
     const handleCancel = async () => {
         if (
             !confirm(
-                'Are you sure you want to cancel this event? All tickets will be refunded and the event will be cancelled permanently.',
+                'Tem certeza de que deseja cancelar este evento? Todos os ingressos serão reembolsados e o evento será cancelado permanentemente.',
             )
         ) {
             return
@@ -32,8 +32,8 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
         if (!event) {
             toast({
                 variant: 'destructive',
-                title: 'Error',
-                description: 'Unable to load event details. Please try again.',
+                title: 'Erro',
+                description: 'Não foi possível carregar os detalhes do evento. Tente novamente.',
             })
             return
         }
@@ -44,16 +44,16 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
             await cancelEvent({ eventId })
 
             toast({
-                title: 'Event cancelled',
-                description: 'All tickets have been refunded successfully.',
+                title: 'Evento cancelado',
+                description: 'Todos os ingressos foram reembolsados com sucesso.',
             })
             router.push('/seller/events')
         } catch (error) {
             console.error('Failed to cancel event:', error)
             toast({
                 variant: 'destructive',
-                title: 'Error',
-                description: 'Failed to cancel event. Please try again.',
+                title: 'Erro',
+                description: 'Falha ao cancelar evento. Tente novamente.',
             })
         } finally {
             setIsCancelling(false)
@@ -67,7 +67,7 @@ export default function CancelEventButton({ eventId }: { eventId: Id<'events'> }
             className="flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
         >
             <Ban className="w-4 h-4" />
-            <span>{isCancelling ? 'Processing...' : 'Cancel Event'}</span>
+            <span>{isCancelling ? 'Processando...' : 'Cancelar Evento'}</span>
         </button>
     )
 }

@@ -52,9 +52,9 @@ export default function MyTicketsPage() {
                         <div className="flex items-center">
                             <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
                             <div>
-                                <h3 className="text-sm font-medium text-green-800">Purchase Successful!</h3>
+                                <h3 className="text-sm font-medium text-green-800">Compra Realizada com Sucesso!</h3>
                                 <p className="text-sm text-green-700 mt-1">
-                                    Your tickets have been confirmed and are ready to use.
+                                    Seus ingressos foram confirmados e estão prontos para uso.
                                 </p>
                             </div>
                         </div>
@@ -63,20 +63,22 @@ export default function MyTicketsPage() {
 
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h1 className="text-3xl font-bold text-gray-900">My Tickets</h1>
-                        <p className="mt-2 text-gray-600">Manage and view all your tickets in one place</p>
+                        <h1 className="text-3xl font-bold text-gray-900">Meus Ingressos</h1>
+                        <p className="mt-2 text-gray-600">
+                            Gerencie e visualize todos os seus ingressos em um só lugar
+                        </p>
                     </div>
                     <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
                         <div className="flex items-center gap-2 text-gray-600">
                             <Ticket className="w-5 h-5" />
-                            <span className="font-medium">{totalTickets} Total Tickets</span>
+                            <span className="font-medium">{totalTickets} Ingressos Totais</span>
                         </div>
                     </div>
                 </div>
 
                 {upcomingGroupedTickets.length > 0 && (
                     <div className="mb-12">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Upcoming Events</h2>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Próximos Eventos</h2>
                         <div className="space-y-4">
                             {upcomingGroupedTickets.map(group => (
                                 <EventCard key={group.event._id} group={group} />
@@ -87,7 +89,7 @@ export default function MyTicketsPage() {
 
                 {pastGroupedTickets.length > 0 && (
                     <div className="mb-12">
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Past Events</h2>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Eventos Passados</h2>
                         <div className="space-y-4">
                             {pastGroupedTickets.map(group => (
                                 <EventCard key={group.event._id} group={group} />
@@ -98,7 +100,7 @@ export default function MyTicketsPage() {
 
                 {otherGroupedTickets.length > 0 && (
                     <div>
-                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Other Tickets</h2>
+                        <h2 className="text-xl font-semibold text-gray-900 mb-4">Outros Ingressos</h2>
                         <div className="space-y-4">
                             {otherGroupedTickets.map(group => (
                                 <EventCard key={group.event._id} group={group} />
@@ -110,8 +112,8 @@ export default function MyTicketsPage() {
                 {groupedTickets.length === 0 && (
                     <div className="text-center py-12">
                         <Ticket className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900">No tickets yet</h3>
-                        <p className="text-gray-600 mt-1">When you purchase tickets, they&apos;ll appear here</p>
+                        <h3 className="text-lg font-medium text-gray-900">Nenhum ingresso ainda</h3>
+                        <p className="text-gray-600 mt-1">Quando você comprar ingressos, eles aparecerão aqui</p>
                     </div>
                 )}
             </div>
@@ -140,7 +142,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                             />
                             {group.event.is_cancelled && (
                                 <div className="absolute inset-0 bg-red-600 bg-opacity-75 flex items-center justify-center">
-                                    <span className="text-white text-xs font-medium">Cancelled</span>
+                                    <span className="text-white text-xs font-medium">Cancelado</span>
                                 </div>
                             )}
                         </div>
@@ -168,14 +170,14 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                                     <div className="flex items-center text-gray-600">
                                         <Ticket className="w-4 h-4 mr-2 text-blue-600" />
                                         <span className="text-sm">
-                                            {group.tickets.length} ticket{group.tickets.length > 1 ? 's' : ''}
+                                            {group.tickets.length} ingresso{group.tickets.length > 1 ? 's' : ''}
                                         </span>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center justify-between">
                                     <span className="text-sm text-gray-500">
-                                        Total paid: £{(group.event.price * group.tickets.length).toFixed(2)}
+                                        Total pago: R$ {(group.event.price * group.tickets.length).toFixed(2)}
                                     </span>
                                     <ArrowRight className="w-5 h-5 text-gray-400" />
                                 </div>

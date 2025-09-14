@@ -33,7 +33,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
     useEffect(() => {
         const calculateTimeRemaining = () => {
             if (isExpired) {
-                setTimeRemaining('Expired')
+                setTimeRemaining('Expirado')
                 return
             }
 
@@ -43,10 +43,10 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
 
             if (minutes > 0) {
                 setTimeRemaining(
-                    `${minutes} minute${minutes === 1 ? '' : 's'} ${seconds} second${seconds === 1 ? '' : 's'}`,
+                    `${minutes} minuto${minutes === 1 ? '' : 's'} ${seconds} segundo${seconds === 1 ? '' : 's'}`,
                 )
             } else {
-                setTimeRemaining(`${seconds} second${seconds === 1 ? '' : 's'}`)
+                setTimeRemaining(`${seconds} segundo${seconds === 1 ? '' : 's'}`)
             }
         }
 
@@ -79,7 +79,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
         return null
     }
 
-    const ticketText = queuePosition.quantity === 1 ? 'Ticket' : `${queuePosition.quantity} Tickets`
+    const ticketText = queuePosition.quantity === 1 ? 'Ingresso' : `${queuePosition.quantity} Ingressos`
 
     return (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-amber-200">
@@ -91,15 +91,15 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
                                 <Ticket className="w-6 h-6 text-amber-600" />
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900">{ticketText} Reserved</h3>
-                                <p className="text-sm text-gray-500">Expires in {timeRemaining}</p>
+                                <h3 className="text-lg font-semibold text-gray-900">{ticketText} Reservado</h3>
+                                <p className="text-sm text-gray-500">Expira em {timeRemaining}</p>
                             </div>
                         </div>
 
                         <div className="text-sm text-gray-600 leading-relaxed">
                             {queuePosition.quantity === 1
-                                ? 'A ticket has been reserved for you. Complete your purchase before the timer expires to secure your spot at this event.'
-                                : `${queuePosition.quantity} tickets have been reserved for you. Complete your purchase before the timer expires to secure your spots at this event.`}
+                                ? 'Um ingresso foi reservado para você. Complete sua compra antes do tempo expirar para garantir sua vaga neste evento.'
+                                : `${queuePosition.quantity} ingressos foram reservados para você. Complete sua compra antes do tempo expirar para garantir suas vagas neste evento.`}
                         </div>
                     </div>
                 </div>
@@ -109,7 +109,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
                     disabled={isExpired || isLoading}
                     className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-4 rounded-lg font-bold shadow-md hover:from-amber-600 hover:to-amber-700 transform hover:scale-[1.02] transition-all duration-200 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed disabled:hover:scale-100 text-lg"
                 >
-                    {isLoading ? 'Redirecting to checkout...' : `Purchase Your ${ticketText} Now →`}
+                    {isLoading ? 'Redirecionando para checkout...' : `Comprar Seu(s) ${ticketText} Agora →`}
                 </button>
 
                 <div className="mt-4">

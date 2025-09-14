@@ -17,28 +17,28 @@ import { formatCNPJ, formatCPF, validateCNPJ, validateCPF } from '@/lib/format'
 
 const formSchema = z
     .object({
-        name: z.string().min(1, 'Name is required'),
-        email: z.string().email('Please enter a valid email address'),
+        name: z.string().min(1, 'Nome é obrigatório'),
+        email: z.string().email('Por favor, insira um endereço de email válido'),
         birthDate: z
             .string()
-            .min(1, 'Birth date is required')
-            .regex(/^\d{4}-\d{2}-\d{2}$/, 'Birth date must be in YYYY-MM-DD format')
+            .min(1, 'Data de nascimento é obrigatória')
+            .regex(/^\d{4}-\d{2}-\d{2}$/, 'Data de nascimento deve estar no formato YYYY-MM-DD')
             .refine(date => {
                 const parsedDate = new Date(date)
                 const today = new Date()
                 const minDate = new Date('1900-01-01')
                 return parsedDate <= today && parsedDate >= minDate
-            }, 'Please enter a valid birth date'),
+            }, 'Por favor, insira uma data de nascimento válida'),
         personType: z.enum(['FISICA', 'JURIDICA'], {
-            required_error: 'Please select a person type',
+            required_error: 'Por favor, selecione um tipo de pessoa',
         }),
-        cpfCnpj: z.string().min(1, 'CPF/CNPJ is required'),
-        mobilePhone: z.string().min(1, 'Mobile phone is required'),
-        incomeValue: z.number().min(0.01, 'Monthly income must be greater than 0'),
-        address: z.string().min(1, 'Address is required'),
-        addressNumber: z.string().min(1, 'Address number is required'),
-        province: z.string().min(1, 'State/Province is required'),
-        postalCode: z.string().min(1, 'Postal code is required'),
+        cpfCnpj: z.string().min(1, 'CPF/CNPJ é obrigatório'),
+        mobilePhone: z.string().min(1, 'Telefone celular é obrigatório'),
+        incomeValue: z.number().min(0.01, 'Renda mensal deve ser maior que 0'),
+        address: z.string().min(1, 'Endereço é obrigatório'),
+        addressNumber: z.string().min(1, 'Número do endereço é obrigatório'),
+        province: z.string().min(1, 'Estado é obrigatório'),
+        postalCode: z.string().min(1, 'CEP é obrigatório'),
     })
     .refine(
         data => {
@@ -50,7 +50,7 @@ const formSchema = z
             return true
         },
         {
-            message: 'Please enter a valid CPF/CNPJ',
+            message: 'Por favor, insira um CPF/CNPJ válido',
             path: ['cpfCnpj'],
         },
     )
@@ -96,10 +96,10 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
     return (
         <div className="bg-white rounded-lg shadow-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Setup {provider === 'asaas' ? 'Asaas' : 'Stripe'} Account
+                Configurar Conta {provider === 'asaas' ? 'Asaas' : 'Stripe'}
             </h3>
             <p className="text-sm text-gray-600 mb-6">
-                Please provide the required information to create your payment account.
+                Por favor, forneça as informações necessárias para criar sua conta de pagamento.
             </p>
 
             <Form {...form}>
@@ -110,9 +110,9 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Full Name</FormLabel>
+                                    <FormLabel>Nome Completo</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="Enter your full name" />
+                                        <Input {...field} placeholder="Digite seu nome completo" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -127,10 +127,10 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <span>
-                                            <Input {...field} type="email" placeholder="Enter your email" />
+                                            <Input {...field} type="email" placeholder="Digite seu email" />
                                             {initialUserAddress && form.getValues().email === initialUserAddress && (
                                                 <p className="text-sm text-gray-500">
-                                                    This is your default email address.
+                                                    Este é seu endereço de email padrão.
                                                 </p>
                                             )}
                                         </span>
@@ -145,7 +145,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="birthDate"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Birth Date</FormLabel>
+                                    <FormLabel>Data de Nascimento</FormLabel>
                                     <FormControl>
                                         <Input {...field} type="date" placeholder="YYYY-MM-DD" />
                                     </FormControl>
@@ -159,7 +159,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="personType"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Person Type</FormLabel>
+                                    <FormLabel>Tipo de Pessoa</FormLabel>
                                     <FormControl>
                                         <ToggleGroup
                                             options={[
@@ -188,7 +188,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            placeholder={`Enter your ${personType === 'FISICA' ? 'CPF' : 'CNPJ'}`}
+                                            placeholder={`Digite seu ${personType === 'FISICA' ? 'CPF' : 'CNPJ'}`}
                                             onChange={e => {
                                                 const value = e.target.value
                                                 const formattedValue =
@@ -208,9 +208,9 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="mobilePhone"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Mobile Phone</FormLabel>
+                                    <FormLabel>Telefone Celular</FormLabel>
                                     <FormControl>
-                                        <Input {...field} type="tel" placeholder="Enter your mobile phone" />
+                                        <Input {...field} type="tel" placeholder="Digite seu telefone celular" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -222,7 +222,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="incomeValue"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Monthly Income (R$)</FormLabel>
+                                    <FormLabel>Renda Mensal (R$)</FormLabel>
                                     <FormControl>
                                         <div className="relative">
                                             <span
@@ -236,8 +236,8 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                                                 {...field}
                                                 onChange={e => field.onChange(Number(e.target.value))}
                                                 className="pl-8"
-                                                placeholder="Enter your 
-                                                monthly income"
+                                                placeholder="Digite sua 
+                                                renda mensal"
                                             />
                                         </div>
                                     </FormControl>
@@ -251,9 +251,9 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="address"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Address</FormLabel>
+                                    <FormLabel>Endereço</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="Enter your address" />
+                                        <Input {...field} placeholder="Digite seu endereço" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -265,9 +265,9 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="addressNumber"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Address Number</FormLabel>
+                                    <FormLabel>Número do Endereço</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="Enter address number" />
+                                        <Input {...field} placeholder="Digite o número do endereço" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -279,9 +279,9 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="province"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>State/Province</FormLabel>
+                                    <FormLabel>Estado</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="Enter your state/province" />
+                                        <Input {...field} placeholder="Digite seu estado" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -293,9 +293,9 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
                             name="postalCode"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Postal Code</FormLabel>
+                                    <FormLabel>CEP</FormLabel>
                                     <FormControl>
-                                        <Input {...field} placeholder="Enter your postal code" />
+                                        <Input {...field} placeholder="Digite seu CEP" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -305,16 +305,16 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
 
                     <div className="flex justify-end space-x-3 pt-4">
                         <Button type="button" variant="outline" onClick={onCancel} disabled={isLoading}>
-                            Cancel
+                            Cancelar
                         </Button>
                         <Button type="submit" disabled={isLoading} className="bg-blue-600 hover:bg-blue-700">
                             {isLoading ? (
                                 <>
                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                                    Creating Account...
+                                    Criando Conta...
                                 </>
                             ) : (
-                                'Create Account'
+                                'Criar Conta'
                             )}
                         </Button>
                     </div>

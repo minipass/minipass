@@ -54,7 +54,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
                     <div className="flex items-center">
                         <Ticket className="w-5 h-5 text-gray-400 mr-2" />
-                        <span className="text-gray-600">Event is sold out</span>
+                        <span className="text-gray-600">Evento esgotado</span>
                     </div>
                 </div>
             )
@@ -66,12 +66,12 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     <div className="flex items-center">
                         <CircleArrowRight className="w-5 h-5 text-amber-500 mr-2" />
                         <span className="text-amber-700 font-medium">
-                            You&apos;re next in line! (Queue position: {queuePosition.position})
+                            Você é o próximo na fila! (Posição na fila: {queuePosition.position})
                         </span>
                     </div>
                     <div className="flex items-center">
                         <LoaderCircle className="w-4 h-4 mr-1 animate-spin text-amber-500" />
-                        <span className="text-amber-600 text-sm">Waiting for ticket</span>
+                        <span className="text-amber-600 text-sm">Aguardando ingresso</span>
                     </div>
                 </div>
             )
@@ -81,7 +81,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
             <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-100">
                 <div className="flex items-center">
                     <LoaderCircle className="w-4 h-4 mr-2 animate-spin text-blue-500" />
-                    <span className="text-blue-700">Queue position</span>
+                    <span className="text-blue-700">Posição na fila</span>
                 </div>
                 <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full font-medium">
                     #{queuePosition.position}
@@ -104,7 +104,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         className="w-full bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200 shadow-sm flex items-center justify-center gap-2"
                     >
                         <PencilIcon className="w-5 h-5" />
-                        Edit Event
+                        Editar Evento
                     </button>
                 </div>
             )
@@ -115,13 +115,13 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                 <div className="mt-4 flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-100">
                     <div className="flex items-center">
                         <Check className="w-5 h-5 text-green-600 mr-2" />
-                        <span className="text-green-700 font-medium">You have tickets for this event!</span>
+                        <span className="text-green-700 font-medium">Você tem ingressos para este evento!</span>
                     </div>
                     <button
                         onClick={() => router.push('/tickets')}
                         className="text-sm bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-full font-medium shadow-sm transition-colors duration-200 flex items-center gap-1"
                     >
-                        View your tickets
+                        Ver seus ingressos
                     </button>
                 </div>
             )
@@ -137,7 +137,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                             <div className="p-3 bg-red-50 rounded-lg border border-red-100">
                                 <span className="text-red-700 font-medium flex items-center">
                                     <XCircle className="w-5 h-5 mr-2" />
-                                    Offer expired
+                                    Oferta expirada
                                 </span>
                             </div>
                         )}
@@ -171,14 +171,14 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                             {isEventOwner && (
                                 <span className="inline-flex items-center gap-1 bg-blue-600/90 text-white px-2 py-1 rounded-full text-xs font-medium">
                                     <StarIcon className="w-3 h-3" />
-                                    Your Event
+                                    Seu Evento
                                 </span>
                             )}
                             <h2 className="text-2xl font-bold text-gray-900">{event.name}</h2>
                         </div>
                         {isPastEvent && (
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mt-2">
-                                Past Event
+                                Evento Passado
                             </span>
                         )}
                     </div>
@@ -194,7 +194,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         </span>
                         {availability.purchasedCount >= availability.totalTickets && (
                             <span className="px-4 py-1.5 bg-red-50 text-red-700 font-semibold rounded-full text-sm">
-                                Sold Out
+                                Esgotado
                             </span>
                         )}
                     </div>
@@ -209,7 +209,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     <div className="flex items-center text-gray-600">
                         <CalendarDays className="w-4 h-4 mr-2" />
                         <span>
-                            {new Date(event.eventDate).toLocaleDateString()} {isPastEvent && '(Ended)'}
+                            {new Date(event.eventDate).toLocaleDateString()} {isPastEvent && '(Terminado)'}
                         </span>
                     </div>
 
@@ -217,11 +217,11 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         <Ticket className="w-4 h-4 mr-2" />
                         <span>
                             {availability.totalTickets - availability.purchasedCount} / {availability.totalTickets}{' '}
-                            available
+                            disponíveis
                             {!isPastEvent && availability.activeOffers > 0 && (
                                 <span className="text-amber-600 text-sm ml-2">
-                                    ({availability.activeOffers} {availability.activeOffers === 1 ? 'person' : 'people'}{' '}
-                                    trying to buy)
+                                    ({availability.activeOffers}{' '}
+                                    {availability.activeOffers === 1 ? 'pessoa' : 'pessoas'} tentando comprar)
                                 </span>
                             )}
                         </span>

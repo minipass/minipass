@@ -20,8 +20,10 @@ export default async function SellerEventsPage() {
                                 <ArrowLeft className="w-5 h-5" />
                             </Link>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900">My Events</h1>
-                                <p className="mt-1 text-gray-500">Manage your event listings and track sales</p>
+                                <h1 className="text-2xl font-bold text-gray-900">Meus Eventos</h1>
+                                <p className="mt-1 text-gray-500">
+                                    Gerencie suas listagens de eventos e acompanhe as vendas
+                                </p>
                             </div>
                         </div>
                         <Link
@@ -29,7 +31,7 @@ export default async function SellerEventsPage() {
                             className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                         >
                             <Plus className="w-5 h-5" />
-                            Create Event
+                            Criar Evento
                         </Link>
                     </div>
                 </div>

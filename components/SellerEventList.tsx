@@ -29,19 +29,19 @@ export default function SellerEventList() {
         <div className="mx-auto space-y-8">
             {/* Upcoming Events */}
             <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">Upcoming Events</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">Próximos Eventos</h2>
                 <div className="grid grid-cols-1 gap-6">
                     {upcomingEvents.map(event => (
                         <SellerEventCard key={event._id} event={event} />
                     ))}
-                    {upcomingEvents.length === 0 && <p className="text-gray-500">No upcoming events</p>}
+                    {upcomingEvents.length === 0 && <p className="text-gray-500">Nenhum evento próximo</p>}
                 </div>
             </div>
 
             {/* Past Events */}
             {pastEvents.length > 0 && (
                 <div>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Past Events</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">Eventos Passados</h2>
                     <div className="grid grid-cols-1 gap-6">
                         {pastEvents.map(event => (
                             <SellerEventCard key={event._id} event={event} />
@@ -85,7 +85,7 @@ function SellerEventCard({
                                 {event.is_cancelled && (
                                     <div className="mt-2 flex items-center gap-2 text-red-600">
                                         <Ban className="w-4 h-4" />
-                                        <span className="text-sm font-medium">Event Cancelled & Refunded</span>
+                                        <span className="text-sm font-medium">Evento Cancelado e Reembolsado</span>
                                     </div>
                                 )}
                             </div>
@@ -97,7 +97,7 @@ function SellerEventCard({
                                             className="shrink-0 flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                                         >
                                             <Edit className="w-4 h-4" />
-                                            Edit
+                                            Editar
                                         </Link>
                                         <CancelEventButton eventId={event._id} />
                                     </>
@@ -110,14 +110,14 @@ function SellerEventCard({
                                 <div className="flex items-center gap-2 text-gray-600 mb-1">
                                     <Ticket className="w-4 h-4" />
                                     <span className="text-sm font-medium">
-                                        {event.is_cancelled ? 'Tickets Refunded' : 'Tickets Sold'}
+                                        {event.is_cancelled ? 'Ingressos Reembolsados' : 'Ingressos Vendidos'}
                                     </span>
                                 </div>
                                 <p className="text-2xl font-semibold text-gray-900">
                                     {event.is_cancelled ? (
                                         <>
                                             {event.metrics.refundedTickets}
-                                            <span className="text-sm text-gray-500 font-normal"> refunded</span>
+                                            <span className="text-sm text-gray-500 font-normal"> reembolsados</span>
                                         </>
                                     ) : (
                                         <>
@@ -134,11 +134,11 @@ function SellerEventCard({
                                 <div className="flex items-center gap-2 text-gray-600 mb-1">
                                     <Banknote className="w-4 h-4" />
                                     <span className="text-sm font-medium">
-                                        {event.is_cancelled ? 'Amount Refunded' : 'Revenue'}
+                                        {event.is_cancelled ? 'Valor Reembolsado' : 'Receita'}
                                     </span>
                                 </div>
                                 <p className="text-2xl font-semibold text-gray-900">
-                                    £
+                                    R$
                                     {event.is_cancelled
                                         ? event.metrics.refundedTickets * event.price
                                         : event.metrics.revenue}
@@ -148,7 +148,7 @@ function SellerEventCard({
                             <div className="bg-gray-50 p-3 rounded-lg">
                                 <div className="flex items-center gap-2 text-gray-600 mb-1">
                                     <CalendarDays className="w-4 h-4" />
-                                    <span className="text-sm font-medium">Date</span>
+                                    <span className="text-sm font-medium">Data</span>
                                 </div>
                                 <p className="text-sm font-medium text-gray-900">
                                     {new Date(event.eventDate).toLocaleDateString()}
@@ -161,7 +161,7 @@ function SellerEventCard({
                                     <span className="text-sm font-medium">Status</span>
                                 </div>
                                 <p className="text-sm font-medium text-gray-900">
-                                    {event.is_cancelled ? 'Cancelled' : isPastEvent ? 'Ended' : 'Active'}
+                                    {event.is_cancelled ? 'Cancelado' : isPastEvent ? 'Terminado' : 'Ativo'}
                                 </p>
                             </div>
                         </div>

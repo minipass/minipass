@@ -21,12 +21,12 @@ import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { useToast } from '@/hooks/useToast'
 
 const formSchema = z.object({
-    name: z.string().min(1, 'Event name is required'),
-    description: z.string().min(1, 'Description is required'),
-    location: z.string().min(1, 'Location is required'),
-    eventDate: z.date().min(new Date(new Date().setHours(0, 0, 0, 0)), 'Event date must be in the future'),
-    price: z.number().min(0, 'Price must be 0 or greater'),
-    totalTickets: z.number().min(1, 'Must have at least 1 ticket'),
+    name: z.string().min(1, 'Nome do evento é obrigatório'),
+    description: z.string().min(1, 'Descrição é obrigatória'),
+    location: z.string().min(1, 'Local é obrigatório'),
+    eventDate: z.date().min(new Date(new Date().setHours(0, 0, 0, 0)), 'Data do evento deve ser no futuro'),
+    price: z.number().min(0, 'Preço deve ser 0 ou maior'),
+    totalTickets: z.number().min(1, 'Deve ter pelo menos 1 ingresso'),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -139,8 +139,8 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     }
 
                     toast({
-                        title: 'Event updated',
-                        description: 'Your event has been successfully updated.',
+                        title: 'Evento atualizado',
+                        description: 'Seu evento foi atualizado com sucesso.',
                     })
 
                     router.push(`/event/${initialData._id}`)
@@ -149,8 +149,8 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                 console.error('Failed to handle event:', error)
                 toast({
                     variant: 'destructive',
-                    title: 'Uh oh! Something went wrong.',
-                    description: 'There was a problem with your request.',
+                    title: 'Ops! Algo deu errado.',
+                    description: 'Houve um problema com sua solicitação.',
                 })
             }
         })
@@ -194,7 +194,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Event Name</FormLabel>
+                                <FormLabel>Nome do Evento</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -208,7 +208,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         name="description"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Description</FormLabel>
+                                <FormLabel>Descrição</FormLabel>
                                 <FormControl>
                                     <Textarea {...field} />
                                 </FormControl>
@@ -222,7 +222,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         name="location"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Location</FormLabel>
+                                <FormLabel>Local</FormLabel>
                                 <FormControl>
                                     <Input {...field} />
                                 </FormControl>
@@ -236,7 +236,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         name="eventDate"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Event Date</FormLabel>
+                                <FormLabel>Data do Evento</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="date"
@@ -257,7 +257,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         name="price"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Price per Ticket</FormLabel>
+                                <FormLabel>Preço por Ingresso</FormLabel>
                                 <FormControl>
                                     <div className="relative">
                                         <span className="absolute left-2 top-1/2 -translate-y-1/2">R$</span>
@@ -279,7 +279,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         name="totalTickets"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Total Tickets Available</FormLabel>
+                                <FormLabel>Total de Ingressos Disponíveis</FormLabel>
                                 <FormControl>
                                     <Input
                                         type="number"
@@ -294,7 +294,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
 
                     {/* Image Upload */}
                     <div className="space-y-4">
-                        <label className="block text-sm font-medium text-gray-700">Event Image</label>
+                        <label className="block text-sm font-medium text-gray-700">Imagem do Evento</label>
                         <div className="mt-1 flex items-center gap-4">
                             {imagePreview || (!removedCurrentImage && currentImageUrl) ? (
                                 <div className="relative w-32 aspect-square bg-gray-100 rounded-lg">
@@ -345,12 +345,12 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     {isPending ? (
                         <>
                             <Loader2 className="w-4 h-4 animate-spin" />
-                            {mode === 'create' ? 'Creating Event...' : 'Updating Event...'}
+                            {mode === 'create' ? 'Criando Evento...' : 'Atualizando Evento...'}
                         </>
                     ) : mode === 'create' ? (
-                        'Create Event'
+                        'Criar Evento'
                     ) : (
-                        'Update Event'
+                        'Atualizar Evento'
                     )}
                 </Button>
             </form>
