@@ -141,22 +141,20 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
             >
                 <div className="flex">
                     {/* Event Image */}
-                    {imageUrl && (
-                        <div className="relative w-24 h-24 flex-shrink-0">
-                            <img
-                                src={imageUrl}
-                                alt={group.event.name}
-                                className={cn('w-full h-full object-cover', group.event.isCancelled && 'opacity-50')}
-                            />
-                            {group.event.isCancelled && (
-                                <div className="absolute inset-0 bg-destructive bg-opacity-75 flex items-center justify-center">
-                                    <Badge variant="destructive" className="text-xs">
-                                        Cancelado
-                                    </Badge>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <div className="relative w-24 h-24 flex-shrink-0">
+                        <img
+                            src={imageUrl || '/images/event-fallback.svg'}
+                            alt={group.event.name}
+                            className={cn('w-full h-full object-cover', group.event.isCancelled && 'opacity-50')}
+                        />
+                        {group.event.isCancelled && (
+                            <div className="absolute inset-0 bg-destructive bg-opacity-75 flex items-center justify-center">
+                                <Badge variant="destructive" className="text-xs">
+                                    Cancelado
+                                </Badge>
+                            </div>
+                        )}
+                    </div>
 
                     {/* Event Details */}
                     <div className="flex-1 p-6">

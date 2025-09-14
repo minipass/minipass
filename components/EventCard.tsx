@@ -164,14 +164,18 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
             )}
         >
             {/* Event Image */}
-            {imageUrl && (
-                <div className="relative w-full h-48">
-                    <Image src={imageUrl} alt={event.name} fill className="object-cover" priority />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                </div>
-            )}
+            <div className="relative w-full h-48">
+                <Image
+                    src={imageUrl || '/images/event-fallback.svg'}
+                    alt={event.name}
+                    fill
+                    className="object-cover"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            </div>
 
-            <div className={cn('p-6', imageUrl && 'relative')}>
+            <div className="p-6 relative">
                 <div className="flex justify-between items-start">
                     <div>
                         <div className="flex flex-col items-start gap-2">

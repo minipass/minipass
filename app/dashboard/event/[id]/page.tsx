@@ -68,11 +68,15 @@ export default function EventPage() {
         <div className="min-h-screen bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="bg-card rounded-lg shadow-sm overflow-hidden">
-                    {imageUrl && (
-                        <div className="aspect-[3/1] relative w-full">
-                            <Image src={imageUrl} alt={event.name} fill className="object-cover" priority />
-                        </div>
-                    )}
+                    <div className="aspect-[3/1] relative w-full">
+                        <Image
+                            src={imageUrl || '/images/event-fallback.svg'}
+                            alt={event.name}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    </div>
 
                     <div className="flex flex-col p-8">
                         <div>

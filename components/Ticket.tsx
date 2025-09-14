@@ -30,31 +30,18 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
         <Card className={cn('overflow-hidden', ticket.event.isCancelled ? 'border-destructive/20' : '')}>
             {/* Event Header with Image */}
             <div className="relative">
-                {imageUrl && (
-                    <div className="relative w-full aspect-[21/9] ">
-                        <Image
-                            src={imageUrl}
-                            alt={ticket.event.name}
-                            fill
-                            className={cn('object-cover object-center', ticket.event.isCancelled && 'opacity-50')}
-                            priority
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/90" />
-                    </div>
-                )}
-                <div
-                    className={cn(
-                        'px-6 py-4',
-                        imageUrl
-                            ? 'absolute bottom-0 left-0 right-0'
-                            : ticket.event.isCancelled
-                              ? 'bg-destructive'
-                              : 'bg-primary',
-                    )}
-                >
-                    <h2 className={cn('text-2xl font-bold', imageUrl ? 'text-white' : 'text-foreground')}>
-                        {ticket.event.name}
-                    </h2>
+                <div className="relative w-full aspect-[21/9] ">
+                    <Image
+                        src={imageUrl || '/images/event-fallback.svg'}
+                        alt={ticket.event.name}
+                        fill
+                        className={cn('object-cover object-center', ticket.event.isCancelled && 'opacity-50')}
+                        priority
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/90" />
+                </div>
+                <div className="px-6 py-4 absolute bottom-0 left-0 right-0">
+                    <h2 className="text-2xl font-bold text-white">{ticket.event.name}</h2>
                     {ticket.event.isCancelled && <p className="text-destructive/80 mt-1">Este evento foi cancelado</p>}
                 </div>
             </div>
