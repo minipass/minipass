@@ -197,7 +197,7 @@ export default function EventPage() {
                                         <JoinQueue eventId={params.id as Id<'events'>} userId={user.id} />
                                     ) : (
                                         <Link href="/sign-in">
-                                            <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg">
+                                            <Button className="w-full mt-2 bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg">
                                                 Entrar para comprar ingressos
                                             </Button>
                                         </Link>
