@@ -1,10 +1,8 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
 
-import logo from '@/images/minipass.svg'
-
 import AuthActions from './AuthActions'
+import Logo from './Logo'
 import SearchBar from './SearchBar'
 
 function Header() {
@@ -13,8 +11,8 @@ function Header() {
             <div className="flex items-center gap-2 px-3 h-12">
                 {/* Logo and Search Bar Group */}
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                    <Link href="/" className="font-bold shrink-0">
-                        <Image src={logo} alt="logo" className="h-8 w-auto" />
+                    <Link href="/" className="shrink-0">
+                        <Logo className="h-8 w-auto" />
                     </Link>
                     <div className="flex-1 max-w-2xl hidden sm:block">
                         <SearchBar />

@@ -2,13 +2,12 @@
 
 import { useUser } from '@clerk/nextjs'
 import { ArrowRight, Globe, Shield, Zap } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import EventListLanding from '@/components/EventListLanding'
-import logo from '@/images/minipass-2lines.svg'
+import Logo from '@/components/Logo'
 
 export default function LandingPage() {
     const { isSignedIn, isLoaded } = useUser()
@@ -214,7 +213,7 @@ export default function LandingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                         <div className="col-span-1 md:col-span-2">
                             <Link href="/" className="flex items-center space-x-2 mb-4">
-                                <Image src={logo} alt="minipass" className="h-24 w-auto" />
+                                <Logo twoLines className="h-24 w-auto" />
                             </Link>
                             <p className="text-muted-foreground mb-4 max-w-md">
                                 A plataforma com as menores taxas do mercado para comprar e vender ingressos.
