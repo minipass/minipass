@@ -135,7 +135,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                     <div className="flex flex-col items-center justify-center border-l border-gray-200 pl-6">
                         <div
                             className={cn(
-                                'bg-gray-50 border border-gray-200 p-4 rounded-lg',
+                                'bg-gray-50 border border-gray-200 p-4 rounded-sm',
                                 ticket.event.is_cancelled && 'opacity-50',
                             )}
                         >

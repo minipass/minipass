@@ -297,12 +297,12 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         <label className="block text-sm font-medium text-gray-700">Imagem do Evento</label>
                         <div className="mt-1 flex items-center gap-4">
                             {imagePreview || (!removedCurrentImage && currentImageUrl) ? (
-                                <div className="relative w-32 aspect-square bg-gray-100 rounded-lg">
+                                <div className="relative w-32 aspect-square bg-gray-100 rounded-sm">
                                     <Image
                                         src={imagePreview || currentImageUrl!}
                                         alt="Preview"
                                         fill
-                                        className="object-contain rounded-lg"
+                                        className="object-contain rounded-sm"
                                     />
                                     <button
                                         type="button"
@@ -314,7 +314,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                                 imageInput.current.value = ''
                                             }
                                         }}
-                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
+                                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-sm w-6 h-6 flex items-center justify-center hover:bg-red-600 transition-colors"
                                     >
                                         ×
                                     </button>
@@ -327,7 +327,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                     ref={imageInput}
                                     className="block w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
+                    file:rounded-sm file:border-0
                     file:text-sm file:font-semibold
                     file:bg-blue-50 file:text-blue-700
                     hover:file:bg-blue-100"
@@ -340,7 +340,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                 <Button
                     type="submit"
                     disabled={isPending}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-sm transition-all duration-200 flex items-center justify-center gap-2"
                 >
                     {isPending ? (
                         <>

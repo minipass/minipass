@@ -126,7 +126,7 @@ export default function SellerDashboard() {
                                 Venda ingressos para seus eventos
                             </h2>
                             <p className="text-gray-600 mb-8">Liste seus ingressos à venda e gerencie suas listagens</p>
-                            <div className="bg-gray-50 rounded-lg border border-gray-200 p-6">
+                            <div className="bg-gray-50 rounded-sm border border-gray-200 p-6">
                                 <div className="flex justify-center gap-4">
                                     <Button asChild>
                                         <Link href="/seller/new-event">
@@ -151,11 +151,11 @@ export default function SellerDashboard() {
                     {/* Provider Status Section */}
                     {isSetup ? (
                         <div className="text-center py-8">
-                            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-8 mb-6">
+                            <div className="bg-emerald-50 border border-emerald-200 rounded-sm p-8 mb-6">
                                 <div className="flex items-center justify-center space-x-3 mb-6">
                                     <div
                                         className={cn(
-                                            'w-12 h-12 rounded-full flex items-center justify-center text-white text-lg ',
+                                            'w-12 h-12 rounded-sm flex items-center justify-center text-white text-lg ',
                                             selectedProvider === 'stripe' ? 'bg-blue-600' : 'bg-emerald-600',
                                         )}
                                     >
@@ -165,7 +165,7 @@ export default function SellerDashboard() {
                                                 alt={`${PROVIDER_CONFIGS[selectedProvider].name} logo`}
                                                 width={32}
                                                 height={32}
-                                                className="rounded-full"
+                                                className="rounded-sm"
                                             />
                                         )}
                                     </div>

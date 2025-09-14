@@ -157,7 +157,7 @@ export default function PrivacyPage() {
 
                 <section>
                     <h2 className="text-2xl font-semibold mb-4">11. Contato</h2>
-                    <div className="bg-gray-50 p-6 rounded-lg">
+                    <div className="bg-gray-50 p-6 rounded-sm">
                         <p className="mb-4">
                             Para questões sobre esta Política de Privacidade ou para exercer seus direitos, entre em
                             contato conosco:

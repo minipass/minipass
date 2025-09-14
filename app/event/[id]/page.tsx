@@ -68,7 +68,7 @@ export default function EventPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {imageUrl && (
                         <div className="aspect-[21/9] relative w-full">
                             <Image src={imageUrl} alt={event.name} fill className="object-cover" priority />
@@ -85,7 +85,7 @@ export default function EventPage() {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-6">
-                                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
                                             <span className="text-sm font-medium">Data</span>
@@ -95,7 +95,7 @@ export default function EventPage() {
                                         </p>
                                     </div>
 
-                                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <MapPin className="w-5 h-5 mr-2 text-blue-600" />
                                             <span className="text-sm font-medium">Local</span>
@@ -103,7 +103,7 @@ export default function EventPage() {
                                         <p className="text-gray-900">{event.location}</p>
                                     </div>
 
-                                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <Ticket className="w-5 h-5 mr-2 text-blue-600" />
                                             <span className="text-sm font-medium">Preço</span>
@@ -111,7 +111,7 @@ export default function EventPage() {
                                         <p className="text-gray-900">R$ {event.price.toFixed(2)}</p>
                                     </div>
 
-                                    <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                                    <div className="bg-gray-50 p-4 rounded-sm border border-gray-100">
                                         <div className="flex items-center text-gray-600 mb-1">
                                             <Users className="w-5 h-5 mr-2 text-blue-600" />
                                             <span className="text-sm font-medium">Disponibilidade</span>
@@ -125,7 +125,7 @@ export default function EventPage() {
 
                                 {/* User's Tickets Section */}
                                 {currentUserTickets.length > 0 && (
-                                    <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                                    <div className="bg-green-50 border border-green-200 rounded-sm p-6">
                                         <div className="flex items-center mb-4">
                                             <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
                                             <h3 className="text-lg font-semibold text-green-900">
@@ -137,7 +137,7 @@ export default function EventPage() {
                                             {currentUserTickets.map((ticket, index) => (
                                                 <div
                                                     key={ticket._id}
-                                                    className="bg-white rounded-lg p-4 border border-green-200 hover:shadow-md transition-shadow cursor-pointer"
+                                                    className="bg-white rounded-sm p-4 border border-green-200 hover:shadow-md transition-shadow cursor-pointer"
                                                     onClick={() =>
                                                         setSelectedQRCode({
                                                             ticketId: ticket._id,
@@ -149,7 +149,7 @@ export default function EventPage() {
                                                     }
                                                 >
                                                     <div className="text-center">
-                                                        <div className="bg-gray-50 p-2 rounded-lg inline-block mb-3">
+                                                        <div className="bg-gray-50 p-2 rounded-sm inline-block mb-3">
                                                             <QRCode value={ticket._id} className="w-20 h-20" />
                                                         </div>
                                                         <p className="text-sm font-medium text-gray-900">
@@ -178,7 +178,7 @@ export default function EventPage() {
                                 )}
 
                                 {/* Additional Event Information */}
-                                <div className="bg-blue-50 border border-blue-100 rounded-lg p-6">
+                                <div className="bg-blue-50 border border-blue-100 rounded-sm p-6">
                                     <h3 className="text-lg font-semibold text-blue-900 mb-2">Informações do Evento</h3>
                                     <ul className="space-y-2 text-blue-700">
                                         <li>• Por favor, chegue 30 minutos antes do evento começar</li>
@@ -197,7 +197,7 @@ export default function EventPage() {
                                         <JoinQueue eventId={params.id as Id<'events'>} userId={user.id} />
                                     ) : (
                                         <Link href="/sign-in">
-                                            <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg">
+                                            <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 text-white font-medium py-2 px-4 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg">
                                                 Entrar para comprar ingressos
                                             </Button>
                                         </Link>
@@ -212,7 +212,7 @@ export default function EventPage() {
             {/* QR Code Modal */}
             {selectedQRCode && (
                 <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+                    <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
                         <div className="flex justify-between items-start mb-6">
                             <div>
                                 <h3 className="text-xl font-bold text-gray-900">{selectedQRCode.eventName}</h3>
@@ -229,7 +229,7 @@ export default function EventPage() {
                         </div>
 
                         <div className="flex justify-center mb-6">
-                            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                            <div className="bg-white p-6 rounded-sm border border-gray-200">
                                 <QRCode value={selectedQRCode.ticketId} className="w-64 h-64" />
                             </div>
                         </div>

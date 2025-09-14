@@ -16,7 +16,7 @@ interface ToggleGroupProps<T extends string> {
 
 export function ToggleGroup<T extends string>({ options, value, onChange, className = '' }: ToggleGroupProps<T>) {
     return (
-        <div className={cn('flex bg-gray-100 rounded-lg p-1', className)}>
+        <div className={cn('flex bg-gray-100 rounded-sm p-1', className)}>
             {options.map(option => (
                 <button
                     key={option.value}

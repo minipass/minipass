@@ -78,7 +78,7 @@ function SellerEventCard({
                 <div className="flex items-start gap-6">
                     {/* Event Image */}
                     {imageUrl && (
-                        <div className="relative w-40 h-40 rounded-lg overflow-hidden shrink-0">
+                        <div className="relative w-40 h-40 rounded-sm overflow-hidden shrink-0">
                             <Image src={imageUrl} alt={event.name} fill className="object-cover" />
                         </div>
                     )}
@@ -114,7 +114,7 @@ function SellerEventCard({
                         </div>
 
                         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-gray-600 mb-2">
                                     <Ticket className="w-4 h-4" />
                                     <span className="text-sm font-medium">
@@ -138,7 +138,7 @@ function SellerEventCard({
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-gray-600 mb-2">
                                     <Banknote className="w-4 h-4" />
                                     <span className="text-sm font-medium">
@@ -153,7 +153,7 @@ function SellerEventCard({
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-gray-600 mb-2">
                                     <CalendarDays className="w-4 h-4" />
                                     <span className="text-sm font-medium">Data</span>
@@ -163,7 +163,7 @@ function SellerEventCard({
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-gray-600 mb-2">
                                     <InfoIcon className="w-4 h-4" />
                                     <span className="text-sm font-medium">Status</span>

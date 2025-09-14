@@ -51,18 +51,18 @@ export default function PaymentProviderSelector({
                             key={provider}
                             onClick={() => onProviderChange(provider)}
                             className={cn(
-                                'p-4 border-2 rounded-lg transition-all',
+                                'p-4 border-2 rounded-sm transition-all',
                                 isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300',
                             )}
                         >
                             <div className="flex items-center space-x-3">
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center">
+                                <div className="w-8 h-8 rounded-sm flex items-center justify-center">
                                     <Image
                                         src={config.logo}
                                         alt={`${config.name} logo`}
                                         width={32}
                                         height={32}
-                                        className="rounded-full"
+                                        className="rounded-sm"
                                     />
                                 </div>
                                 <div className="text-left">

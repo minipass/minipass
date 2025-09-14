@@ -50,7 +50,7 @@ export default function SignInPage() {
             <Suspense
                 fallback={
                     <div className="mt-8 flex w-full justify-center">
-                        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 w-full max-w-md">
+                        <div className="bg-white py-8 px-4 shadow sm:rounded-sm sm:px-10 w-full max-w-md">
                             <div className="flex flex-col items-center space-y-4">
                                 <div className="w-8 h-8 bg-gray-200 rounded animate-pulse"></div>
                                 <div className="w-32 h-4 bg-gray-200 rounded animate-pulse"></div>

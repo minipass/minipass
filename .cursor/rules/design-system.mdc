@@ -16,7 +16,7 @@ The MiniPass platform uses a modern, clean design system focused on clarity, acc
 ### 2. Modern Card System
 
 -   Cards use subtle borders instead of shadows
--   Border radius: `rounded-lg` (8px) for standard cards, `rounded-xl` (12px) for featured cards
+-   Border radius: `rounded-sm` (4px) for standard cards, `rounded-sm` (8px) for featured cards
 -   Background: Pure white (`bg-white`) with subtle border (`border border-gray-200`)
 -   Hover states: Subtle border color change and minimal shadow (`hover:border-gray-300 hover:shadow-sm`)
 
@@ -52,15 +52,15 @@ The MiniPass platform uses a modern, clean design system focused on clarity, acc
 ```typescript
 // Standard Card
 className =
-    'bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-200'
+    'bg-white border border-gray-200 rounded-sm p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-200'
 
 // Featured Card (larger, more prominent)
 className =
-    'bg-white border border-gray-200 rounded-xl p-8 hover:border-gray-300 hover:shadow-sm transition-all duration-200'
+    'bg-white border border-gray-200 rounded-lg p-8 hover:border-gray-300 hover:shadow-sm transition-all duration-200'
 
 // Interactive Card (clickable)
 className =
-    'bg-white border border-gray-200 rounded-lg p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-200 cursor-pointer'
+    'bg-white border border-gray-200 rounded-sm p-6 hover:border-gray-300 hover:shadow-sm transition-all duration-200 cursor-pointer'
 ```
 
 ### Buttons
@@ -87,7 +87,7 @@ className =
 
 ```typescript
 // Status Badge
-className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border'
+className = 'inline-flex items-center px-2.5 py-0.5 rounded-sm text-xs font-medium border'
 
 // Success Badge
 className = 'bg-emerald-100 text-emerald-800 border-emerald-200'

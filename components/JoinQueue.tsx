@@ -106,12 +106,12 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                     queuePosition.offerExpiresAt <= Date.now())) && (
                 <>
                     {isEventOwner ? (
-                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg">
+                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-sm">
                             <OctagonXIcon className="w-5 h-5" />
                             <span>Você não pode comprar um ingresso para seu próprio evento</span>
                         </div>
                     ) : isPastEvent ? (
-                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-lg cursor-not-allowed">
+                        <div className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gray-100 text-gray-500 rounded-sm cursor-not-allowed">
                             <Clock className="w-5 h-5" />
                             <span>Evento terminou</span>
                         </div>
@@ -122,7 +122,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                     ) : (
                         <div className="space-y-4">
                             {/* Quantity Selector */}
-                            <div className="bg-gray-50 p-4 rounded-lg">
+                            <div className="bg-gray-50 p-4 rounded-sm">
                                 <div className="flex items-center justify-between mb-2">
                                     <label className="text-sm font-medium text-gray-700">Número de Ingressos</label>
                                     <span className="text-sm text-gray-500">{availableTickets} disponíveis</span>
@@ -131,7 +131,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                                     <button
                                         onClick={() => handleQuantityChange(quantity - 1)}
                                         disabled={quantity <= 1}
-                                        className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-8 h-8 rounded-sm bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <Minus className="w-4 h-4" />
                                     </button>
@@ -139,7 +139,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                                     <button
                                         onClick={() => handleQuantityChange(quantity + 1)}
                                         disabled={quantity >= Math.min(10, availableTickets)}
-                                        className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                                        className="w-8 h-8 rounded-sm bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <Plus className="w-4 h-4" />
                                     </button>
@@ -152,7 +152,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
                             <button
                                 onClick={handleJoinQueue}
                                 disabled={isPastEvent || isEventOwner || isLoading}
-                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 shadow-md flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
+                                className="w-full bg-blue-600 text-white px-6 py-3 rounded-sm font-medium hover:bg-blue-700 transition-colors duration-200 shadow-md flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
                             >
                                 {isLoading ? <Spinner /> : `Comprar ${quantity} Ingresso${quantity > 1 ? 's' : ''}`}
                             </button>

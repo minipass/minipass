@@ -33,7 +33,7 @@ export default function EventList() {
                     <h1 className="text-3xl font-bold text-gray-900">Próximos Eventos</h1>
                     <p className="mt-2 text-gray-600">Descubra e reserve ingressos para eventos incríveis</p>
                 </div>
-                <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+                <div className="bg-white px-4 py-2 rounded-sm shadow-sm border border-gray-100">
                     <div className="flex items-center gap-2 text-gray-600">
                         <CalendarDays className="w-5 h-5" />
                         <span className="font-medium">{upcomingEvents.length} Próximos Eventos</span>
@@ -49,7 +49,7 @@ export default function EventList() {
                     ))}
                 </div>
             ) : (
-                <div className="bg-gray-50 rounded-lg p-12 text-center mb-12">
+                <div className="bg-gray-50 rounded-sm p-12 text-center mb-12">
                     <Ticket className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-lg font-medium text-gray-900">Nenhum evento próximo</h3>
                     <p className="text-gray-600 mt-1">Volte mais tarde para novos eventos</p>

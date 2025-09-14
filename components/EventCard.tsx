@@ -55,7 +55,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
         if (availability.purchasedCount >= availability.totalTickets) {
             return (
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-sm border border-gray-200">
                     <div className="flex items-center">
                         <Ticket className="w-5 h-5 text-gray-500 mr-2" />
                         <span className="text-gray-700 font-medium">Evento esgotado</span>
@@ -66,7 +66,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
         if (queuePosition.position === 2) {
             return (
-                <div className="flex flex-col lg:flex-row items-center justify-between p-4 bg-amber-50 rounded-lg border border-amber-200">
+                <div className="flex flex-col lg:flex-row items-center justify-between p-4 bg-amber-50 rounded-sm border border-amber-200">
                     <div className="flex items-center">
                         <CircleArrowRight className="w-5 h-5 text-amber-600 mr-2" />
                         <span className="text-amber-800 font-medium">
@@ -82,7 +82,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
         }
 
         return (
-            <div className="flex items-center justify-between p-4 bg-sky-50 rounded-lg border border-sky-200">
+            <div className="flex items-center justify-between p-4 bg-sky-50 rounded-sm border border-sky-200">
                 <div className="flex items-center">
                     <LoaderCircle className="w-4 h-4 mr-2 animate-spin text-sky-600" />
                     <span className="text-sky-800 font-medium">Posição na fila</span>
@@ -117,7 +117,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
         if (userTicket) {
             return (
-                <div className="mt-4 flex items-center justify-between p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                <div className="mt-4 flex items-center justify-between p-4 bg-emerald-50 rounded-sm border border-emerald-200">
                     <div className="flex items-center">
                         <Check className="w-5 h-5 text-emerald-600 mr-2" />
                         <span className="text-emerald-800 font-medium">Você tem ingressos para este evento!</span>
@@ -140,7 +140,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                         {queuePosition.status === 'offered' && <PurchaseTicket eventId={eventId} />}
                         {renderQueuePosition()}
                         {queuePosition.status === 'expired' && (
-                            <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+                            <div className="p-4 bg-red-50 rounded-sm border border-red-200">
                                 <span className="text-red-800 font-medium flex items-center">
                                     <XCircle className="w-5 h-5 mr-2" />
                                     Oferta expirada

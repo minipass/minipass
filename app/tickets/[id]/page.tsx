@@ -52,11 +52,11 @@ export default function TicketPage() {
                             Voltar aos Meus Ingressos
                         </Link>
                         <div className="flex items-center gap-4">
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100">
+                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-sm hover:bg-gray-100">
                                 <Download className="w-4 h-4" />
                                 <span className="text-sm">Salvar</span>
                             </button>
-                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-lg hover:bg-gray-100">
+                            <button className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 transition-colors rounded-sm hover:bg-gray-100">
                                 <Share2 className="w-4 h-4" />
                                 <span className="text-sm">Compartilhar</span>
                             </button>
@@ -66,7 +66,7 @@ export default function TicketPage() {
                     {/* Event Info Summary */}
                     <div
                         className={cn(
-                            'bg-white p-6 rounded-lg shadow-sm border',
+                            'bg-white p-6 rounded-sm shadow-sm border',
                             ticket.event.is_cancelled ? 'border-red-200' : 'border-gray-100',
                         )}
                     >
@@ -77,7 +77,7 @@ export default function TicketPage() {
                         <div className="mt-4 flex items-center gap-4">
                             <span
                                 className={cn(
-                                    'px-3 py-1 rounded-full text-sm font-medium',
+                                    'px-3 py-1 rounded-sm text-sm font-medium',
                                     ticket.event.is_cancelled ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700',
                                 )}
                             >
@@ -101,7 +101,7 @@ export default function TicketPage() {
                 {/* Additional Information */}
                 <div
                     className={cn(
-                        'mt-8 rounded-lg p-4',
+                        'mt-8 rounded-sm p-4',
                         ticket.event.is_cancelled
                             ? 'bg-red-50 border-red-100 border'
                             : 'bg-blue-50 border-blue-100 border',

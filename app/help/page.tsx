@@ -46,7 +46,7 @@ export default function HelpPage() {
 
                         <div>
                             <h3 className="text-lg font-medium mb-2">Importante: Verificação de Vendedores</h3>
-                            <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                            <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-sm">
                                 <p className="mb-3">
                                     <strong>Atenção:</strong> O minipass não realiza verificação prévia dos vendedores
                                     na plataforma. É responsabilidade do comprador verificar a legitimidade do vendedor
@@ -96,7 +96,7 @@ export default function HelpPage() {
 
                         <div>
                             <h3 className="text-lg font-medium mb-2">Taxas e Pagamentos</h3>
-                            <div className="bg-blue-50 p-4 rounded-lg">
+                            <div className="bg-blue-50 p-4 rounded-sm">
                                 <p className="mb-3">
                                     <strong>Taxa da Plataforma:</strong> Cobramos uma taxa de 2% sobre cada venda
                                     realizada. Esta taxa é reduzida para vendedores com maior volume de vendas.
@@ -153,7 +153,7 @@ export default function HelpPage() {
 
                 <section>
                     <h2 className="text-2xl font-semibold mb-4">Contato</h2>
-                    <div className="bg-gray-50 p-6 rounded-lg">
+                    <div className="bg-gray-50 p-6 rounded-sm">
                         <p className="mb-4">Precisa de mais ajuda? Entre em contato conosco:</p>
                         <ul className="space-y-2">
                             <li>

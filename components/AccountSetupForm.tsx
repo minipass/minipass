@@ -94,7 +94,7 @@ export default function AccountSetupForm({ provider, onSubmit, onCancel, isLoadi
     if (!provider) return null
 
     return (
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="bg-white rounded-sm shadow-lg p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
                 Configurar Conta {provider === 'asaas' ? 'Asaas' : 'Stripe'}
             </h3>

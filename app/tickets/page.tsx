@@ -51,7 +51,7 @@ export default function MyTicketsPage() {
             <div className="max-w-4xl mx-auto">
                 {/* Success Message */}
                 {showSuccessMessage && (
-                    <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                    <div className="mb-6 bg-emerald-50 border border-emerald-200 rounded-sm p-4">
                         <div className="flex items-center">
                             <CheckCircle className="w-5 h-5 text-emerald-600 mr-3" />
                             <div>

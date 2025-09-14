@@ -109,7 +109,7 @@ export default function TermsPage() {
                     </p>
 
                     <h3 className="text-lg font-medium mb-3 mt-6">6.3 Impostos e Obrigações Fiscais</h3>
-                    <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="bg-gray-50 p-4 rounded-sm">
                         <p className="mb-3">
                             <strong>Responsabilidade Fiscal:</strong> Todos os usuários são responsáveis por cumprir
                             suas obrigações fiscais de acordo com a legislação brasileira vigente.
@@ -226,7 +226,7 @@ export default function TermsPage() {
 
                 <section>
                     <h2 className="text-2xl font-semibold mb-4">14. Contato</h2>
-                    <div className="bg-gray-50 p-6 rounded-lg">
+                    <div className="bg-gray-50 p-6 rounded-sm">
                         <p className="mb-4">
                             Se você tiver dúvidas sobre estes Termos de Serviço, entre em contato conosco:
                         </p>
