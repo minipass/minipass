@@ -28,7 +28,10 @@ export class StripeProvider extends PaymentProviderBase {
     async createAccount() {
         const account = await this.stripe.accounts.create({
             type: 'express',
-            capabilities: { card_payments: { requested: true } },
+            capabilities: {
+                card_payments: { requested: true },
+                transfers: { requested: true },
+            },
         })
 
         return { accountId: account.id }
