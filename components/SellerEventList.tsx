@@ -82,6 +82,7 @@ function SellerEventCard({
                             src={imageUrl || '/images/event-fallback.svg'}
                             alt={event.name}
                             fill
+                            unoptimized // TODO: Eventually remove this, need it for now because of Convex
                             className="object-cover"
                         />
                     </div>
