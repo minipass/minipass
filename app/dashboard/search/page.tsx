@@ -22,13 +22,14 @@ export default function SearchPage() {
         )
     }
 
+    const now = new Date()
     const upcomingEvents = searchResults
-        .filter(event => event.eventDate > Date.now())
-        .sort((a, b) => a.eventDate - b.eventDate)
+        .filter(event => new Date(event.eventDate) > now)
+        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
 
     const pastEvents = searchResults
-        .filter(event => event.eventDate <= Date.now())
-        .sort((a, b) => b.eventDate - a.eventDate)
+        .filter(event => new Date(event.eventDate) <= now)
+        .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
 
     return (
         <div className="min-h-screen bg-gray-50 py-12">

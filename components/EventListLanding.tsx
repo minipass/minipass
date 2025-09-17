@@ -19,9 +19,10 @@ export default function EventListLanding() {
         )
     }
 
+    const now = new Date()
     const upcomingEvents = events
-        .filter(event => event.eventDate > Date.now())
-        .sort((a, b) => a.eventDate - b.eventDate)
+        .filter(event => new Date(event.eventDate) > now)
+        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
 
     return (
         <div className="">

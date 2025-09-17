@@ -19,11 +19,14 @@ export default function EventList() {
         )
     }
 
+    const now = new Date()
     const upcomingEvents = events
-        .filter(event => event.eventDate > Date.now())
-        .sort((a, b) => a.eventDate - b.eventDate)
+        .filter(event => new Date(event.eventDate) > now)
+        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
 
-    const pastEvents = events.filter(event => event.eventDate <= Date.now()).sort((a, b) => b.eventDate - a.eventDate)
+    const pastEvents = events
+        .filter(event => new Date(event.eventDate) <= now)
+        .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

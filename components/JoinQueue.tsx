@@ -100,7 +100,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
         return null
     }
 
-    const isPastEvent = event.eventDate < Date.now()
+    const isPastEvent = new Date(event.eventDate) < new Date()
     const availableTickets = availability.totalTickets - availability.purchasedCount
 
     return (

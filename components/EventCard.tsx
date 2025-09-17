@@ -46,7 +46,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
         return null
     }
 
-    const isPastEvent = event.eventDate < Date.now()
+    const isPastEvent = new Date(event.eventDate) < new Date()
 
     const isEventOwner = user?.id === event?.userId
 

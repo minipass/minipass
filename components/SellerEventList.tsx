@@ -26,8 +26,13 @@ export default function SellerEventList() {
 
     if (!events) return null
 
-    const upcomingEvents = events.filter(e => e.eventDate > Date.now())
-    const pastEvents = events.filter(e => e.eventDate <= Date.now())
+    const now = new Date()
+    const upcomingEvents = events
+        .filter(e => new Date(e.eventDate) > now)
+        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
+    const pastEvents = events
+        .filter(e => new Date(e.eventDate) <= now)
+        .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
 
     return (
         <div className="mx-auto space-y-8">
@@ -65,7 +70,7 @@ function SellerEventCard({
     }
 }) {
     const imageUrl = useStorageUrl(event.imageStorageId)
-    const isPastEvent = event.eventDate < Date.now()
+    const isPastEvent = new Date(event.eventDate) < new Date()
 
     return (
         <Card

@@ -44,7 +44,7 @@ export const create = mutation({
         name: v.string(),
         description: v.string(),
         location: v.string(),
-        eventDate: v.number(), // Store as timestamp
+        eventDate: v.string(), // Store as ISO string
         price: v.number(),
         totalTickets: v.number(),
         displayTotalTickets: v.boolean(),
@@ -55,7 +55,8 @@ export const create = mutation({
             name: args.name,
             description: args.description,
             location: args.location,
-            eventDate: args.eventDate,
+            eventDate: 0,
+            // eventDate: args.eventDate,
             price: args.price,
             totalTickets: args.totalTickets,
             displayTotalTickets: args.displayTotalTickets,
@@ -315,7 +316,7 @@ export const getUserTicketsGroupedByEvent = query({
 
         // Convert to array and sort by event date
         const groupedTickets = Array.from(ticketsByEvent.values())
-        groupedTickets.sort((a, b) => a.event.eventDate - b.event.eventDate)
+        groupedTickets.sort((a, b) => new Date(a.event.eventDate).getTime() - new Date(b.event.eventDate).getTime())
 
         return groupedTickets
     },
@@ -446,7 +447,7 @@ export const updateEvent = mutation({
         name: v.string(),
         description: v.string(),
         location: v.string(),
-        eventDate: v.number(),
+        // eventDate: v.string(), // ISO string
         price: v.number(),
         totalTickets: v.number(),
         displayTotalTickets: v.boolean(),

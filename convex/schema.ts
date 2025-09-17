@@ -7,6 +7,7 @@ export default defineSchema({
         description: v.string(),
         location: v.string(),
         eventDate: v.number(),
+        eventDateISO: v.optional(v.string()),
         price: v.number(),
         totalTickets: v.number(),
         displayTotalTickets: v.boolean(),

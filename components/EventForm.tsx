@@ -108,7 +108,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     const eventId = await createEvent({
                         ...values,
                         userId: user.id,
-                        eventDate: values.eventDate.getTime(),
+                        eventDate: values.eventDate.toISOString(),
                     })
 
                     if (imageStorageId) {
@@ -129,7 +129,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     await updateEvent({
                         eventId: initialData._id,
                         ...values,
-                        eventDate: values.eventDate.getTime(),
+                        // eventDate: values.eventDate.toISOString(),
                     })
 
                     // Update image - this will now handle both adding new image and removing existing image

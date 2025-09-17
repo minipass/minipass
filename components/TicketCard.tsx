@@ -18,7 +18,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
 
     if (!ticket || !ticket.event) return <Spinner />
 
-    const isPastEvent = ticket.event.eventDate < Date.now()
+    const isPastEvent = new Date(ticket.event.eventDate) < new Date()
 
     const getStatusVariant = () => {
         if (ticket.event!.isCancelled) return 'destructive'

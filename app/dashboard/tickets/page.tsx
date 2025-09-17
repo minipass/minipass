@@ -41,8 +41,9 @@ export default function MyTicketsPage() {
     const otherGroupedTickets = groupedTickets.filter(group => group.tickets.every(ticket => ticket.status !== 'valid'))
 
     // Separate upcoming and past events
-    const upcomingGroupedTickets = validGroupedTickets.filter(group => group.event.eventDate > Date.now())
-    const pastGroupedTickets = validGroupedTickets.filter(group => group.event.eventDate <= Date.now())
+    const now = new Date()
+    const upcomingGroupedTickets = validGroupedTickets.filter(group => new Date(group.event.eventDate) > now)
+    const pastGroupedTickets = validGroupedTickets.filter(group => new Date(group.event.eventDate) <= now)
 
     // Get total ticket count
     const totalTickets = groupedTickets.reduce((total, group) => total + group.tickets.length, 0)
