@@ -26,6 +26,11 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
         return <Spinner />
     }
 
+    // Image still loading, if not present will return null instead
+    if (imageUrl === undefined) {
+        return <Spinner />
+    }
+
     return (
         <Card className={cn('overflow-hidden', ticket.event.isCancelled ? 'border-destructive/20' : '')}>
             {/* Event Header with Image */}
@@ -35,6 +40,7 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                         src={imageUrl || '/images/event-fallback.svg'}
                         alt={ticket.event.name}
                         fill
+                        unoptimized // TODO: Eventually remove this, need it for now because of Convex
                         className={cn('object-cover object-center', ticket.event.isCancelled && 'opacity-50')}
                         priority
                     />

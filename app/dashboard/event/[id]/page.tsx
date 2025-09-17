@@ -56,7 +56,7 @@ export default function EventPage() {
         }
     }, [selectedQRCode])
 
-    if (!event || !availability) {
+    if (!event || !availability || imageUrl === undefined) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <Spinner />

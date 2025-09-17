@@ -3,6 +3,7 @@
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
 import { ArrowRight, CalendarDays, CheckCircle, MapPin, Ticket } from 'lucide-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -142,9 +143,11 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                 <div className="flex">
                     {/* Event Image */}
                     <div className="relative w-24 h-24 flex-shrink-0">
-                        <img
+                        <Image
                             src={imageUrl || '/images/event-fallback.svg'}
                             alt={group.event.name}
+                            fill
+                            unoptimized // TODO: Eventually remove this, need it for now because of Convex
                             className={cn('w-full h-full object-cover', group.event.isCancelled && 'opacity-50')}
                         />
                         {group.event.isCancelled && (

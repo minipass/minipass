@@ -77,11 +77,14 @@ function SellerEventCard({
             <div className="p-6">
                 <div className="flex items-start gap-6">
                     {/* Event Image */}
-                    {imageUrl && (
-                        <div className="relative w-40 h-40 rounded-sm overflow-hidden shrink-0">
-                            <Image src={imageUrl} alt={event.name} fill className="object-cover" />
-                        </div>
-                    )}
+                    <div className="relative w-40 h-40 rounded-sm overflow-hidden shrink-0">
+                        <Image
+                            src={imageUrl || '/images/event-fallback.svg'}
+                            alt={event.name}
+                            fill
+                            className="object-cover"
+                        />
+                    </div>
 
                     {/* Event Details */}
                     <div className="flex-1 min-w-0">
