@@ -233,7 +233,7 @@ export default function EventPage() {
                                             ) : (
                                                 <Link href="/sign-in">
                                                     <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/40 text-primary-foreground font-medium py-4 px-6 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg text-lg">
-                                                        Entrar para comprar ingressos
+                                                        Comprar Ingressos
                                                     </Button>
                                                 </Link>
                                             )}
