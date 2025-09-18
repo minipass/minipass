@@ -370,7 +370,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
 
                         <p className="text-xs text-muted-foreground">
                             Imagem do evento será exibida na página do evento, na lista de eventos e no ingresso.
-                            Tamanho recomendado: 1000x500px.
+                            Tamanho recomendado: 1200x400px.
                         </p>
                     </div>
                 </div>
