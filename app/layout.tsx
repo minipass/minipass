@@ -9,7 +9,7 @@ import SyncUserWithConvex from '@/components/SyncUserWithConvex'
 import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/css'
 
-import './globals.css'
+import './globals.scss'
 
 const geistSans = localFont({
     src: './fonts/GeistVF.woff',

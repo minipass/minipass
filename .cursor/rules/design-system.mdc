@@ -277,7 +277,7 @@ const className = cn('base-classes', condition && 'conditional-classes', variant
 
 -   Core components: `components/ui/`
 -   Business components: `components/`
--   Global styles: `app/globals.css`
+-   Global styles: `app/globals.scss`
 -   Design tokens: `tailwind.config.ts`
 -   Utility functions: `lib/css.ts`
 
