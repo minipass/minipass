@@ -14,6 +14,7 @@ import { Id } from '@/convex/_generated/dataModel'
 
 import JoinQueue from '@/components/JoinQueue'
 import Spinner from '@/components/Spinner'
+import { Editor } from '@/components/tiptap/Editor'
 import { Button } from '@/components/ui/button'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import dayjs, { LONG_FORMAT } from '@/lib/dayjs'
@@ -84,7 +85,7 @@ export default function EventPage() {
                     <div className="flex flex-col p-8">
                         <div>
                             <h1 className="text-4xl font-bold text-foreground mb-4">{event.name}</h1>
-                            <p className="text-lg text-muted-foreground mb-8">{event.description}</p>
+                            <p className="text-lg text-muted-foreground mb-8">{event.callout}</p>
                         </div>
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -146,10 +147,10 @@ export default function EventPage() {
 
                                 {/* User's Tickets Section */}
                                 {currentUserTickets.length > 0 && (
-                                    <div className="bg-green-50 border border-green-200 rounded-sm p-6">
+                                    <div className="bg-primary/10 border border-primary/20 text-primary rounded-sm p-6">
                                         <div className="flex items-center mb-4">
-                                            <CheckCircle className="w-6 h-6 text-green-600 mr-3" />
-                                            <h3 className="text-lg font-semibold text-green-900">
+                                            <CheckCircle className="w-6 h-6 mr-3" />
+                                            <h3 className="text-lg font-semibold">
                                                 Seus Ingressos ({currentUserTickets.length})
                                             </h3>
                                         </div>
@@ -187,7 +188,7 @@ export default function EventPage() {
                                             ))}
                                         </div>
 
-                                        <div className="text-sm text-green-700">
+                                        <div className="text-sm ">
                                             <p className="font-medium mb-2">Importante:</p>
                                             <ul className="space-y-1">
                                                 <li>• Tenha seus códigos QR prontos para escaneamento</li>
@@ -200,11 +201,10 @@ export default function EventPage() {
 
                                 {/* Additional Event Information */}
                                 <div className="bg-primary/10 border border-primary/20 rounded-sm p-6">
-                                    <h3 className="text-lg font-semibold text-primary mb-2">Informações Extras</h3>
-                                    <ul className="space-y-2 text-primary/80">
-                                        <li>• Por favor, chegue 30 minutos antes do evento começar</li>
-                                        <li>• Ingressos não são reembolsáveis</li>
-                                    </ul>
+                                    <h3 className="text-lg font-semibold text-primary mb-2">
+                                        Informações do Organizador
+                                    </h3>
+                                    <Editor content={event.description} editable={false} />
                                 </div>
                             </div>
 

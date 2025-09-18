@@ -4,6 +4,7 @@ import { v } from 'convex/values'
 export default defineSchema({
     events: defineTable({
         name: v.string(),
+        callout: v.optional(v.string()),
         description: v.string(),
         location: v.string(),
         eventDate: v.number(),

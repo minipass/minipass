@@ -11,18 +11,20 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { api } from '@/convex/_generated/api'
-import { Id } from '@/convex/_generated/dataModel'
+import { Doc, Id } from '@/convex/_generated/dataModel'
 
+import { Editor, EditorRef } from '@/components/tiptap/Editor'
+import { EXAMPLE_CONTENT } from '@/components/tiptap/example'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { useToast } from '@/hooks/useToast'
 import dayjs from '@/lib/dayjs'
 
 const formSchema = z.object({
     name: z.string().min(1, 'Nome do evento é obrigatório'),
+    callout: z.string().min(1, 'Subtítulo é obrigatório'),
     description: z.string().min(1, 'Descrição é obrigatória'),
     location: z.string().min(1, 'Local é obrigatório'),
     eventDate: z.date().min(dayjs().toDate(), 'Data do evento deve ser no futuro'),
@@ -33,21 +35,9 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>
 
-interface InitialEventData {
-    _id: Id<'events'>
-    name: string
-    description: string
-    location: string
-    eventDate: number
-    price: number
-    totalTickets: number
-    displayTotalTickets: boolean
-    imageStorageId?: Id<'_storage'>
-}
-
 interface EventFormProps {
     mode: 'create' | 'edit'
-    initialData?: InitialEventData
+    initialData?: Doc<'events'>
 }
 
 export default function EventForm({ mode, initialData }: EventFormProps) {
@@ -58,6 +48,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
     const [isPending, startTransition] = useTransition()
     const { toast } = useToast()
     const currentImageUrl = useStorageUrl(initialData?.imageStorageId)
+    const editorRef: EditorRef = useRef(null)
 
     // Image upload
     const imageInput = useRef<HTMLInputElement>(null)
@@ -73,9 +64,11 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: initialData?.name ?? '',
-            description: initialData?.description ?? '',
+            callout: initialData?.callout ?? '',
+            description: initialData?.description ?? EXAMPLE_CONTENT,
             location: initialData?.location ?? '',
             eventDate: initialData ? dayjs(initialData.eventDate).toDate() : dayjs().toDate(),
+            price: initialData?.price ?? 0,
             totalTickets: initialData?.totalTickets ?? 1,
             displayTotalTickets: initialData?.displayTotalTickets ?? false,
         },
@@ -109,6 +102,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         ...values,
                         userId: user.id,
                         eventDate: dayjs(values.eventDate).toDate().getTime(),
+                        description: editorRef.current!.getHTML(),
                     })
 
                     if (imageStorageId) {
@@ -130,6 +124,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         eventId: initialData._id,
                         ...values,
                         eventDate: dayjs(values.eventDate).toDate().getTime(),
+                        description: editorRef.current!.getHTML(),
                     })
 
                     // Update image - this will now handle both adding new image and removing existing image
@@ -208,12 +203,28 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
 
                     <FormField
                         control={form.control}
+                        name="callout"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Subtítulo</FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
                         name="description"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Descrição</FormLabel>
                                 <FormControl>
-                                    <Textarea {...field} />
+                                    <div className="max-w-2xl rounded-md border border-input">
+                                        <Editor content={field.value} ref={editorRef} />
+                                    </div>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

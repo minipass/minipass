@@ -245,7 +245,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     )}
                 </div>
 
-                <p className="mt-4 text-primary text-sm line-clamp-2">{event.description}</p>
+                <p className="mt-4 text-primary text-sm line-clamp-2">{event.callout}</p>
 
                 <div onClick={e => e.stopPropagation()}>{!isPastEvent && renderTicketStatus()}</div>
             </div>

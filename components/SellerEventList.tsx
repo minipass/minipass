@@ -98,7 +98,7 @@ function SellerEventCard({
                         <div className="flex items-start justify-between gap-4">
                             <div>
                                 <h3 className="text-xl font-semibold text-foreground">{event.name}</h3>
-                                <p className="mt-1 text-muted-foreground">{event.description}</p>
+                                <p className="mt-1 text-muted-foreground">{event.callout}</p>
                                 {event.isCancelled && (
                                     <div className="mt-2">
                                         <Badge variant="destructive" className="flex items-center gap-1">
@@ -112,7 +112,7 @@ function SellerEventCard({
                                 {!isPastEvent && !event.isCancelled && (
                                     <>
                                         <Button variant="secondary" size="sm" asChild>
-                                            <Link href={`/seller/events/${event._id}/edit`}>
+                                            <Link href={`/dashboard/seller/events/${event._id}/edit`}>
                                                 <Edit className="w-4 h-4" />
                                                 Editar
                                             </Link>

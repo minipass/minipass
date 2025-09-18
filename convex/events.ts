@@ -43,6 +43,7 @@ export const getById = query({
 export const create = mutation({
     args: {
         name: v.string(),
+        callout: v.string(),
         description: v.string(),
         location: v.string(),
         eventDate: v.number(),
@@ -54,6 +55,7 @@ export const create = mutation({
     handler: async (ctx, args) => {
         const eventId = await ctx.db.insert('events', {
             name: args.name,
+            callout: args.callout,
             description: args.description,
             location: args.location,
             eventDate: args.eventDate,
@@ -445,6 +447,7 @@ export const updateEvent = mutation({
     args: {
         eventId: v.id('events'),
         name: v.string(),
+        callout: v.string(),
         description: v.string(),
         location: v.string(),
         eventDate: v.number(),
