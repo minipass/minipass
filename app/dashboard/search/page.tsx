@@ -8,6 +8,7 @@ import { api } from '@/convex/_generated/api'
 
 import EventCard from '@/components/EventCard'
 import Spinner from '@/components/Spinner'
+import dayjs from '@/lib/dayjs'
 
 export default function SearchPage() {
     const searchParams = useSearchParams()
@@ -22,14 +23,14 @@ export default function SearchPage() {
         )
     }
 
-    const now = new Date()
+    const today = dayjs().startOf('day')
     const upcomingEvents = searchResults
-        .filter(event => new Date(event.eventDate) > now)
-        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
+        .filter(event => dayjs(event.eventDate).isAfter(today))
+        .sort((a, b) => dayjs(a.eventDate).diff(b.eventDate))
 
     const pastEvents = searchResults
-        .filter(event => new Date(event.eventDate) <= now)
-        .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
+        .filter(event => dayjs(event.eventDate).isBefore(today))
+        .sort((a, b) => dayjs(b.eventDate).diff(a.eventDate))
 
     return (
         <div className="min-h-screen bg-gray-50 py-12">

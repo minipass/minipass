@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
+import dayjs from '@/lib/dayjs'
 
 export default function MyTicketsPage() {
     const { user } = useUser()
@@ -41,9 +42,9 @@ export default function MyTicketsPage() {
     const otherGroupedTickets = groupedTickets.filter(group => group.tickets.every(ticket => ticket.status !== 'valid'))
 
     // Separate upcoming and past events
-    const now = new Date()
-    const upcomingGroupedTickets = validGroupedTickets.filter(group => new Date(group.event.eventDate) > now)
-    const pastGroupedTickets = validGroupedTickets.filter(group => new Date(group.event.eventDate) <= now)
+    const today = dayjs().startOf('day')
+    const upcomingGroupedTickets = validGroupedTickets.filter(group => dayjs(group.event.eventDate).isAfter(today))
+    const pastGroupedTickets = validGroupedTickets.filter(group => dayjs(group.event.eventDate).isBefore(today))
 
     // Get total ticket count
     const totalTickets = groupedTickets.reduce((total, group) => total + group.tickets.length, 0)
@@ -131,7 +132,7 @@ export default function MyTicketsPage() {
 // Event Card Component
 function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
     const imageUrl = useStorageUrl(group.event.imageStorageId)
-    const isPastEvent = group.event.eventDate < Date.now()
+    const isPastEvent = dayjs(group.event.eventDate).isBefore(dayjs().startOf('day'))
 
     return (
         <Link href={`/event/${group.event._id}`}>
@@ -170,7 +171,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                                     <div className="flex items-center text-muted-foreground">
                                         <CalendarDays className="w-4 h-4 mr-2 text-primary" />
                                         <span className="text-sm">
-                                            {new Date(group.event.eventDate).toLocaleDateString()}
+                                            {dayjs(group.event.eventDate).format('DD/MM/YYYY h:mm')}
                                         </span>
                                     </div>
 

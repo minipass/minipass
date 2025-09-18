@@ -8,6 +8,7 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
 import { cn } from '@/lib/css'
+import dayjs from '@/lib/dayjs'
 
 import Spinner from './Spinner'
 import { Badge } from './ui/badge'
@@ -18,7 +19,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
 
     if (!ticket || !ticket.event) return <Spinner />
 
-    const isPastEvent = new Date(ticket.event.eventDate) < new Date()
+    const isPastEvent = dayjs(ticket.event.eventDate).isBefore(dayjs().startOf('day'))
 
     const getStatusVariant = () => {
         if (ticket.event!.isCancelled) return 'destructive'
@@ -77,7 +78,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
                             <CalendarDays
                                 className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-destructive')}
                             />
-                            <span className="text-sm">{new Date(ticket.event.eventDate).toLocaleDateString()}</span>
+                            <span className="text-sm">{dayjs(ticket.event.eventDate).format('DD/MM/YYYY h:mm')}</span>
                         </div>
                         <div className="flex items-center text-muted-foreground">
                             <MapPin className={cn('w-4 h-4 mr-2', ticket.event.isCancelled && 'text-destructive')} />

@@ -21,6 +21,7 @@ import { Id } from '@/convex/_generated/dataModel'
 
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
+import dayjs from '@/lib/dayjs'
 
 import PurchaseTicket from './PurchaseTicket'
 import { Badge } from './ui/badge'
@@ -46,8 +47,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
         return null
     }
 
-    const isPastEvent = new Date(event.eventDate) < new Date()
-
+    const isPastEvent = dayjs(event.eventDate).isBefore(dayjs().startOf('day'))
     const isEventOwner = user?.id === event?.userId
 
     const renderQueuePosition = () => {
@@ -224,7 +224,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
                     <div className="flex items-center text-primary">
                         <CalendarDays className="w-4 h-4 mr-2" />
                         <span>
-                            {new Date(event.eventDate).toLocaleDateString()} {isPastEvent && '(Terminado)'}
+                            {dayjs(event.eventDate).format('DD/MM/YYYY h:mm')} {isPastEvent && '(Terminado)'}
                         </span>
                     </div>
 

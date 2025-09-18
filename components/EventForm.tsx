@@ -19,12 +19,13 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { useToast } from '@/hooks/useToast'
+import dayjs from '@/lib/dayjs'
 
 const formSchema = z.object({
     name: z.string().min(1, 'Nome do evento é obrigatório'),
     description: z.string().min(1, 'Descrição é obrigatória'),
     location: z.string().min(1, 'Local é obrigatório'),
-    eventDate: z.date().min(new Date(new Date().setHours(0, 0, 0, 0)), 'Data do evento deve ser no futuro'),
+    eventDate: z.date().min(dayjs().toDate(), 'Data do evento deve ser no futuro'),
     price: z.number().min(0, 'Preço deve ser 0 ou maior'),
     totalTickets: z.number().min(1, 'Deve ter pelo menos 1 ingresso'),
     displayTotalTickets: z.boolean(),
@@ -74,8 +75,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
             name: initialData?.name ?? '',
             description: initialData?.description ?? '',
             location: initialData?.location ?? '',
-            eventDate: initialData ? new Date(initialData.eventDate) : new Date(),
-            price: initialData?.price ?? 0,
+            eventDate: initialData ? dayjs(initialData.eventDate).toDate() : dayjs().toDate(),
             totalTickets: initialData?.totalTickets ?? 1,
             displayTotalTickets: initialData?.displayTotalTickets ?? false,
         },
@@ -108,7 +108,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     const eventId = await createEvent({
                         ...values,
                         userId: user.id,
-                        eventDate: values.eventDate.toISOString(),
+                        eventDate: dayjs(values.eventDate).toDate().getTime(),
                     })
 
                     if (imageStorageId) {
@@ -129,7 +129,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     await updateEvent({
                         eventId: initialData._id,
                         ...values,
-                        // eventDate: values.eventDate.toISOString(),
+                        eventDate: dayjs(values.eventDate).toDate().getTime(),
                     })
 
                     // Update image - this will now handle both adding new image and removing existing image
@@ -242,12 +242,17 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                 <FormLabel>Data do Evento</FormLabel>
                                 <FormControl>
                                     <Input
-                                        type="date"
+                                        type="datetime-local"
                                         {...field}
                                         onChange={e => {
-                                            field.onChange(e.target.value ? new Date(e.target.value) : null)
+                                            console.log(
+                                                'e.target.value',
+                                                e.target.value,
+                                                dayjs(e.target.value).toDate(),
+                                            )
+                                            field.onChange(dayjs(e.target.value).toDate())
                                         }}
-                                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                                        value={field.value ? dayjs(field.value).format('YYYY-MM-DDTHH:mm') : ''}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -320,9 +325,9 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                     />
 
                     {/* Image Upload */}
-                    <div className="space-y-4">
+                    <div>
                         <label className="block text-sm font-medium text-foreground">Imagem do Evento</label>
-                        <div className="mt-1 flex items-center gap-4">
+                        <div className="mt-4 flex items-center gap-4">
                             {imagePreview || (!removedCurrentImage && currentImageUrl) ? (
                                 <div className="relative w-32 aspect-square bg-gray-100 rounded-sm">
                                     <Image
@@ -352,15 +357,15 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                     accept="image/*"
                                     onChange={handleImageChange}
                                     ref={imageInput}
-                                    className="block w-full text-sm text-muted-foreground
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-sm file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-primary/10 file:text-primary
-                    hover:file:bg-primary/20"
+                                    className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
                                 />
                             )}
                         </div>
+
+                        <p className="text-xs text-muted-foreground">
+                            Imagem do evento será exibida na página do evento, na lista de eventos e no ingresso.
+                            Tamanho recomendado: 1000x500px.
+                        </p>
                     </div>
                 </div>
 

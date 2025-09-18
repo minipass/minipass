@@ -12,6 +12,7 @@ import { Id } from '@/convex/_generated/dataModel'
 
 import Ticket from '@/components/Ticket'
 import { cn } from '@/lib/css'
+import dayjs from '@/lib/dayjs'
 
 export default function TicketPage() {
     const params = useParams()
@@ -72,7 +73,7 @@ export default function TicketPage() {
                     >
                         <h1 className="text-2xl font-bold text-foreground">{ticket.event.name}</h1>
                         <p className="mt-1 text-muted-foreground">
-                            {new Date(ticket.event.eventDate).toLocaleDateString()} at {ticket.event.location}
+                            {dayjs(ticket.event.eventDate).format('DD/MM/YYYY h:mm')} at {ticket.event.location}
                         </p>
                         <div className="mt-4 flex items-center gap-4">
                             <span

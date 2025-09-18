@@ -12,6 +12,7 @@ import { Metrics } from '@/convex/events'
 
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
+import dayjs, { LONG_FORMAT } from '@/lib/dayjs'
 
 import CancelEventButton from './CancelEventButton'
 import { Badge } from './ui/badge'
@@ -26,13 +27,13 @@ export default function SellerEventList() {
 
     if (!events) return null
 
-    const now = new Date()
+    const today = dayjs().startOf('day')
     const upcomingEvents = events
-        .filter(e => new Date(e.eventDate) > now)
-        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
+        .filter(e => dayjs(e.eventDate).isAfter(today))
+        .sort((a, b) => dayjs(a.eventDate).diff(b.eventDate))
     const pastEvents = events
-        .filter(e => new Date(e.eventDate) <= now)
-        .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
+        .filter(e => dayjs(e.eventDate).isBefore(today))
+        .sort((a, b) => dayjs(b.eventDate).diff(a.eventDate))
 
     return (
         <div className="mx-auto space-y-8">
@@ -70,7 +71,7 @@ function SellerEventCard({
     }
 }) {
     const imageUrl = useStorageUrl(event.imageStorageId)
-    const isPastEvent = new Date(event.eventDate) < new Date()
+    const isPastEvent = dayjs(event.eventDate).isBefore(dayjs().startOf('day'))
 
     return (
         <Card
@@ -168,10 +169,10 @@ function SellerEventCard({
                             <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <CalendarDays className="w-4 h-4" />
-                                    <span className="text-sm font-medium">Data</span>
+                                    <span className="text-sm font-medium">Horário</span>
                                 </div>
                                 <p className="text-sm font-medium text-foreground">
-                                    {new Date(event.eventDate).toLocaleDateString()}
+                                    {dayjs(event.eventDate).format(LONG_FORMAT)}
                                 </p>
                             </div>
 

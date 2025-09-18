@@ -10,6 +10,7 @@ import { Id } from '@/convex/_generated/dataModel'
 import { WAITING_LIST_STATUS } from '@/convex/constants'
 
 import { useToast } from '@/hooks/useToast'
+import dayjs from '@/lib/dayjs'
 
 import Spinner from './Spinner'
 
@@ -100,7 +101,7 @@ export default function JoinQueue({ eventId, userId }: { eventId: Id<'events'>; 
         return null
     }
 
-    const isPastEvent = new Date(event.eventDate) < new Date()
+    const isPastEvent = dayjs(event.eventDate).isBefore(dayjs().startOf('day'))
     const availableTickets = availability.totalTickets - availability.purchasedCount
 
     return (

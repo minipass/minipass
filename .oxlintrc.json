@@ -1,0 +1,17 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["typescript", "react", "react-perf", "promise", "oxc"],
+    "rules": {
+        "no-restricted-imports": [
+            "error",
+            {
+                "paths": [
+                    {
+                        "name": "dayjs",
+                        "message": "Do not directly import dayjs. Only import the dayjs exported from '@/lib/dayjs'."
+                    }
+                ]
+            }
+        ]
+    }
+}

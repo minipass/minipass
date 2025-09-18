@@ -1,6 +1,7 @@
 import { MINUTE, RateLimiter } from '@convex-dev/rate-limiter'
 import { ConvexError, v } from 'convex/values'
 
+import dayjs from '../lib/dayjs'
 import { components, internal } from './_generated/api'
 import { Doc, Id } from './_generated/dataModel'
 import { mutation, query } from './_generated/server'
@@ -44,7 +45,7 @@ export const create = mutation({
         name: v.string(),
         description: v.string(),
         location: v.string(),
-        eventDate: v.string(), // Store as ISO string
+        eventDate: v.number(),
         price: v.number(),
         totalTickets: v.number(),
         displayTotalTickets: v.boolean(),
@@ -55,8 +56,7 @@ export const create = mutation({
             name: args.name,
             description: args.description,
             location: args.location,
-            eventDate: 0,
-            // eventDate: args.eventDate,
+            eventDate: args.eventDate,
             price: args.price,
             totalTickets: args.totalTickets,
             displayTotalTickets: args.displayTotalTickets,
@@ -316,7 +316,7 @@ export const getUserTicketsGroupedByEvent = query({
 
         // Convert to array and sort by event date
         const groupedTickets = Array.from(ticketsByEvent.values())
-        groupedTickets.sort((a, b) => new Date(a.event.eventDate).getTime() - new Date(b.event.eventDate).getTime())
+        groupedTickets.sort((a, b) => dayjs(a.event.eventDate).diff(b.event.eventDate))
 
         return groupedTickets
     },
@@ -447,7 +447,7 @@ export const updateEvent = mutation({
         name: v.string(),
         description: v.string(),
         location: v.string(),
-        // eventDate: v.string(), // ISO string
+        eventDate: v.number(),
         price: v.number(),
         totalTickets: v.number(),
         displayTotalTickets: v.boolean(),

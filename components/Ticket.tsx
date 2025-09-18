@@ -10,6 +10,7 @@ import { Id } from '@/convex/_generated/dataModel'
 
 import { useStorageUrl } from '@/hooks/useStorageUrl'
 import { cn } from '@/lib/css'
+import dayjs from '@/lib/dayjs'
 
 import Spinner from './Spinner'
 import { Badge } from './ui/badge'
@@ -23,11 +24,6 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
     const imageUrl = useStorageUrl(ticket?.event?.imageStorageId)
 
     if (!ticket || !ticket.event || !user) {
-        return <Spinner />
-    }
-
-    // Image still loading, if not present will return null instead
-    if (imageUrl === undefined) {
         return <Spinner />
     }
 
@@ -65,8 +61,8 @@ export default function Ticket({ ticketId }: { ticketId: Id<'tickets'> }) {
                                 )}
                             />
                             <div>
-                                <p className="text-sm text-muted-foreground">Data</p>
-                                <p className="font-medium">{new Date(ticket.event.eventDate).toLocaleDateString()}</p>
+                                <p className="text-sm text-muted-foreground">Horário</p>
+                                <p className="font-medium">{dayjs(ticket.event.eventDate).format('DD/MM/YYYY h:mm')}</p>
                             </div>
                         </div>
 

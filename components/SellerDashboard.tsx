@@ -11,8 +11,6 @@ import React, { useEffect, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { PaymentProvider } from '@/convex/types'
 
-import { cn } from '@/lib/css'
-
 import AccountSetupForm from './AccountSetupForm'
 import PaymentProviderSelector, { PROVIDER_CONFIGS } from './PaymentProviderSelector'
 import Spinner from './Spinner'
@@ -27,8 +25,6 @@ export default function SellerDashboard() {
 
     const router = useRouter()
     const { user } = useUser()
-
-    console.log('this is the user', user)
 
     // Convex actions and queries
     const paymentAccounts = useQuery(api.payment.getUsersPaymentAccounts, {
@@ -111,11 +107,9 @@ export default function SellerDashboard() {
         <div className="max-w-4xl mx-auto p-6">
             <Card className="overflow-hidden">
                 {/* Header Section */}
-                <div className="bg-gradient-to-r from-primary to-primary/80 px-8 py-10 text-primary-foreground">
+                <div className="bg-card px-8 py-10 border-b border-border">
                     <h2 className="text-3xl font-bold">Painel do Vendedor</h2>
-                    <p className="text-primary-foreground/80 mt-2 text-lg">
-                        Gerencie seu perfil de vendedor e configurações de pagamento
-                    </p>
+                    <p className="mt-2 text-lg">Gerencie seu perfil de vendedor e configurações de pagamento</p>
                 </div>
 
                 {/* Main Content */}
@@ -153,14 +147,9 @@ export default function SellerDashboard() {
                     {/* Provider Status Section */}
                     {isSetup ? (
                         <div className="text-center py-8">
-                            <div className="bg-emerald-50 border border-emerald-200 rounded-sm p-8 mb-6">
+                            <div className="bg-emerald-50 dark:bg-emerald-800 border rounded-sm p-8 mb-6">
                                 <div className="flex items-center justify-center space-x-3 mb-6">
-                                    <div
-                                        className={cn(
-                                            'w-12 h-12 rounded-sm flex items-center justify-center text-primary-foreground text-lg ',
-                                            selectedProvider === 'stripe' ? 'bg-primary' : 'bg-emerald-600',
-                                        )}
-                                    >
+                                    <div className="w-12 h-12 rounded-sm flex items-center justify-center text-primary-foreground text-lg">
                                         {selectedProvider && (
                                             <Image
                                                 src={PROVIDER_CONFIGS[selectedProvider].logo}
@@ -177,10 +166,10 @@ export default function SellerDashboard() {
                                         </div>
                                     </div>
                                 </div>
-                                <p className="text-emerald-800 mb-4 text-lg">
+                                <p className="mb-4 text-lg">
                                     Seu provedor de pagamento está configurado e pronto para aceitar pagamentos.
                                 </p>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm text-primary">
                                     Precisa trocar de provedor? Entre em contato com o suporte para assistência.
                                 </p>
                             </div>

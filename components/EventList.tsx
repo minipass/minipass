@@ -5,6 +5,8 @@ import { CalendarDays, Ticket } from 'lucide-react'
 
 import { api } from '@/convex/_generated/api'
 
+import dayjs from '@/lib/dayjs'
+
 import EventCard from './EventCard'
 import Spinner from './Spinner'
 
@@ -19,14 +21,14 @@ export default function EventList() {
         )
     }
 
-    const now = new Date()
+    const today = dayjs().startOf('day')
     const upcomingEvents = events
-        .filter(event => new Date(event.eventDate) > now)
-        .sort((a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
+        .filter(event => dayjs(event.eventDate).isAfter(today))
+        .sort((a, b) => dayjs(a.eventDate).diff(b.eventDate))
 
     const pastEvents = events
-        .filter(event => new Date(event.eventDate) <= now)
-        .sort((a, b) => new Date(b.eventDate).getTime() - new Date(a.eventDate).getTime())
+        .filter(event => dayjs(event.eventDate).isBefore(today))
+        .sort((a, b) => dayjs(b.eventDate).diff(a.eventDate))
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

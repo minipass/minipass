@@ -16,6 +16,7 @@ import JoinQueue from '@/components/JoinQueue'
 import Spinner from '@/components/Spinner'
 import { Button } from '@/components/ui/button'
 import { useStorageUrl } from '@/hooks/useStorageUrl'
+import dayjs, { LONG_FORMAT } from '@/lib/dayjs'
 
 export default function EventPage() {
     const { user } = useUser()
@@ -56,7 +57,8 @@ export default function EventPage() {
         }
     }, [selectedQRCode])
 
-    if (!event || !availability || imageUrl === undefined) {
+    console.log(event, availability, imageUrl)
+    if (!event || !availability) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <Spinner />
@@ -98,14 +100,11 @@ export default function EventPage() {
                                         <div className="flex items-center py-3">
                                             <CalendarDays className="w-5 h-5 mr-3 text-primary flex-shrink-0" />
                                             <div>
-                                                <span className="text-sm font-medium text-muted-foreground">Data</span>
+                                                <span className="text-sm font-medium text-muted-foreground">
+                                                    Horário
+                                                </span>
                                                 <p className="text-foreground font-medium">
-                                                    {new Date(event.eventDate).toLocaleDateString('pt-BR', {
-                                                        weekday: 'long',
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric',
-                                                    })}
+                                                    {dayjs(event.eventDate).format(LONG_FORMAT)}
                                                 </p>
                                             </div>
                                         </div>
