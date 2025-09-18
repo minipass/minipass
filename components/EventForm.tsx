@@ -270,7 +270,6 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                                     <div className="relative">
                                         <span className="absolute left-2 top-1/2 -translate-y-1/2 text-sm">R$</span>
                                         <Input
-                                            type="number"
                                             {...field}
                                             onChange={e => field.onChange(Number(e.target.value))}
                                             className="pl-8"
@@ -289,11 +288,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                             <FormItem>
                                 <FormLabel>Total de Ingressos Disponíveis</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        type="number"
-                                        {...field}
-                                        onChange={e => field.onChange(Number(e.target.value))}
-                                    />
+                                    <Input {...field} onChange={e => field.onChange(Number(e.target.value))} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
