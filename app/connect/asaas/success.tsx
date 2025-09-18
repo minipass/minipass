@@ -31,10 +31,10 @@ export default function Return() {
                             </div>
 
                             <Link
-                                href="/dashboard/seller"
+                                href="/dashboard/seller/events"
                                 className="flex w-full bg-primary text-primary-foreground text-center py-3 px-4 rounded-sm font-medium hover:bg-primary/90 transition-colors duration-200 items-center justify-center gap-2"
                             >
-                                Go to Seller Dashboard
+                                See My Events
                                 <ArrowRight className="w-4 h-4" />
                             </Link>
                         </div>

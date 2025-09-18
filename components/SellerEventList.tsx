@@ -2,7 +2,7 @@
 
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
-import { Ban, Banknote, CalendarDays, Edit, InfoIcon, Ticket } from 'lucide-react'
+import { Ban, Banknote, CalendarDays, CreditCard, Edit, InfoIcon, Plus, Ticket } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -15,6 +15,7 @@ import { cn } from '@/lib/css'
 import dayjs, { LONG_FORMAT } from '@/lib/dayjs'
 
 import CancelEventButton from './CancelEventButton'
+import PaymentStatus from './PaymentStatus'
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
 import { Card } from './ui/card'
@@ -24,8 +25,56 @@ export default function SellerEventList() {
     const events = useQuery(api.events.getSellerEvents, {
         userId: user?.id ?? '',
     })
+    const paymentAccounts = useQuery(api.payment.getUsersPaymentAccounts, {
+        userId: user?.id || '',
+    })
 
-    if (!events) return null
+    if (!events || paymentAccounts === undefined) return null
+
+    const isPaymentSetup = paymentAccounts.stripeConnectId || paymentAccounts.asaasSubaccountId
+
+    // Show empty state if no events at all
+    if (events.length === 0) {
+        return (
+            <div className="mx-auto">
+                <div className="text-center py-12">
+                    {!isPaymentSetup ? (
+                        <>
+                            <div className="w-16 h-16 mx-auto mb-6 bg-muted rounded-full flex items-center justify-center">
+                                <CreditCard className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-foreground mb-2">
+                                Configure o pagamento primeiro
+                            </h3>
+                            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                                Você precisa configurar um provedor de pagamento antes de criar eventos e vender
+                                ingressos.
+                            </p>
+                        </>
+                    ) : (
+                        <>
+                            <div className="w-16 h-16 mx-auto mb-6 bg-muted rounded-full flex items-center justify-center">
+                                <Ticket className="w-8 h-8 text-muted-foreground" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-foreground mb-2">Nenhum evento criado ainda</h3>
+                            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                                Comece criando seu primeiro evento para vender ingressos e gerenciar suas vendas.
+                            </p>
+                            <Button asChild>
+                                <Link href="/dashboard/seller/events/new">
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    Criar Primeiro Evento
+                                </Link>
+                            </Button>
+                        </>
+                    )}
+                </div>
+
+                {/* Payment Status */}
+                <PaymentStatus />
+            </div>
+        )
+    }
 
     const today = dayjs().startOf('day')
     const upcomingEvents = events
@@ -59,6 +108,9 @@ export default function SellerEventList() {
                     </div>
                 </div>
             )}
+
+            {/* Payment Status */}
+            <PaymentStatus />
         </div>
     )
 }

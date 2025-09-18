@@ -1,15 +1,10 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 
-import SellerDashboard from '@/components/SellerDashboard'
-
 export default async function SellerPage() {
     const { userId } = await auth()
     if (!userId) redirect('/')
 
-    return (
-        <div className="min-h-screen bg-gray-50 dark:bg-blue-800">
-            <SellerDashboard />
-        </div>
-    )
+    // Redirect to events page since dashboard functionality has been moved there
+    redirect('/dashboard/seller/events')
 }

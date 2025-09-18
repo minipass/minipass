@@ -8,9 +8,9 @@ export default function AuthActions() {
     return (
         <>
             <Authenticated>
-                <Link href="/dashboard/seller">
+                <Link href="/dashboard/seller/events">
                     <button className="bg-primary text-primary-foreground px-2 py-1 text-sm rounded border-2 border-primary hover:bg-primary/90 transition hidden sm:block">
-                        Vender
+                        Meus Eventos
                     </button>
                 </Link>
 
