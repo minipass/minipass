@@ -12,6 +12,7 @@ import { CheckoutSession } from './types'
 type GetUsersPaymentAccountsResult = {
     stripeConnectId: string | undefined
     asaasApiKey: string | undefined
+    asaasWalletId: string | undefined
     feePercentage: number
 }
 export const getUsersPaymentAccounts = query({
@@ -29,6 +30,7 @@ export const getUsersPaymentAccounts = query({
         return {
             stripeConnectId: user.stripeConnectId,
             asaasApiKey: user.asaasApiKey,
+            asaasWalletId: user.asaasWalletId,
             feePercentage: user.feePercentage,
         }
     },
@@ -200,10 +202,10 @@ export const createCheckoutSession = action({
 
         if (!eventOwner) throw new ConvexError('Proprietário do evento não encontrado')
 
-        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasApiKey ? 'asaas' : null
+        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasWalletId ? 'asaas' : null
         if (!provider) throw new ConvexError('Provedor de pagamento não encontrado para o proprietário do evento!')
 
-        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasApiKey
+        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasWalletId
         if (!accountId) throw new ConvexError('Conta de pagamento não encontrada para o proprietário do evento!')
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
