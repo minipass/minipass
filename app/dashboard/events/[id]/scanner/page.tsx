@@ -253,7 +253,7 @@ export default function EventScannerPage() {
                             variant={isScannerActive ? 'destructive' : 'default'}
                             className="w-full"
                         >
-                            {isScannerActive ? 'Parar Scanner' : 'Iniciar Scanner'}
+                            {isScannerActive ? 'Esconder Scanner' : 'Mostrar Scanner'}
                         </Button>
 
                         {validTicketsCount === 0 && (
