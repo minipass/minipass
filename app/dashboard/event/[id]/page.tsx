@@ -200,10 +200,8 @@ export default function EventPage() {
                                 )}
 
                                 {/* Additional Event Information */}
-                                <div className="bg-primary/10 border border-primary/20 rounded-sm p-6">
-                                    <h3 className="text-lg font-semibold text-primary mb-2">
-                                        Informações do Organizador
-                                    </h3>
+                                <div className="bg-primary/10 border border-primary/20 rounded-sm p-6 text-primary">
+                                    <h3 className="text-lg font-semibold mb-2">Informações do Organizador</h3>
                                     <Editor content={event.description} editable={false} />
                                 </div>
                             </div>
