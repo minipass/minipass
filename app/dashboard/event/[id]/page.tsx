@@ -167,7 +167,7 @@ export default function EventPage() {
                                             {currentUserTickets.map((ticket, index) => (
                                                 <div
                                                     key={ticket._id}
-                                                    className="bg-card rounded-sm p-4 border border-green-200 hover:shadow-md transition-shadow cursor-pointer"
+                                                    className="bg-card rounded-sm p-4 border border-primary/20 hover:shadow-md transition-shadow cursor-pointer"
                                                     onClick={() =>
                                                         setSelectedQRCode({
                                                             ticketId: ticket._id,
