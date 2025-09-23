@@ -55,7 +55,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
 
         if (!availability.availabilityHidden && availability.purchasedCount >= availability.totalTickets) {
             return (
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-sm border border-gray-200">
+                <div className="flex items-center justify-between p-4 bg-muted rounded-sm border">
                     <div className="flex items-center">
                         <Ticket className="w-5 h-5 text-muted-foreground mr-2" />
                         <span className="text-foreground font-medium">Evento esgotado</span>

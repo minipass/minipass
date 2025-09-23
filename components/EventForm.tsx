@@ -335,7 +335,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
                         <label className="block text-sm font-medium text-foreground">Imagem do Evento</label>
                         <div className="mt-4 flex items-center gap-4">
                             {imagePreview || (!removedCurrentImage && currentImageUrl) ? (
-                                <div className="relative w-32 aspect-square bg-gray-100 rounded-sm">
+                                <div className="relative w-32 aspect-square bg-muted rounded-sm">
                                     <Image
                                         src={imagePreview || currentImageUrl!}
                                         alt="Preview"

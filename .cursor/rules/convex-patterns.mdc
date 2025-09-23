@@ -72,7 +72,7 @@ const rateLimiter = new RateLimiter(components.rateLimiter, {
 
 ```typescript
 if (!event) throw new ConvexError('Event not found')
-if (existingEntry) throw new Error('Already exists')
+if (existingEntry) throw new ConvexError('Already exists')
 ```
 
 description:
