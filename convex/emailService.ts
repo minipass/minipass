@@ -1,6 +1,6 @@
 import { Resend } from '@convex-dev/resend'
 import { pretty, render } from '@react-email/render'
-import { v } from 'convex/values'
+import { ConvexError, v } from 'convex/values'
 
 import { TicketEmailTemplate } from '../emails/ticketEmail'
 import { api, components } from './_generated/api'
@@ -19,7 +19,7 @@ export const sendTicketsEmail = internalAction({
     },
     handler: async (ctx, { ticketIds, userId }) => {
         if (ticketIds.length === 0) {
-            throw new Error('No tickets provided')
+            throw new ConvexError('No tickets provided')
         }
 
         // Get all ticket details
@@ -27,7 +27,7 @@ export const sendTicketsEmail = internalAction({
         for (const ticketId of ticketIds) {
             const ticket = await ctx.runQuery(api.tickets.getTicketById, { ticketId })
             if (!ticket) {
-                throw new Error(`Ticket ${ticketId} not found`)
+                throw new ConvexError(`Ticket ${ticketId} not found`)
             }
             tickets.push(ticket)
         }
@@ -35,13 +35,13 @@ export const sendTicketsEmail = internalAction({
         // Get event details (all tickets should be for the same event)
         const event = await ctx.runQuery(api.events.getById, { eventId: tickets[0].eventId })
         if (!event) {
-            throw new Error('Event not found')
+            throw new ConvexError('Event not found')
         }
 
         // Get user details
         const user = await ctx.runQuery(api.users.getUserById, { userId })
         if (!user) {
-            throw new Error('User not found')
+            throw new ConvexError('User not found')
         }
 
         // Format event date

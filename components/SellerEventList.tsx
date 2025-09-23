@@ -2,7 +2,7 @@
 
 import { useUser } from '@clerk/nextjs'
 import { useQuery } from 'convex/react'
-import { Ban, Banknote, CalendarDays, CreditCard, Edit, InfoIcon, Plus, Ticket } from 'lucide-react'
+import { Ban, Banknote, CalendarDays, CreditCard, Edit, InfoIcon, Plus, QrCode, Ticket } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -124,6 +124,7 @@ function SellerEventCard({
 }) {
     const imageUrl = useStorageUrl(event.imageStorageId)
     const isPastEvent = dayjs(event.eventDate).isBefore(dayjs().startOf('day'))
+    const isEventToday = Math.abs(dayjs(event.eventDate).diff(dayjs(), 'day')) <= 1
 
     return (
         <Card className={cn('transition-all duration-200 overflow-hidden', event.isCancelled ? 'border-red-200' : '')}>
@@ -165,6 +166,15 @@ function SellerEventCard({
                                             </Link>
                                         </Button>
                                         <CancelEventButton eventId={event._id} />
+                                        {isEventToday && (
+                                            <Link
+                                                href={`/dashboard/events/${event._id}/scanner`}
+                                                className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white hover:bg-orange-600 transition-colors rounded-sm"
+                                            >
+                                                <QrCode className="w-4 h-4" />
+                                                <span className="text-sm">Scanner</span>
+                                            </Link>
+                                        )}
                                     </>
                                 )}
                             </div>
