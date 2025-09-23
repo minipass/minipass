@@ -50,7 +50,7 @@ export default function MyTicketsPage() {
     const totalTickets = groupedTickets.reduce((total, group) => total + group.tickets.length, 0)
 
     return (
-        <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-background py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 {/* Success Message */}
                 {showSuccessMessage && (
@@ -138,7 +138,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
         <Link href={`/event/${group.event._id}`}>
             <Card
                 className={cn(
-                    'hover:border-gray-300 hover:shadow-sm transition-all duration-200 cursor-pointer overflow-hidden',
+                    'transition-all duration-200 cursor-pointer overflow-hidden',
                     isPastEvent && 'opacity-75 hover:opacity-100',
                 )}
             >

@@ -18,26 +18,28 @@ export default function EditEventPage() {
     if (!event) return null
 
     return (
-        <div className="max-w-3xl mx-auto p-6">
-            <div className="bg-card rounded-sm shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-8 text-primary-foreground">
-                    <h2 className="text-2xl font-bold">Edit Event</h2>
-                    <p className="text-primary-foreground/80 mt-2">Update your event details</p>
-                </div>
-
-                <div className="p-6">
-                    <div className="mb-6 bg-amber-50 border border-amber-200 rounded-sm p-4">
-                        <div className="flex gap-2 text-amber-800">
-                            <AlertCircle className="w-5 h-5 shrink-0" />
-                            <p className="text-sm">
-                                Note: If you modify the total number of tickets, any tickets already sold will remain
-                                valid. You can only increase the total number of tickets, not decrease it below the
-                                number of tickets already sold.
-                            </p>
-                        </div>
+        <div className="bg-background">
+            <div className="max-w-3xl mx-auto p-6">
+                <div className="bg-card rounded-sm shadow-lg border border-secondary overflow-hidden">
+                    <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-8 text-primary-foreground">
+                        <h2 className="text-2xl font-bold">Edit Event</h2>
+                        <p className="text-primary-foreground/80 mt-2">Update your event details</p>
                     </div>
 
-                    <EventForm mode="edit" initialData={event} />
+                    <div className="p-6">
+                        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-sm p-4">
+                            <div className="flex gap-2 text-amber-800">
+                                <AlertCircle className="w-5 h-5 shrink-0" />
+                                <p className="text-sm">
+                                    Note: If you modify the total number of tickets, any tickets already sold will
+                                    remain valid. You can only increase the total number of tickets, not decrease it
+                                    below the number of tickets already sold.
+                                </p>
+                            </div>
+                        </div>
+
+                        <EventForm mode="edit" initialData={event} />
+                    </div>
                 </div>
             </div>
         </div>

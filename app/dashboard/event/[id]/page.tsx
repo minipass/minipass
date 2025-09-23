@@ -70,7 +70,7 @@ export default function EventPage() {
     return (
         <div className="min-h-screen bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="bg-card rounded-lg shadow-sm overflow-hidden">
+                <div className="bg-card border border-secondary rounded-lg shadow-sm overflow-hidden">
                     <div className="aspect-[3/1] relative w-full">
                         <Image
                             src={imageUrl || '/images/event-fallback.svg'}
@@ -92,7 +92,7 @@ export default function EventPage() {
                             {/* Left Column - Event Details */}
                             <div className="lg:col-span-2 space-y-8">
                                 {/* Event Information - Less Card-Centric Design */}
-                                <div className="bg-card border border-border rounded-sm p-6">
+                                <div className="bg-card border border-secondary rounded-sm p-6">
                                     <h2 className="text-xl font-semibold text-card-foreground mb-6">
                                         Informações do Evento
                                     </h2>

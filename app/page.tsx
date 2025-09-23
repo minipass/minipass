@@ -78,7 +78,7 @@ export default function LandingPage() {
             </section>
 
             {/* Events Section */}
-            <section className="py-20 bg-card">
+            <section className="py-20 bg-card border border-secondary">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
                         <h2 className="text-3xl sm:text-4xl font-bold text-card-foreground mb-4">Próximos Eventos</h2>

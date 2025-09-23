@@ -5,7 +5,7 @@ export default function Return() {
     return (
         <div className="min-h-screen bg-background flex items-center justify-center p-4">
             <div className="max-w-md w-full">
-                <div className="bg-card rounded-lg shadow-lg overflow-hidden">
+                <div className="bg-card border border-secondary rounded-lg shadow-lg overflow-hidden">
                     {/* Success Header */}
                     <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 text-white text-center">
                         <div className="mb-4 flex justify-center">
