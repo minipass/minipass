@@ -126,12 +126,7 @@ function SellerEventCard({
     const isPastEvent = dayjs(event.eventDate).isBefore(dayjs().startOf('day'))
 
     return (
-        <Card
-            className={cn(
-                'hover:border-gray-300 hover:shadow-sm transition-all duration-200 overflow-hidden',
-                event.isCancelled ? 'border-red-200' : '',
-            )}
-        >
+        <Card className={cn('transition-all duration-200 overflow-hidden', event.isCancelled ? 'border-red-200' : '')}>
             <div className="p-6">
                 <div className="flex items-start gap-6">
                     {/* Event Image */}
@@ -176,7 +171,7 @@ function SellerEventCard({
                         </div>
 
                         <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
+                            <div className="bg-background p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <Ticket className="w-4 h-4" />
                                     <span className="text-sm font-medium">
@@ -203,7 +198,7 @@ function SellerEventCard({
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
+                            <div className="bg-background p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <Banknote className="w-4 h-4" />
                                     <span className="text-sm font-medium">
@@ -218,7 +213,7 @@ function SellerEventCard({
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
+                            <div className="bg-background p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <CalendarDays className="w-4 h-4" />
                                     <span className="text-sm font-medium">Horário</span>
@@ -228,7 +223,7 @@ function SellerEventCard({
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 border border-gray-200 p-4 rounded-sm">
+                            <div className="bg-background p-4 rounded-sm">
                                 <div className="flex items-center gap-2 text-muted-foreground mb-2">
                                     <InfoIcon className="w-4 h-4" />
                                     <span className="text-sm font-medium">Status</span>

@@ -40,7 +40,7 @@ export default function TicketCard({ ticketId }: { ticketId: Id<'tickets'> }) {
         <Link
             href={`/tickets/${ticketId}`}
             className={cn(
-                'block hover:border-gray-300 hover:shadow-sm transition-all duration-200 overflow-hidden',
+                'block transition-all duration-200 overflow-hidden',
                 ticket.event.isCancelled ? 'border-destructive/20' : '',
                 isPastEvent && 'opacity-75 hover:opacity-100',
             )}

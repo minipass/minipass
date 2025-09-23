@@ -20,7 +20,7 @@
         filter: brightness(95%);
         mix-blend-mode: multiply;
 
-        .dark & {
+        @media (prefers-color-scheme: dark) {
             filter: brightness(140%);
             mix-blend-mode: lighten;
         }
@@ -36,11 +36,10 @@
         }
     }
 
-    .dark & {
+    @media (prefers-color-scheme: dark) {
         &[data-active-state='on'] {
             .tiptap-button-highlight {
                 &::after {
-                    // Andere Eigenschaft für .dark Kontext
                     filter: brightness(180%);
                 }
             }

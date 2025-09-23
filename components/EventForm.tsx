@@ -184,7 +184,7 @@ export default function EventForm({ mode, initialData }: EventFormProps) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-primary">
                 {/* Form fields */}
                 <div className="space-y-4">
                     <FormField

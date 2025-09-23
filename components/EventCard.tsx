@@ -159,7 +159,7 @@ export default function EventCard({ eventId }: { eventId: Id<'events'> }) {
         <Card
             onClick={() => router.push(`/dashboard/event/${eventId}`)}
             className={cn(
-                'cursor-pointer overflow-hidden relative hover:border-gray-300 hover:shadow-sm transition-all duration-200',
+                'cursor-pointer overflow-hidden relative transition-all duration-200',
                 isPastEvent && 'opacity-75 hover:opacity-100',
             )}
         >
