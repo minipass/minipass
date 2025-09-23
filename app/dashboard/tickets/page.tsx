@@ -135,7 +135,7 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
     const isPastEvent = dayjs(group.event.eventDate).isBefore(dayjs().startOf('day'))
 
     return (
-        <Link href={`/event/${group.event._id}`}>
+        <Link href={`/dashboard/event/${group.event._id}`}>
             <Card
                 className={cn(
                     'transition-all duration-200 cursor-pointer overflow-hidden',
