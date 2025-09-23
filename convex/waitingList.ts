@@ -1,4 +1,4 @@
-import { v } from 'convex/values'
+import { ConvexError, v } from 'convex/values'
 
 import { internal } from './_generated/api'
 import { Id } from './_generated/dataModel'
@@ -75,7 +75,7 @@ export const processQueue = internalMutation({
     },
     handler: async (ctx, { eventId }) => {
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Evento não encontrado')
+        if (!event) throw new ConvexError('Evento não encontrado')
 
         // Calculate available spots
         const { availableSpots } = await ctx.db
@@ -83,7 +83,7 @@ export const processQueue = internalMutation({
             .filter(q => q.eq(q.field('_id'), eventId))
             .first()
             .then(async event => {
-                if (!event) throw new Error('Evento não encontrado')
+                if (!event) throw new ConvexError('Evento não encontrado')
 
                 const purchasedCount = await ctx.db
                     .query('tickets')
@@ -218,7 +218,7 @@ export const releaseTicket = mutation({
     handler: async (ctx, { eventId, waitingListId }) => {
         const entry = await ctx.db.get(waitingListId)
         if (!entry || entry.status !== WAITING_LIST_STATUS.OFFERED) {
-            throw new Error('Nenhuma oferta de ingresso válida encontrada')
+            throw new ConvexError('Nenhuma oferta de ingresso válida encontrada')
         }
 
         // Mark the entry as expired

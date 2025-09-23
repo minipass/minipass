@@ -97,12 +97,18 @@ export const joinWaitingList = mutation({
 
         // Don't allow duplicate entries
         if (existingEntry) {
-            throw new Error('Já está na lista de espera para este evento')
+            throw new ConvexError('Já está na lista de espera para este evento')
         }
 
         // Verify the event exists
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Evento não encontrado')
+        if (!event) throw new ConvexError('Evento não encontrado')
+
+        // Check it's not owner
+        const isOwner = userId === event.userId
+        if (isOwner) {
+            throw new ConvexError('Você não pode se inscrever na lista de espera para seu próprio evento')
+        }
 
         // Check if there are any available tickets right now
         // Calculate availability inline to avoid circular reference
@@ -196,14 +202,14 @@ export const purchaseTicket = mutation({
 
         if (!waitingListEntry) {
             console.error('Waiting list entry not found')
-            throw new Error('Entrada da lista de espera não encontrada')
+            throw new ConvexError('Entrada da lista de espera não encontrada')
         }
 
         if (waitingListEntry.status !== WAITING_LIST_STATUS.OFFERED) {
             console.error('Invalid waiting list status', {
                 status: waitingListEntry.status,
             })
-            throw new Error('Status inválido da lista de espera - a oferta de ingresso pode ter expirado')
+            throw new ConvexError('Status inválido da lista de espera - a oferta de ingresso pode ter expirado')
         }
 
         if (waitingListEntry.userId !== userId) {
@@ -211,7 +217,7 @@ export const purchaseTicket = mutation({
                 waitingListUserId: waitingListEntry.userId,
                 requestUserId: userId,
             })
-            throw new Error('A entrada da lista de espera não pertence a este usuário')
+            throw new ConvexError('A entrada da lista de espera não pertence a este usuário')
         }
 
         // Verify event exists and is active
@@ -220,12 +226,12 @@ export const purchaseTicket = mutation({
 
         if (!event) {
             console.error('Event not found', { eventId })
-            throw new Error('Evento não encontrado')
+            throw new ConvexError('Evento não encontrado')
         }
 
         if (event.isCancelled) {
             console.error('Attempted purchase of cancelled event', { eventId })
-            throw new Error('Evento não está mais ativo')
+            throw new ConvexError('Evento não está mais ativo')
         }
 
         try {
@@ -261,7 +267,7 @@ export const purchaseTicket = mutation({
             console.log('Purchase ticket completed successfully')
         } catch (error) {
             console.error('Failed to complete ticket purchase:', error)
-            throw new Error(`Falha ao completar a compra do ingresso: ${error}`)
+            throw new ConvexError(`Falha ao completar a compra do ingresso: ${error}`)
         }
     },
 })
@@ -351,7 +357,7 @@ export const getEventAvailability = query({
     args: { eventId: v.id('events') },
     handler: async (ctx, { eventId }) => {
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Evento não encontrado')
+        if (!event) throw new ConvexError('Evento não encontrado')
 
         // Count total purchased tickets
         const purchasedCount = await ctx.db
@@ -460,7 +466,7 @@ export const updateEvent = mutation({
 
         // Get current event to check tickets sold
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Evento não encontrado')
+        if (!event) throw new ConvexError('Evento não encontrado')
 
         const soldTickets = await ctx.db
             .query('tickets')
@@ -470,7 +476,7 @@ export const updateEvent = mutation({
 
         // Ensure new total tickets is not less than sold tickets
         if (updates.totalTickets < soldTickets.length) {
-            throw new Error(
+            throw new ConvexError(
                 `Não é possível reduzir o total de ingressos abaixo de ${soldTickets.length} (número de ingressos já vendidos)`,
             )
         }
@@ -484,7 +490,7 @@ export const cancelEvent = mutation({
     args: { eventId: v.id('events') },
     handler: async (ctx, { eventId }) => {
         const event = await ctx.db.get(eventId)
-        if (!event) throw new Error('Evento não encontrado')
+        if (!event) throw new ConvexError('Evento não encontrado')
 
         // Get all valid tickets for this event
         const tickets = await ctx.db
@@ -494,7 +500,7 @@ export const cancelEvent = mutation({
             .collect()
 
         if (tickets.length > 0) {
-            throw new Error(
+            throw new ConvexError(
                 'Não é possível cancelar evento com ingressos ativos. Por favor, reembolse todos os ingressos primeiro.',
             )
         }

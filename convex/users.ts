@@ -1,4 +1,4 @@
-import { v } from 'convex/values'
+import { ConvexError, v } from 'convex/values'
 
 import { internalQuery, mutation, query } from './_generated/server'
 
@@ -23,7 +23,7 @@ export const updateOrCreateUserStripeConnectId = mutation({
             .first()
 
         if (!user) {
-            throw new Error('Usuário não encontrado')
+            throw new ConvexError('Usuário não encontrado')
         }
 
         await ctx.db.patch(user._id, { stripeConnectId: args.stripeConnectId })
