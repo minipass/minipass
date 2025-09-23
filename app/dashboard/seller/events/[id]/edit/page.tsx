@@ -27,7 +27,7 @@ export default function EditEventPage() {
                     </div>
 
                     <div className="p-6">
-                        <div className="mb-6 bg-amber-50 border border-amber-200 rounded-sm p-4">
+                        <div className="mb-6 bg-amber-50 border rounded-sm p-4">
                             <div className="flex gap-2 text-amber-800">
                                 <AlertCircle className="w-5 h-5 shrink-0" />
                                 <p className="text-sm">

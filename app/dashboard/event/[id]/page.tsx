@@ -13,6 +13,8 @@ import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
 import JoinQueue from '@/components/JoinQueue'
+import { PurchaseTicketButton } from '@/components/PurchaseTicket'
+import ReleaseTicket from '@/components/ReleaseTicket'
 import Spinner from '@/components/Spinner'
 import { Editor } from '@/components/tiptap/Editor'
 import { Button } from '@/components/ui/button'
@@ -30,14 +32,20 @@ export default function EventPage() {
         price: number
     } | null>(null)
 
+    const eventId = params.id as Id<'events'>
+
     const event = useQuery(api.events.getById, {
-        eventId: params.id as Id<'events'>,
+        eventId,
     })
     const availability = useQuery(api.events.getEventAvailability, {
-        eventId: params.id as Id<'events'>,
+        eventId,
     })
     const userTickets = useQuery(api.tickets.getValidTicketsForEvent, {
-        eventId: params.id as Id<'events'>,
+        eventId,
+    })
+    const queuePosition = useQuery(api.waitingList.getQueuePosition, {
+        eventId,
+        userId: user?.id ?? '',
     })
     const imageUrl = useStorageUrl(event?.imageStorageId)
 
@@ -226,8 +234,16 @@ export default function EventPage() {
                                         </div>
 
                                         <div className="space-y-4">
-                                            {user ? (
-                                                <JoinQueue eventId={params.id as Id<'events'>} userId={user.id} />
+                                            {queuePosition?.status === 'offered' ? (
+                                                <>
+                                                    <PurchaseTicketButton eventId={eventId} />
+                                                    <ReleaseTicket
+                                                        eventId={eventId}
+                                                        waitingListId={queuePosition._id}
+                                                    />
+                                                </>
+                                            ) : user ? (
+                                                <JoinQueue eventId={eventId} userId={user.id} />
                                             ) : (
                                                 <Link href="/sign-in">
                                                     <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/40 text-primary-foreground font-medium py-4 px-6 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg text-lg">
