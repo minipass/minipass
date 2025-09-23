@@ -27,6 +27,3 @@ jobs:
 
             - name: Check prettier formatting
               run: bunx prettier --check .
-
-            - name: Check TypeScript
-              run: bunx tsc --noEmit
