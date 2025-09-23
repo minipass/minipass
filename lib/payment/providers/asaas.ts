@@ -85,7 +85,7 @@ export class AsaasProvider implements PaymentProviderBase {
             splits,
             items: [
                 {
-                    name: params.event.name,
+                    name: params.event.name.slice(0, 30),
                     description: params.event.description,
                     quantity: params.quantity,
                     value: params.event.price.toFixed(2),
