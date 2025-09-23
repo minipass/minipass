@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from 'react'
 
 import { Badge } from './ui/badge'
 import { Button } from './ui/button'
-import { Card } from './ui/card'
 
 interface QRCodeReaderProps {
     validTicketIds: Set<string>
@@ -145,87 +144,78 @@ export default function QRCodeReader({
 
     return (
         <div className="w-full max-w-md mx-auto space-y-4">
-            <Card className="p-6">
-                <div className="text-center space-y-4">
-                    <h2 className="text-2xl font-bold">
-                        {eventName ? `Scanner - ${eventName}` : 'Scanner de Ingressos'}
-                    </h2>
+            <div className="text-center space-y-4">
+                <h2 className="text-2xl font-bold">{eventName ? `Scanner - ${eventName}` : 'Scanner de Ingressos'}</h2>
 
-                    {/* Camera View */}
-                    <div className="relative">
-                        <video
-                            ref={videoRef}
-                            className="w-full h-64 bg-black rounded-lg object-cover"
-                            playsInline
-                            muted
-                        />
-                        {!isScanning && (
-                            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
-                                <p className="text-white text-lg">Câmera não iniciada</p>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Scan Result */}
-                    {scanResult && (
-                        <div className="flex items-center justify-center space-x-2">
-                            {scanResult === 'valid' && (
-                                <>
-                                    <CheckCircle className="h-8 w-8 text-green-500" />
-                                    <span className="text-green-500 font-semibold text-lg">Ingresso Válido!</span>
-                                </>
-                            )}
-                            {scanResult === 'invalid' && (
-                                <>
-                                    <XCircle className="h-8 w-8 text-red-500" />
-                                    <span className="text-red-500 font-semibold text-lg">Ingresso Inválido</span>
-                                </>
-                            )}
-                            {scanResult === 'already-used' && (
-                                <>
-                                    <XCircle className="h-8 w-8 text-orange-500" />
-                                    <span className="text-orange-500 font-semibold text-lg">Ingresso Já Utilizado</span>
-                                </>
-                            )}
+                {/* Camera View */}
+                <div className="relative">
+                    <video ref={videoRef} className="w-full h-64 bg-black rounded-lg object-cover" playsInline muted />
+                    {!isScanning && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+                            <p className="text-white text-lg">Câmera não iniciada</p>
                         </div>
                     )}
+                </div>
 
-                    {/* Controls */}
-                    <div className="flex flex-col space-y-2">
-                        <div className="flex space-x-2">
-                            <Button
-                                onClick={isScanning ? stopScanning : startScanning}
-                                variant={isScanning ? 'destructive' : 'default'}
-                                className="flex-1"
-                            >
-                                {isScanning ? 'Parar Scanner' : 'Iniciar Scanner'}
-                            </Button>
+                {/* Scan Result */}
+                {scanResult && (
+                    <div className="flex items-center justify-center space-x-2">
+                        {scanResult === 'valid' && (
+                            <>
+                                <CheckCircle className="h-8 w-8 text-green-500" />
+                                <span className="text-green-500 font-semibold text-lg">Ingresso Válido!</span>
+                            </>
+                        )}
+                        {scanResult === 'invalid' && (
+                            <>
+                                <XCircle className="h-8 w-8 text-red-500" />
+                                <span className="text-red-500 font-semibold text-lg">Ingresso Inválido</span>
+                            </>
+                        )}
+                        {scanResult === 'already-used' && (
+                            <>
+                                <XCircle className="h-8 w-8 text-orange-500" />
+                                <span className="text-orange-500 font-semibold text-lg">Ingresso Já Utilizado</span>
+                            </>
+                        )}
+                    </div>
+                )}
 
-                            <Button onClick={() => setIsMuted(!isMuted)} variant="outline" size="icon">
-                                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                            </Button>
-                        </div>
+                {/* Controls */}
+                <div className="flex flex-col space-y-2">
+                    <div className="flex space-x-2">
+                        <Button
+                            onClick={isScanning ? stopScanning : startScanning}
+                            variant={isScanning ? 'destructive' : 'default'}
+                            className="flex-1"
+                        >
+                            {isScanning ? 'Parar Scanner' : 'Iniciar Scanner'}
+                        </Button>
 
-                        {/* Status */}
-                        <div className="flex items-center justify-center space-x-2">
-                            <Badge variant={isScanning ? 'default' : 'secondary'}>
-                                {isScanning ? 'Escaneando...' : 'Parado'}
-                            </Badge>
-                            {isMuted && <Badge variant="outline">Som Desabilitado</Badge>}
-                        </div>
+                        <Button onClick={() => setIsMuted(!isMuted)} variant="outline" size="icon">
+                            {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                        </Button>
                     </div>
 
-                    {/* Error Message */}
-                    {error && <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded">{error}</div>}
-
-                    {/* Instructions */}
-                    <div className="text-sm text-gray-600 space-y-1">
-                        <p>• Aponte a câmera para o QR code do ingresso</p>
-                        <p>• O scanner detectará automaticamente</p>
-                        <p>• Som e vibração indicarão o resultado</p>
+                    {/* Status */}
+                    <div className="flex items-center justify-center space-x-2">
+                        <Badge variant={isScanning ? 'default' : 'secondary'}>
+                            {isScanning ? 'Escaneando...' : 'Parado'}
+                        </Badge>
+                        {isMuted && <Badge variant="outline">Som Desabilitado</Badge>}
                     </div>
                 </div>
-            </Card>
+
+                {/* Error Message */}
+                {error && <div className="text-red-500 text-sm text-center bg-red-50 p-2 rounded">{error}</div>}
+
+                {/* Instructions */}
+                <div className="text-sm text-gray-600 space-y-1">
+                    <p>• Aponte a câmera para o QR code do ingresso</p>
+                    <p>• O scanner detectará automaticamente</p>
+                    <p>• Som e vibração indicarão o resultado</p>
+                </div>
+            </div>
         </div>
     )
 }

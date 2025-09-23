@@ -252,7 +252,6 @@ export default function EventScannerPage() {
                             onClick={() => setIsScannerActive(!isScannerActive)}
                             variant={isScannerActive ? 'destructive' : 'default'}
                             className="w-full"
-                            // disabled={validTicketsCount === 0}
                         >
                             {isScannerActive ? 'Parar Scanner' : 'Iniciar Scanner'}
                         </Button>
