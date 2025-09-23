@@ -59,9 +59,13 @@ export const TicketEmailTemplate = ({
                                             value={ticket.ticketId}
                                             size={200}
                                             style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
+                                            format=""
                                         />
                                     </div>
                                     <Text style={qrText}>Apresente este QR Code na entrada do evento</Text>
+                                    <Text style={qrTextSubcaption}>
+                                        Se o QR Code não estiver aparecendo, abra o app da minipass em um navegador
+                                    </Text>
                                 </Section>
                             </Section>
                         ))}
@@ -198,6 +202,13 @@ const qrText = {
     fontSize: '14px',
     margin: '16px 0 0 0',
     fontWeight: '500',
+}
+
+const qrTextSubcaption = {
+    color: '#92400e',
+    fontSize: '12px',
+    margin: '8px 0 0 0',
+    fontWeight: '400',
 }
 
 const instructions = {
