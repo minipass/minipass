@@ -29,8 +29,8 @@ export class AsaasProvider implements PaymentProviderBase {
                     name: 'minipass - DO NOT DELETE',
                     url:
                         process.env.IS_DEV === 'false'
-                            ? `${process.env.NEXT_PUBLIC_APP_URL}/api/asaas/webhook`
-                            : `https://minipass.com.br/api/asaas/webhook`,
+                            ? `${process.env.NEXT_PUBLIC_APP_URL}/api/webhooks/asaas`
+                            : `https://minipass.com.br/api/webhooks/asaas`,
                     email: 'rafaeelaudibert+minipass@gmail.com',
                     enabled: true,
                     interrupted: false,
