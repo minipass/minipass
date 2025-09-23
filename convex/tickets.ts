@@ -17,6 +17,13 @@ export const getUserTicketForEvent = query({
     },
 })
 
+export const getTicketById = query({
+    args: { ticketId: v.id('tickets') },
+    handler: async (ctx, { ticketId }) => {
+        return await ctx.db.get(ticketId)
+    },
+})
+
 export const getTicketWithDetails = query({
     args: { ticketId: v.id('tickets') },
     handler: async (ctx, { ticketId }) => {

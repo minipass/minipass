@@ -252,7 +252,7 @@ export const purchaseTicket = mutation({
                 }),
             )
 
-            await Promise.all(ticketPromises)
+            const createdTickets = await Promise.all(ticketPromises)
 
             console.log('Updating waiting list status to purchased')
             await ctx.db.patch(waitingListId, {
@@ -263,6 +263,19 @@ export const purchaseTicket = mutation({
 
             // Process queue for next person
             await ctx.runMutation(internal.waitingList.processQueue, { eventId })
+
+            // Send ticket emails
+            console.log('Sending ticket emails')
+            try {
+                await ctx.scheduler.runAfter(0, internal.emailService.sendTicketsEmail, {
+                    ticketIds: createdTickets,
+                    userId,
+                })
+                console.log('Ticket emails scheduled successfully')
+            } catch (emailError) {
+                console.error('Failed to schedule ticket emails:', emailError)
+                // Don't fail the purchase if email sending fails
+            }
 
             console.log('Purchase ticket completed successfully')
         } catch (error) {

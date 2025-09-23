@@ -10,4 +10,6 @@ crons.interval(
     internal.waitingList.cleanupExpiredOffers,
 )
 
+crons.interval('cleanup-old-emails', { hours: 1 }, internal.emailService.cleanupOldEmails)
+
 export default crons

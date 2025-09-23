@@ -20,6 +20,6 @@
         "isolatedModules": true,
         "noEmit": true
     },
-    "include": ["./**/*", "../lib/payment"],
+    "include": ["./**/*", "../lib/payment", "../emails"],
     "exclude": ["./_generated"]
 }
