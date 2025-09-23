@@ -14,6 +14,7 @@ if (!process.env.ASAAS_WEBHOOK_SIGNATURE) {
 export class Asaas {
     apiKey: string
     baseUrl: string
+    checkoutBaseUrl: string = 'https://asaas.com'
     apiUrl: string
     walletId: string
     webhookSignature: string

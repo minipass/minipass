@@ -100,7 +100,7 @@ export class AsaasProvider implements PaymentProviderBase {
 
         return {
             sessionId: checkoutSession.id,
-            sessionUrl: `${this.asaas.baseUrl}/checkoutSession/show?id=${checkoutSession.id}`,
+            sessionUrl: `${this.asaas.checkoutBaseUrl}/checkoutSession/show?id=${checkoutSession.id}`,
             provider: this.provider,
         }
     }
