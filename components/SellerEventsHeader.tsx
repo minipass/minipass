@@ -15,7 +15,7 @@ export default function SellerEventsHeader() {
         userId: user?.id || '',
     })
 
-    const isPaymentSetup = paymentAccounts?.stripeConnectId || paymentAccounts?.asaasWalletId
+    const isPaymentSetup = paymentAccounts?.stripeConnectId || paymentAccounts?.asaasApiKey
 
     return (
         <div className="bg-card rounded-lg shadow-sm border border-border p-6 mb-8">
