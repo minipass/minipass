@@ -26,6 +26,7 @@ export const SignUpComponent = () => {
                     headerTitle: 'hidden',
                     headerSubtitle: 'hidden',
                     formFieldInput: 'border border-gray-300 focus:border-primary focus:ring-primary',
+                    formFieldCheckboxInput: 'border-0 focus:border-0 focus:ring-0 shadow-none',
                 },
             }}
             fallbackRedirectUrl="/"
