@@ -1,7 +1,7 @@
 export default {
     providers: [
         {
-            domain: 'https://well-moth-48.clerk.accounts.dev/',
+            domain: process.env.CLERK_JWT_ISSUER_DOMAIN,
             applicationID: 'convex',
         },
     ],
