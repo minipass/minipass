@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
+import { toast } from '@/hooks/useToast'
+
 import ReleaseTicket from './ReleaseTicket'
 
 export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
@@ -122,6 +124,12 @@ export const PurchaseTicketButton = ({ eventId }: { eventId: Id<'events'> }) => 
             }
         } catch (error) {
             console.error('Error creating checkout session:', error)
+            toast({
+                variant: 'destructive',
+                title: 'Ops! Algo deu errado.',
+                description:
+                    'Falha ao criar a sessão de checkout. Contate o administrador do evento ou o time de suporte.',
+            })
         } finally {
             setIsLoading(false)
         }

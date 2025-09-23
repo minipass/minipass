@@ -4,6 +4,7 @@ import { PaymentProviderFactory } from '../lib/payment/provider-factory'
 import { api, internal } from './_generated/api'
 import { Doc } from './_generated/dataModel'
 import { action, internalMutation, query } from './_generated/server'
+import { CheckoutSession } from './types'
 
 // Get user's payment accounts
 type GetUsersPaymentAccountsResult = {
@@ -180,12 +181,21 @@ export const createCheckoutSession = action({
         if (!accountId) throw new ConvexError('Conta de pagamento não encontrada para o proprietário do evento!')
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
-        const session = await paymentProvider.createCheckoutSession({
-            event,
-            quantity,
-            accountId,
-            feePercentage: eventOwner.feePercentage,
-        })
+
+        let session: CheckoutSession
+        try {
+            session = await paymentProvider.createCheckoutSession({
+                event,
+                quantity,
+                accountId,
+                feePercentage: eventOwner.feePercentage,
+            })
+        } catch (error) {
+            console.error('Failed to create checkout session:', error)
+            throw new ConvexError(
+                'Falha ao criar a sessão de checkout. Contate o administrador do evento ou o time de suporte.',
+            )
+        }
 
         // After session was created, make sure we store the metadata
         await ctx.runMutation(internal.payment.storeCheckoutSessionMetadata, {
