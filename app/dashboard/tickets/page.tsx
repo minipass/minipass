@@ -142,9 +142,9 @@ function EventCard({ group }: { group: { event: any; tickets: any[] } }) {
                     isPastEvent && 'opacity-75 hover:opacity-100',
                 )}
             >
-                <div className="flex">
+                <div className="flex items-center">
                     {/* Event Image */}
-                    <div className="relative w-24 h-24 flex-shrink-0">
+                    <div className="relative w-24 h-24 flex-shrink-0 m-6">
                         <Image
                             src={imageUrl || '/images/event-fallback.svg'}
                             alt={group.event.name}
