@@ -99,7 +99,6 @@ export const createAsaasPaymentAccount = action({
             account = await paymentProvider.createAccount({ apiKey })
         } catch (error) {
             console.error('Failed to create Asaas account:', error)
-            throw error
             throw new ConvexError(
                 'Falha ao criar a conta Asaas. Valide sua chave de API ou entre em contato com o time de suporte.',
             )
