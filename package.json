@@ -37,7 +37,7 @@
         "@tiptap/starter-kit": "^3.4.4",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
-        "convex": "^1.27.0",
+        "convex": "^1.27.2",
         "dayjs": "^1.11.18",
         "lodash.throttle": "^4.1.1",
         "lucide-react": "^0.460.0",
