@@ -3,67 +3,55 @@ import { CheckoutSession, PaymentProvider } from '../../../convex/types'
 import { Asaas, asaas } from '../../asaas'
 import { PaymentProviderBase } from './base'
 
-export class AsaasProvider extends PaymentProviderBase {
+export class AsaasProvider implements PaymentProviderBase {
     provider: PaymentProvider = 'asaas'
     private asaas: Asaas
 
     constructor() {
-        super()
         this.asaas = asaas
     }
 
     // Asaas doesn't have account links like Stripe
-    // This is a hardcoded page explaining that people need to configure their Asaas account in their email
-    async createAccountLink(): Promise<{ url: string }> {
-        return { url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/asaas/success` }
-    }
+    // This is a hardcoded page explaining that people just need to use their Asaas account as is
+    // We do hit their API to validate the API key and get the wallet ID
+    async createAccount({ apiKey }: { apiKey: string }) {
+        // Validate the API key and get the wallet ID for splits
+        const wallets = await this.asaas.makeRequest('/wallets', { method: 'GET' }, apiKey)
 
-    async createAccount(accountData: {
-        name: string
-        email: string
-        birthDate: string
-        cpfCnpj: string
-        mobilePhone: string
-        incomeValue: number
-        address: string
-        addressNumber: string
-        province: string
-        postalCode: string
-    }) {
-        const subaccountData = {
-            name: accountData.name,
-            email: accountData.email,
-            birthDate: accountData.birthDate, // Crazy that this is required
-            cpfCnpj: accountData.cpfCnpj,
-            mobilePhone: accountData.mobilePhone,
-            incomeValue: accountData.incomeValue, // Monthly billing value - required from May 30, 2024
-            address: accountData.address,
-            addressNumber: accountData.addressNumber,
-            province: accountData.province,
-            postalCode: accountData.postalCode,
-            webhooks: [
-                {
+        const walletId = wallets.data[0].id
+
+        // Create a webhook to receive payments from the account
+        await this.asaas.makeRequest(
+            '/webhooks',
+            {
+                method: 'POST',
+                body: JSON.stringify({
                     name: 'minipass - DO NOT DELETE',
-                    url: `${process.env.NEXT_PUBLIC_APP_URL}/api/asaas/webhook`,
-                    email: accountData.email,
+                    url:
+                        process.env.IS_DEV === 'false'
+                            ? `${process.env.NEXT_PUBLIC_APP_URL}/api/asaas/webhook`
+                            : `https://minipass.com.br/api/asaas/webhook`,
+                    email: 'rafaeelaudibert+minipass@gmail.com',
                     enabled: true,
                     interrupted: false,
                     sendType: 'SEQUENTIALLY',
                     events: ['CHECKOUT_PAID'],
                     authToken: this.asaas.webhookSignature,
-                },
-            ],
-        }
+                }),
+            },
+            apiKey,
+        )
 
-        const subaccount = await this.asaas.makeRequest('/accounts', {
-            method: 'POST',
-            body: JSON.stringify(subaccountData),
-        })
+        // Generate an account link to the success page
+        const { url } = await this.getAccountLink()
 
-        return {
-            accountId: subaccount.apiKey,
-            walletId: subaccount.walletId,
-        }
+        return { walletId, url }
+    }
+
+    // Asaas doesn't have account links like Stripe
+    // This is a hardcoded page explaining that people just need to use their Asaas account as is
+    async getAccountLink() {
+        return { url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/asaas/success` }
     }
 
     async createCheckoutSession(params: {
@@ -79,8 +67,8 @@ export class AsaasProvider extends PaymentProviderBase {
                 ? []
                 : [
                       {
-                          walletId: this.asaas.walletId,
-                          percentageValue: params.feePercentage,
+                          walletId: params.accountId,
+                          percentageValue: 100 - params.feePercentage,
                       },
                   ]
 
@@ -105,14 +93,10 @@ export class AsaasProvider extends PaymentProviderBase {
             ],
         }
 
-        const checkoutSession = await this.asaas.makeRequest(
-            '/checkouts',
-            {
-                method: 'POST',
-                body: JSON.stringify(checkoutSessionData),
-            },
-            params.accountId, // Make sure the charge is done in the name of the subaccount
-        )
+        const checkoutSession = await this.asaas.makeRequest('/checkouts', {
+            method: 'POST',
+            body: JSON.stringify(checkoutSessionData),
+        })
 
         return {
             sessionId: checkoutSession.id,
@@ -128,14 +112,10 @@ export class AsaasProvider extends PaymentProviderBase {
             description: 'Refund requested by customer',
         }
 
-        await this.asaas.makeRequest(
-            `/payments/${paymentId}/refund`,
-            {
-                method: 'POST',
-                body: JSON.stringify(refundData),
-            },
-            accountId,
-        )
+        await this.asaas.makeRequest(`/payments/${paymentId}/refund`, {
+            method: 'POST',
+            body: JSON.stringify(refundData),
+        })
     }
 
     async verifyWebhook(body: string, signature: string) {

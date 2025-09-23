@@ -58,10 +58,13 @@ export default defineSchema({
         email: v.string(),
         userId: v.string(),
         stripeConnectId: v.optional(v.string()),
-        asaasSubaccountId: v.optional(v.string()),
+        asaasApiKey: v.optional(v.string()),
         asaasWalletId: v.optional(v.string()),
         feePercentage: v.number(),
     })
         .index('by_user_id', ['userId'])
-        .index('by_email', ['email']),
+        .index('by_email', ['email'])
+        .index('by_stripe_connect_id', ['stripeConnectId'])
+        .index('by_asaas_api_key', ['asaasApiKey'])
+        .index('by_asaas_wallet_id', ['asaasWalletId']),
 })

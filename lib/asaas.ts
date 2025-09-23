@@ -20,8 +20,8 @@ export class Asaas {
 
     constructor() {
         this.apiKey = process.env.ASAAS_API_KEY!
-        this.baseUrl = process.env.ASAAS_BASE_URL || 'https://sandbox.asaas.com'
-        this.apiUrl = `${this.baseUrl}/api/v3`
+        this.baseUrl = process.env.ASAAS_BASE_URL || 'https://api-sandbox.asaas.com'
+        this.apiUrl = `${this.baseUrl}/v3`
         this.walletId = process.env.ASAAS_WALLET_ID!
         this.webhookSignature = process.env.ASAAS_WEBHOOK_SIGNATURE!
     }

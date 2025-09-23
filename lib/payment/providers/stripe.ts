@@ -5,24 +5,12 @@ import { CheckoutSession, PaymentProvider } from '../../../convex/types'
 import { stripe } from '../../stripe'
 import { PaymentProviderBase } from './base'
 
-export class StripeProvider extends PaymentProviderBase {
+export class StripeProvider implements PaymentProviderBase {
     provider: PaymentProvider = 'stripe'
     private stripe: Stripe
 
     constructor() {
-        super()
         this.stripe = stripe
-    }
-
-    async createAccountLink(accountId: string): Promise<{ url: string }> {
-        const accountLink = await this.stripe.accountLinks.create({
-            account: accountId,
-            refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/stripe/refresh/${accountId}`,
-            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/stripe/return/${accountId}`,
-            type: 'account_onboarding',
-        })
-
-        return { url: accountLink.url }
     }
 
     async createAccount() {
@@ -34,7 +22,20 @@ export class StripeProvider extends PaymentProviderBase {
             },
         })
 
-        return { accountId: account.id }
+        const { url } = await this.getAccountLink(account.id)
+
+        return { accountId: account.id, url }
+    }
+
+    async getAccountLink(accountId: string) {
+        const accountLink = await this.stripe.accountLinks.create({
+            account: accountId,
+            refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/stripe/refresh/${accountId}`,
+            return_url: `${process.env.NEXT_PUBLIC_APP_URL}/connect/stripe/return/${accountId}`,
+            type: 'account_onboarding',
+        })
+
+        return { url: accountLink.url }
     }
 
     async createCheckoutSession(params: {

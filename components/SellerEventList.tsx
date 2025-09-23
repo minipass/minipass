@@ -31,7 +31,7 @@ export default function SellerEventList() {
 
     if (!events || paymentAccounts === undefined) return null
 
-    const isPaymentSetup = paymentAccounts.stripeConnectId || paymentAccounts.asaasSubaccountId
+    const isPaymentSetup = paymentAccounts.stripeConnectId || paymentAccounts.asaasWalletId
 
     // Show empty state if no events at all
     if (events.length === 0) {

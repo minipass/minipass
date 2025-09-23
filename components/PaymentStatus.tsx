@@ -28,7 +28,7 @@ export default function PaymentStatus() {
             if (paymentAccounts.stripeConnectId) {
                 setSelectedProvider('stripe')
                 setIsSetup(true)
-            } else if (paymentAccounts.asaasSubaccountId) {
+            } else if (paymentAccounts.asaasApiKey) {
                 setSelectedProvider('asaas')
                 setIsSetup(true)
             } else {

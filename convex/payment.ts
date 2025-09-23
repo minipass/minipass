@@ -1,6 +1,8 @@
 import { ConvexError, v } from 'convex/values'
 
 import { PaymentProviderFactory } from '../lib/payment/provider-factory'
+import { AsaasProvider } from '../lib/payment/providers/asaas'
+import { StripeProvider } from '../lib/payment/providers/stripe'
 import { api, internal } from './_generated/api'
 import { Doc } from './_generated/dataModel'
 import { action, internalMutation, query } from './_generated/server'
@@ -9,7 +11,7 @@ import { CheckoutSession } from './types'
 // Get user's payment accounts
 type GetUsersPaymentAccountsResult = {
     stripeConnectId: string | undefined
-    asaasSubaccountId: string | undefined
+    asaasApiKey: string | undefined
     feePercentage: number
 }
 export const getUsersPaymentAccounts = query({
@@ -26,67 +28,103 @@ export const getUsersPaymentAccounts = query({
 
         return {
             stripeConnectId: user.stripeConnectId,
-            asaasSubaccountId: user.asaasSubaccountId,
+            asaasApiKey: user.asaasApiKey,
             feePercentage: user.feePercentage,
         }
     },
 })
 
-// Create payment account
-export const createPaymentAccount = action({
-    args: {
-        userId: v.string(),
-        provider: v.union(v.literal('stripe'), v.literal('asaas')),
-        accountData: v.object({
-            name: v.string(),
-            email: v.string(),
-            birthDate: v.string(),
-            cpfCnpj: v.string(),
-            mobilePhone: v.string(),
-            incomeValue: v.number(),
-            address: v.string(),
-            addressNumber: v.string(),
-            province: v.string(),
-            postalCode: v.string(),
-            personType: v.union(v.literal('FISICA'), v.literal('JURIDICA')),
-        }),
-    },
-    handler: async (ctx, { userId, provider, accountData }) => {
+// Create payment accounts for Stripe and Asaas
+export const createStripePaymentAccount = action({
+    args: { userId: v.string() },
+    handler: async (ctx, { userId }) => {
         // Check if user already has an account for this provider
         const user: GetUsersPaymentAccountsResult = await ctx.runQuery(api.payment.getUsersPaymentAccounts, { userId })
 
-        if (provider === 'stripe' && user.stripeConnectId) {
+        // If user already has a Stripe account, return it
+        if (user.stripeConnectId) {
             return { account: user.stripeConnectId }
         }
 
-        if (provider === 'asaas' && user.asaasSubaccountId) {
-            return { account: user.asaasSubaccountId }
-        }
-
         // Check if user already has an account for the other provider
-        if (provider === 'stripe' && user.asaasSubaccountId) {
+        if (user.asaasApiKey) {
             throw new ConvexError(
                 'Você já tem uma conta Asaas. Entre em contato com o suporte para trocar de provedor.',
             )
         }
 
-        if (provider === 'asaas' && user.stripeConnectId) {
+        const paymentProvider = PaymentProviderFactory.getProvider('stripe') as StripeProvider
+        let account: Awaited<ReturnType<typeof paymentProvider.createAccount>>
+        try {
+            account = await paymentProvider.createAccount()
+        } catch (error) {
+            console.error('Failed to create Stripe account:', error)
+            throw new ConvexError('Falha ao criar a conta Stripe. Entre em contato com o time de suporte.')
+        }
+
+        await ctx.runMutation(internal.payment.updateUserPaymentAccount, {
+            userId,
+            provider: 'stripe',
+            stripeConnectId: account.accountId,
+        })
+
+        return { url: account.url }
+    },
+})
+
+export const createAsaasPaymentAccount = action({
+    args: {
+        userId: v.string(),
+        apiKey: v.string(),
+    },
+    handler: async (ctx, { userId, apiKey }) => {
+        // Check if user already has an account for this provider
+        const user: GetUsersPaymentAccountsResult = await ctx.runQuery(api.payment.getUsersPaymentAccounts, { userId })
+
+        // If user already has an Asaas account, return it
+        if (user.asaasApiKey) {
+            return { account: user.asaasApiKey }
+        }
+
+        // Check if user already has an account for the other provider
+        if (user.stripeConnectId) {
             throw new ConvexError(
                 'Você já tem uma conta Stripe. Entre em contato com o suporte para trocar de provedor.',
             )
         }
 
-        const paymentProvider = PaymentProviderFactory.getProvider(provider)
-        const account = await paymentProvider.createAccount(accountData)
+        const paymentProvider = PaymentProviderFactory.getProvider('asaas') as AsaasProvider
+        let account: Awaited<ReturnType<typeof paymentProvider.createAccount>>
+        try {
+            account = await paymentProvider.createAccount({ apiKey })
+        } catch (error) {
+            console.error('Failed to create Asaas account:', error)
+            throw error
+            throw new ConvexError(
+                'Falha ao criar a conta Asaas. Valide sua chave de API ou entre em contato com o time de suporte.',
+            )
+        }
 
         await ctx.runMutation(internal.payment.updateUserPaymentAccount, {
             userId,
-            provider,
-            accountId: account.accountId,
-            walletId: account.walletId,
+            provider: 'asaas',
+            asaasApiKey: apiKey,
+            asaasWalletId: account.walletId,
         })
 
-        return { account: account.accountId }
+        return { url: account.url }
+    },
+})
+
+// Simpler action to simply get an account link
+export const createAccountLink = action({
+    args: {
+        provider: v.union(v.literal('stripe'), v.literal('asaas')),
+        accountId: v.string(),
+    },
+    handler: async (ctx, { provider, accountId }) => {
+        const paymentProvider = PaymentProviderFactory.getProvider(provider) as StripeProvider | AsaasProvider
+        return await paymentProvider.getAccountLink(accountId)
     },
 })
 
@@ -95,10 +133,11 @@ export const updateUserPaymentAccount = internalMutation({
     args: {
         userId: v.string(),
         provider: v.union(v.literal('stripe'), v.literal('asaas')),
-        accountId: v.string(),
-        walletId: v.optional(v.string()),
+        stripeConnectId: v.optional(v.string()),
+        asaasApiKey: v.optional(v.string()),
+        asaasWalletId: v.optional(v.string()),
     },
-    handler: async (ctx, { userId, provider, accountId, walletId }) => {
+    handler: async (ctx, { userId, provider, stripeConnectId, asaasApiKey, asaasWalletId }) => {
         const user = await ctx.db
             .query('users')
             .withIndex('by_user_id', q => q.eq('userId', userId))
@@ -109,24 +148,12 @@ export const updateUserPaymentAccount = internalMutation({
         }
 
         const updateData = {
-            stripeConnectId: provider === 'stripe' ? accountId : undefined,
-            asaasSubaccountId: provider === 'asaas' ? accountId : undefined,
-            asaasWalletId: provider === 'asaas' ? walletId : undefined,
+            stripeConnectId: provider === 'stripe' ? stripeConnectId : undefined,
+            asaasApiKey: provider === 'asaas' ? asaasApiKey : undefined,
+            asaasWalletId: provider === 'asaas' ? asaasWalletId : undefined,
         }
 
         await ctx.db.patch(user._id, updateData)
-    },
-})
-
-// Create account link
-export const createAccountLink = action({
-    args: {
-        provider: v.union(v.literal('stripe'), v.literal('asaas')),
-        accountId: v.string(),
-    },
-    handler: async (ctx, { provider, accountId }) => {
-        const paymentProvider = PaymentProviderFactory.getProvider(provider)
-        return await paymentProvider.createAccountLink(accountId)
     },
 })
 
@@ -174,10 +201,10 @@ export const createCheckoutSession = action({
 
         if (!eventOwner) throw new ConvexError('Proprietário do evento não encontrado')
 
-        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasSubaccountId ? 'asaas' : null
+        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasApiKey ? 'asaas' : null
         if (!provider) throw new ConvexError('Provedor de pagamento não encontrado para o proprietário do evento!')
 
-        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasSubaccountId
+        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasApiKey
         if (!accountId) throw new ConvexError('Conta de pagamento não encontrada para o proprietário do evento!')
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
@@ -233,10 +260,10 @@ export const processRefunds = action({
 
         if (!eventOwner) throw new ConvexError('Proprietário do evento não encontrado')
 
-        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasSubaccountId ? 'asaas' : null
+        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasApiKey ? 'asaas' : null
         if (!provider) throw new ConvexError('Provedor de pagamento não encontrado para o proprietário do evento!')
 
-        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasSubaccountId
+        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasApiKey
         if (!accountId) throw new ConvexError('Conta de pagamento não encontrada para o proprietário do evento!')
 
         // Get all valid tickets for this event

@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { api } from '@/convex/_generated/api'
 import { Id } from '@/convex/_generated/dataModel'
 
-import { toast } from '@/hooks/useToast'
+import { useToast } from '@/hooks/useToast'
 
 import ReleaseTicket from './ReleaseTicket'
 
@@ -94,6 +94,7 @@ export default function PurchaseTicket({ eventId }: { eventId: Id<'events'> }) {
 export const PurchaseTicketButton = ({ eventId }: { eventId: Id<'events'> }) => {
     const router = useRouter()
     const { user } = useUser()
+    const { toast } = useToast()
 
     // Get queue position
     const queuePosition = useQuery(api.waitingList.getQueuePosition, {
