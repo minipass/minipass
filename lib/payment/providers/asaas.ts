@@ -67,8 +67,8 @@ export class AsaasProvider implements PaymentProviderBase {
                 ? []
                 : [
                       {
-                          walletId: params.accountId,
-                          percentageValue: 100 - params.feePercentage,
+                          walletId: this.asaas.walletId,
+                          percentageValue: params.feePercentage,
                       },
                   ]
 
@@ -93,10 +93,14 @@ export class AsaasProvider implements PaymentProviderBase {
             ],
         }
 
-        const checkoutSession = await this.asaas.makeRequest('/checkouts', {
-            method: 'POST',
-            body: JSON.stringify(checkoutSessionData),
-        })
+        const checkoutSession = await this.asaas.makeRequest(
+            '/checkouts',
+            {
+                method: 'POST',
+                body: JSON.stringify(checkoutSessionData),
+            },
+            params.accountId,
+        )
 
         return {
             sessionId: checkoutSession.id,

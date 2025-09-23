@@ -202,10 +202,10 @@ export const createCheckoutSession = action({
 
         if (!eventOwner) throw new ConvexError('Proprietário do evento não encontrado')
 
-        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasWalletId ? 'asaas' : null
+        const provider = eventOwner.stripeConnectId ? 'stripe' : eventOwner.asaasApiKey ? 'asaas' : null
         if (!provider) throw new ConvexError('Provedor de pagamento não encontrado para o proprietário do evento!')
 
-        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasWalletId
+        const accountId = provider === 'stripe' ? eventOwner.stripeConnectId : eventOwner.asaasApiKey
         if (!accountId) throw new ConvexError('Conta de pagamento não encontrada para o proprietário do evento!')
 
         const paymentProvider = PaymentProviderFactory.getProvider(provider)
